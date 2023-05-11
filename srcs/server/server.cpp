@@ -1,6 +1,10 @@
 #include "../../include/server/server.hpp"
+#include <sys/poll.h>
+#include <sys/socket.h>
 
 using namespace irc;
+
+Server::Server() {}
 
 Server::Server(std::string portStr, std::string pass):_Password(pass)
 {
@@ -41,14 +45,48 @@ void	Server::setSocket()
 		throw IrcError(strerror(errno));
 }
 
+void	Server::checkEvents()
+{
+	std::string		recvMessage;
+	ssize_t			recvNChar = 0;
+	if (_PollVector.empty())
+		return ;
+	for (pollvectorIter it = _PollVector.begin(); it != _PollVector.end(); it++)
+	{
+		if (it->revents == POLLIN)
+		{
+			do
+			{
+			} while (recvMessage[recvNChar] != '\n');
+		}
+		if (it->revents == POLLHUP)
+		{
+		}
+	}
+}
+
+const std::string		&Server::getPass() const
+{
+	return (_Password);
+}
+
+// void	Server::acceptClient()
+// {
+// 	Client	newClient;
+// 	while (ACCEPT_CLIENT)
+// 	{
+// 		accept(_Sock, struct sockaddr *, socklen_t *)
+// 	}
+// }
+
 void	Server::ConnectServer()
 {
 	socketInit();
 	setSocket();
 	while (RUNTIME)
 	{
-		std::cout << "truc" << '\n';
+		poll(_PollVector.data(), _PollVector.size(), POLL_TIMEOUT);
+		checkEvents();
 	}
-	std::cout << "ctrlc" << '\n';
 	close(_Sock);
 }

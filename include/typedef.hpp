@@ -2,8 +2,18 @@
 
 #include "include.hpp"
 
-class	Client;
-typedef	u_int32_t				fd_t;
-typedef u_int32_t				socket_t;
-typedef std::vector<pollfd>		pollvector;
-typedef std::map<fd_t, Client*>	mapClient;
+namespace irc
+{
+	class Client;
+}
+//base typedef
+typedef	u_int32_t		fd_t;
+typedef u_int16_t		socket_t;
+
+//typdef on pollfd vector and pollfd iterator
+typedef std::vector<struct pollfd>					pollvector;
+typedef std::vector<struct pollfd>::iterator		pollvectorIter;
+
+//client stockage in map with a typdef on iterator
+typedef std::map<fd_t, irc::Client*>				mapClient;
+typedef std::map<fd_t, irc::Client*>::iterator	mapClientIter;
