@@ -12,7 +12,7 @@ class Client : public irc::Server
 		void				setClient(const std::string &pass, const std::string &Nick, const std::string &name, bool isConnect);
 		const std::string	&getName() const;
 		const std::string	&getNick() const;
-		const bool			isConnect() const;
+		bool				isConnect() const;
 		void				changeName(const std::string &name);
 		void				changeNick(const std::string &nick);
 		void				changeData(const std::string &name, const std::string &nick);
