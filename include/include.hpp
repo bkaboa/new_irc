@@ -2,6 +2,7 @@
 
 // ************		BASE-INCLUDE
 #include <string>
+#include <cstring>
 #include <iostream>
 #include <cstdlib>
 #include <sstream>

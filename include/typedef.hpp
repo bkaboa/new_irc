@@ -17,3 +17,6 @@ typedef std::vector<struct pollfd>::iterator		pollvectorIter;
 //client stockage in map with a typdef on iterator
 typedef std::map<fd_t, irc::Client*>				mapClient;
 typedef std::map<fd_t, irc::Client*>::iterator	mapClientIter;
+
+//typedef for channel Client list
+typedef std::map<irc::Client, bool, bool> channelMembers;
