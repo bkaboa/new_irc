@@ -1,9 +1,6 @@
 #pragma once
 
 #include "../include.hpp"
-#include "../define.hpp"
-#include "../typedef.hpp"
-#include "../error.hpp"
 
 namespace irc
 {
@@ -12,8 +9,6 @@ namespace irc
 		public:
 			Server(std::string portStr, std::string pass);
 			~Server();
-			void	parseMessage(std::string message, fd_t fd);
-			void	sndMessage(std::string message, fd_t fd);
 
 			void					ConnectServer();
 			const std::string		&getPass() const;
@@ -25,6 +20,7 @@ namespace irc
 			void	checkEvents();
 			void	acceptConnection();
 			void	disconnectClient();
+			void	clientNew(fd_t clientFd);
 
 			std::string			_Password;
 			fd_t				_Port;

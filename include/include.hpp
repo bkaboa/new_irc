@@ -22,3 +22,9 @@
 #include <poll.h>
 #include <netinet/in.h>
 #include <fcntl.h>
+
+// ************		OUR_INCLUDES
+#include "define.hpp"
+#include "typedef.hpp"
+#include "error.hpp"
+#include "client/client.hpp"

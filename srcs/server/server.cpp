@@ -1,6 +1,4 @@
 #include "../../include/server/server.hpp"
-#include <sys/poll.h>
-#include <sys/socket.h>
 
 using namespace irc;
 
@@ -43,10 +41,53 @@ void	Server::setSocket()
 		throw IrcError(strerror(errno));
 }
 
+void	Server::clientNew(fd_t clientFd)
+{
+	if (_ClientMap.find(clientFd) != _ClientMap.end())
+		std::cout << RED << "Error : this file descriptor is already taken" << NC << '\n';
+	else
+		_ClientMap.insert(std::make_pair(clientFd, new Client(clientFd)));
+}
+
+const std::string		&Server::getPass() const
+{
+	return (_Password);
+}
+
+void	Server::disconnectClient()
+{
+	
+}
+
+void	Server::acceptConnection()
+{
+	struct sockaddr_in		client;
+	socklen_t				clientSize = sizeof(sockaddr_in);
+	struct pollfd			newPoll;
+	fd_t					clientFd = 0;
+
+	memset(static_cast<void*>(&newPoll), 0, sizeof(newPoll));
+	memset(static_cast<void*>(&client), 0, sizeof(client));
+	while (ACCEPT_CLIENT)
+	{
+		clientFd = accept(_Sock, (sockaddr*)&client, &clientSize);
+		if (clientFd < 0 && (errno == EAGAIN || errno == EWOULDBLOCK))
+			break;
+		else if (clientFd < 0)
+			std::cout << RED << strerror(errno) << NC <<  '\n';
+		newPoll.fd = clientFd;
+		newPoll.events = POLLIN;
+		_PollVector.push_back(newPoll);
+		clientNew(clientFd);
+	}
+}
+
 void	Server::checkEvents()
 {
-	std::string		recvMessage;
-	ssize_t			recvNChar = 0;
+	char		buffer[512];
+	int			recvNChar = 0, tmp = 0;
+	std::string message;
+
 	if (_PollVector.empty())
 		return ;
 	for (pollvectorIter it = _PollVector.begin(); it != _PollVector.end(); it++)
@@ -55,27 +96,19 @@ void	Server::checkEvents()
 		{
 			do
 			{
-			} while (recvMessage[recvNChar] != '\n');
+				bzero(&buffer, sizeof(buffer));
+				recvNChar = recv(_Sock, &buffer, sizeof(buffer), MSG_PEEK | MSG_DONTWAIT);
+				recvNChar += tmp;
+				message.append(buffer);
+				tmp = recvNChar;
+			} while (message[recvNChar] != '\n');
 		}
 		if (it->revents == POLLHUP)
 		{
+			disconnectClient();
 		}
 	}
 }
-
-const std::string		&Server::getPass() const
-{
-	return (_Password);
-}
-
-// void	Server::acceptClient()
-// {
-// 	Client	newClient;
-// 	while (ACCEPT_CLIENT)
-// 	{
-// 		accept(_Sock, struct sockaddr *, socklen_t *)
-// 	}
-// }
 
 void	Server::ConnectServer()
 {
