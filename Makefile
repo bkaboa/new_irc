@@ -15,7 +15,7 @@ CPP 	:= 	c++
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CPP) $(FLAGS) $< -o $@
+	$(CPP) $(FLAGS) $^ -o $@
 
 $(OPATH)/%.o: %.cpp Makefile $(HEADER)
 	@mkdir -p $(dir $@)

@@ -4,8 +4,6 @@
 
 using namespace irc;
 
-Server::Server() {}
-
 Server::Server(std::string portStr, std::string pass):_Password(pass)
 {
 	const int port = std::atoi(portStr.c_str());

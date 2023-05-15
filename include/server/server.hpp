@@ -11,10 +11,9 @@ namespace irc
 	{
 		public:
 			Server(std::string portStr, std::string pass);
-			Server();
 			~Server();
-			virtual void	parseMessage(std::string message, fd_t fd);
-			virtual	void	sndMessage(std::string message, fd_t fd);
+			void	parseMessage(std::string message, fd_t fd);
+			void	sndMessage(std::string message, fd_t fd);
 
 			void					ConnectServer();
 			const std::string		&getPass() const;

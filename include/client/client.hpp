@@ -4,7 +4,7 @@
 
 namespace irc
 {
-class Client : public irc::Server
+class Client
 {
 	public:
 		Client(fd_t fd);
