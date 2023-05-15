@@ -5,6 +5,7 @@
 namespace irc
 {
 	class Client;
+	struct Member;
 }
 //base typedef
 typedef	u_int32_t		fd_t;
@@ -19,4 +20,4 @@ typedef std::map<fd_t, irc::Client*>				mapClient;
 typedef std::map<fd_t, irc::Client*>::iterator	mapClientIter;
 
 //typedef for channel Client list
-typedef std::map<irc::Client, bool, bool> channelMembers;
+typedef std::vector<irc::Member> channelMembers;
