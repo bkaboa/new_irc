@@ -12,6 +12,11 @@ Server::Server(std::string portStr, std::string pass):_Password(pass)
 
 Server::~Server() {}
 
+const std::string	&Server::getPass() const
+{
+	return (_Password);
+}
+
 void	Server::socketInit()
 {
 	std::memset(&_SockAddr, 0, sizeof(_SockAddr));
@@ -41,22 +46,32 @@ void	Server::setSocket()
 		throw IrcError(strerror(errno));
 }
 
-void	Server::clientNew(fd_t clientFd)
+void	Server::checkEvents()
 {
-	if (_ClientMap.find(clientFd) != _ClientMap.end())
-		std::cout << RED << "Error : this file descriptor is already taken" << NC << '\n';
-	else
-		_ClientMap.insert(std::make_pair(clientFd, new Client(clientFd)));
-}
+	char		buffer[512];
+	int			recvNChar = 0, tmp = 0;
+	std::string message;
 
-const std::string		&Server::getPass() const
-{
-	return (_Password);
-}
-
-void	Server::disconnectClient()
-{
-	
+	if (_PollVector.empty())
+		return ;
+	for (pollvectorIter it = _PollVector.begin(); it != _PollVector.end(); it++)
+	{
+		if (it->revents == POLLIN)
+		{
+			do
+			{
+				bzero(&buffer, sizeof(buffer));
+				recvNChar = recv(it->fd, &buffer, sizeof(buffer), MSG_PEEK | MSG_DONTWAIT);
+				recvNChar += tmp;
+				message.append(buffer);
+				tmp = recvNChar;
+			} while (message[recvNChar] != '\n');
+		}
+		if (it->revents == POLLHUP)
+		{
+			disconnectClient(it->fd);
+		}
+	}
 }
 
 void	Server::acceptConnection()
@@ -82,35 +97,8 @@ void	Server::acceptConnection()
 	}
 }
 
-void	Server::checkEvents()
-{
-	char		buffer[512];
-	int			recvNChar = 0, tmp = 0;
-	std::string message;
-
-	if (_PollVector.empty())
-		return ;
-	for (pollvectorIter it = _PollVector.begin(); it != _PollVector.end(); it++)
-	{
-		if (it->revents == POLLIN)
-		{
-			do
-			{
-				bzero(&buffer, sizeof(buffer));
-				recvNChar = recv(_Sock, &buffer, sizeof(buffer), MSG_PEEK | MSG_DONTWAIT);
-				recvNChar += tmp;
-				message.append(buffer);
-				tmp = recvNChar;
-			} while (message[recvNChar] != '\n');
-		}
-		if (it->revents == POLLHUP)
-		{
-			disconnectClient();
-		}
-	}
-}
-
 void	Server::ConnectServer()
+
 {
 	socketInit();
 	setSocket();
