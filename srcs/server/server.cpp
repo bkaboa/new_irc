@@ -105,6 +105,7 @@ void	Server::ConnectServer()
 	while (RUNTIME)
 	{
 		poll(_PollVector.data(), _PollVector.size(), POLL_TIMEOUT);
+		acceptConnection();
 		checkEvents();
 	}
 	close(_Sock);
