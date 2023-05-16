@@ -46,3 +46,5 @@ _*
 *.swp
 
 ircserv
+
+.obj_dir
