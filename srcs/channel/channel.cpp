@@ -11,5 +11,5 @@ bool irc::Channel::checkBan(std::string name)
 
 void irc::Channel::addMember(irc::Client newMember)
 {
-
+	this->_members(1) = newMember.getName();
 }
