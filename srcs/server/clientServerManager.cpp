@@ -10,6 +10,7 @@ void	Server::clientNew(fd_t clientFd)
 	}
 	else
 	{
+		std::cout << GREEN << "new client connection established" << NC << '\n';
 		_ClientMap.insert(std::make_pair(clientFd, new Client(clientFd)));
 	}
 }

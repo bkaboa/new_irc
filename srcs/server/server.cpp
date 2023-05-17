@@ -79,7 +79,7 @@ void	Server::acceptConnection()
 	struct sockaddr_in		client;
 	socklen_t				clientSize = sizeof(sockaddr_in);
 	struct pollfd			newPoll;
-	fd_t					clientFd = 0;
+	int						clientFd = 0;
 
 	memset(static_cast<void*>(&newPoll), 0, sizeof(newPoll));
 	memset(static_cast<void*>(&client), 0, sizeof(client));
@@ -98,15 +98,14 @@ void	Server::acceptConnection()
 }
 
 void	Server::ConnectServer()
-
 {
 	socketInit();
 	setSocket();
 	while (RUNTIME)
 	{
 		poll(_PollVector.data(), _PollVector.size(), POLL_TIMEOUT);
-		acceptConnection();
 		checkEvents();
+		acceptConnection();
 	}
 	close(_Sock);
 }
