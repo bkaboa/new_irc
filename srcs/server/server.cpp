@@ -58,16 +58,9 @@ void	Server::checkEvents()
 	{
 		if (it->revents == POLLIN)
 		{
-			std::cout << BLUE << it->fd << NC << std::endl;
-			do
-			{
-				bzero(&buffer, 512);
-				recvNChar = recv(it->fd, &buffer, 512, 0);
-				recvNChar += tmp;
-				message.append(buffer);
-				send(it->fd, buffer, recvNChar + 1, 0);
-				tmp = recvNChar;
-			} while (message[recvNChar] != '\n');
+			bzero(&buffer, 512);
+			recvNChar = recv(it->fd, &buffer, 10, 0);
+			send(it->fd, buffer, recvNChar + 1, 0);
 		}
 		if (it->revents == POLLHUP)
 		{
@@ -91,7 +84,10 @@ void	Server::acceptConnection()
 		if (clientFd < 0 && (errno == EAGAIN || errno == EWOULDBLOCK))
 			break;
 		else if (clientFd < 0)
+		{
 			std::cout << RED << strerror(errno) << NC <<  '\n';
+			return;
+		}
 		newPoll.fd = clientFd;
 		newPoll.events = POLLIN;
 		_PollVector.push_back(newPoll);

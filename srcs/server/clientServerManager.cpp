@@ -7,6 +7,7 @@ void	Server::clientNew(fd_t clientFd)
 	if (_ClientMap.find(clientFd) != _ClientMap.end())
 	{
 		std::cout << RED << "Error : this file descriptor is already taken" << NC << '\n';
+		_PollVector.pop_back();
 	}
 	else
 	{
@@ -30,7 +31,7 @@ void	Server::disconnectClient(fd_t clientFd)
 		clientTmp = *mIt->second;
 		delete mIt->second;
 		_ClientMap.erase(mIt);
-		// std::cout << BLUE << "the client " << clientTmp.getNick() << " have been disconnected" << NC << '\n';
+		std::cout << BLUE << "the client " << clientTmp.getNick() << " have been disconnected" << NC << '\n';
 	}
 	for (pollvectorIter vIt = _PollVector.begin(); vIt->fd != clientFd; vIt++);
 	_PollVector.erase(vIt);
