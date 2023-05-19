@@ -1,6 +1,6 @@
-#include "../../include/include.hpp"
+// #include "../../include/include.hpp"
 
-void Pass(std::string channel)
-{
-	std::cout << "TEST --- PASS" << std::endl;
-}
+// void Pass(std::string channel)
+// {
+// 	std::cout << "TEST --- PASS" << std::endl;
+// }
