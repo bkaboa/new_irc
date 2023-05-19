@@ -58,12 +58,14 @@ void	Server::checkEvents()
 	{
 		if (it->revents == POLLIN)
 		{
+			std::cout << BLUE << it->fd << NC << std::endl;
 			do
 			{
-				bzero(&buffer, sizeof(buffer));
-				recvNChar = recv(it->fd, &buffer, sizeof(buffer), MSG_PEEK | MSG_DONTWAIT);
+				bzero(&buffer, 512);
+				recvNChar = recv(it->fd, &buffer, 512, 0);
 				recvNChar += tmp;
 				message.append(buffer);
+				send(it->fd, buffer, recvNChar + 1, 0);
 				tmp = recvNChar;
 			} while (message[recvNChar] != '\n');
 		}

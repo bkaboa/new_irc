@@ -30,7 +30,7 @@ void	Server::disconnectClient(fd_t clientFd)
 		clientTmp = *mIt->second;
 		delete mIt->second;
 		_ClientMap.erase(mIt);
-		std::cout << BLUE << "the client " << clientTmp.getNick() << " have been disconnected" << NC << '\n';
+		// std::cout << BLUE << "the client " << clientTmp.getNick() << " have been disconnected" << NC << '\n';
 	}
 	for (pollvectorIter vIt = _PollVector.begin(); vIt->fd != clientFd; vIt++);
 	_PollVector.erase(vIt);

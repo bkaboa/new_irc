@@ -1,6 +1,6 @@
-#include "../../include/include.hpp"
+// #include "../../include/include.hpp"
 
-void Join(std::string channel)
-{
-	std::cout << "TEST --- JOIN" << std::endl;
-}
+// void Join(std::string channel)
+// {
+// 	std::cout << "TEST --- JOIN" << std::endl;
+// }
