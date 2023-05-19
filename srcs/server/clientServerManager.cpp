@@ -7,6 +7,7 @@ void	Server::clientNew(fd_t clientFd)
 	if (_ClientMap.find(clientFd) != _ClientMap.end())
 	{
 		std::cout << RED << "Error : this file descriptor is already taken" << NC << '\n';
+		_PollVector.pop_back();
 	}
 	else
 	{
