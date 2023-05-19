@@ -1,46 +1,81 @@
-#include "../../include/server/server.hpp"
-#include <sys/poll.h>
-#include <sys/socket.h>
-#include <../../include/IrcMessage/IrcMessage.hpp>
+// #include "../../include/server/server.hpp"
+// #include <sys/poll.h>
+// #include <sys/socket.h>
+// #include "../../include/IrcMessage/IrcMessage.hpp"
 
-using namespace irc;
+// using namespace irc;
 
-static std::vector<std::string> strSplit(const std::string &str, char separator)
-{
-	std::vector<std::string> output;
-	size_t prev_pos = 0, pos = 0;
 
-	while((pos = str.find(separator, pos)) != std::string::npos)
-	{
-		std::string substring(str.substr(prev_pos, pos - prev_pos));
-		output.push_back(substring);
-		prev_pos = ++pos;
-	}
-	output.push_back(str.substr(prev_pos, pos - prev_pos));
-	return(output);
-}
-
-// void Server::sndMessage(std::string message, fd_t target)
+// IrcMessage::IrcMessage(std::string message)
 // {
-// 	//sends a message to the corresponding fd
+// 	this->parseMessage(message);
 // }
 
-//without prefix for now : Example message : JOIN #channel //// or PRIVSMSG #channel :Hello guys
-void parseMessage(std::string message, fd_t target)
-{
-	std::vector<std::string> tab = strSplit(message, ' ');
-	
-}
+// IrcMessage::~IrcMessage()
+// {
 
-int main(int ac, char **av)
-{
-	std::string fullmsg;
-	av = &av[1];
-	for (int i = 0; av[i]; i++)
-	{
-		fullmsg.append(av[i]);
-		if (av[i + 1])
-			fullmsg.append(" ");
-	}
-	std::cout << fullmsg << std::endl;
-}
+// }
+
+// void IrcMessage::setNickname(std::string str)
+// {
+// 	this->_nickname = str;
+// }
+
+// void IrcMessage::setUsername(std::string str)
+// {
+// 	this->_username = str;
+// }
+
+// void IrcMessage::setHostname(std::string str)
+// {
+// 	this->_hostname = str;
+// }
+
+// void IrcMessage::setCommand(std::string str)
+// {
+// 	this->_command = str;
+// }
+
+// void IrcMessage::setMessage(std::string str)
+// {
+// 	this->_message = str;
+// }
+
+// const std::string IrcMessage::getNickname(void)
+// {
+// 	return (this->_nickname);
+// }
+
+// const std::string IrcMessage::getUsername(void)
+// {
+// 	return (this->_username);
+// }
+
+// const std::string IrcMessage::getHostname(void)
+// {
+// 	return (this->_hostname);
+// }
+
+// const std::string IrcMessage::getCommand(void)
+// {
+// 	return (this->_command);
+// }
+
+// const std::string IrcMessage::getMessage(void)
+// {
+// 	return (this->_message);
+// }
+
+// int main(int ac, char **av)
+// {
+// 	std::string fullmsg;
+// 	av = &av[1];
+// 	for (int i = 0; av[i]; i++)
+// 	{
+// 		fullmsg.append(av[i]);
+// 		if (av[i + 1])
+// 			fullmsg.append(" ");
+// 	}
+// 	std::cout << fullmsg << std::endl;
+// 	IrcMessage msg(fullmsg, 1);
+// }
