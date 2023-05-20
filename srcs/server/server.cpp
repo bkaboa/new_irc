@@ -49,7 +49,7 @@ void	Server::setSocket()
 void	Server::checkEvents()
 {
 	char		buffer[512];
-	int			recvNChar = 0, tmp = 0;
+	int			recvNChar = 0;
 	std::string message;
 
 	if (_PollVector.empty())

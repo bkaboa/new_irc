@@ -9,7 +9,7 @@ namespace irc
 }
 //base typedef
 typedef	u_int32_t		fd_t;
-typedef u_int16_t		socket_t;
+typedef int32_t			socket_t;
 
 //typdef on pollfd vector and pollfd iterator
 typedef std::vector<struct pollfd>					pollvector;
