@@ -8,7 +8,7 @@ namespace irc
 	struct Member;
 }
 //base typedef
-typedef	u_int32_t		fd_t;
+typedef	int32_t			fd_t;
 typedef int32_t			socket_t;
 
 //typdef on pollfd vector and pollfd iterator
