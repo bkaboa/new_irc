@@ -11,28 +11,23 @@ void	Server::clientNew(fd_t clientFd)
 	}
 	else
 	{
-		std::cout << GREEN << "new client connection established" << NC << '\n';
+		std::cout << GREEN << "new client connection established from " << NC << '\n';
 		_ClientMap.insert(std::make_pair(clientFd, new Client(clientFd)));
 	}
 }
 
-void	Server::disconnectClient(fd_t clientFd)
+void	Server::disconnectClient(pollvectorIter &it)
 {
-	mapClientIter	mIt;
-	pollvectorIter	vIt;
-	Client			clientTmp(clientFd);
+	mapClientIter mit = _ClientMap.find(it->fd);
 
-	if ((mIt = _ClientMap.find(clientFd)) == _ClientMap.end())
+	if (mit->second->getName().empty())
 	{
-		std::cout << RED << "client in map doesn't exist" << NC << '\n';
+		std::cout << BLUE << "Unknown client disconnected" << NC << std::endl;
+		_ClientMap.erase(mit);
 	}
-	else
-	{
-		clientTmp = *mIt->second;
-		delete mIt->second;
-		_ClientMap.erase(mIt);
-		std::cout << BLUE << "the client " << clientTmp.getNick() << " have been disconnected" << NC << '\n';
+	else {
+		std::cout << BLUE << "client " << mit->second->getNick() << " disconnected" << NC << std::endl;
+		_ClientMap.erase(mit);
 	}
-	for (pollvectorIter vIt = _PollVector.begin(); vIt->fd != clientFd; vIt++);
-	_PollVector.erase(vIt);
+	_PollVector.erase(it);
 }

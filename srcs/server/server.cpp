@@ -51,10 +51,12 @@ void	Server::checkEvents()
 	char		buffer[512];
 	int			recvNChar = 0;
 	std::string message;
+	pollvectorIter it;
 
-	if (_PollVector.empty())
+	if (_PollVector.empty() || _PollVector.size() == 0)
 		return ;
-	for (pollvectorIter it = _PollVector.begin(); it != _PollVector.end(); it++)
+	it = _PollVector.begin();
+	do
 	{
 		if (it->revents == POLLIN)
 		{
@@ -62,11 +64,18 @@ void	Server::checkEvents()
 			recvNChar = recv(it->fd, &buffer, 10, 0);
 			send(it->fd, buffer, recvNChar + 1, 0);
 		}
-		if (it->revents == POLLHUP)
+		else if (it->revents == POLLHUP)
 		{
-			disconnectClient(it->fd);
+			disconnectClient(it);
 		}
-	}
+		else if (it->revents == 17)
+		{
+			std::cout << RED << "Client unexpected deconection" << NC << '\n';
+			disconnectClient(it);
+		}
+		if (it != _PollVector.end())
+			++it;
+	} while (it != _PollVector.end());
 }
 
 void	Server::acceptConnection()

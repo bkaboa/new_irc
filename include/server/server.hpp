@@ -19,7 +19,7 @@ namespace irc
 			void	setSocket();
 			void	checkEvents();
 			void	acceptConnection();
-			void	disconnectClient(fd_t clientFd);
+			void	disconnectClient(pollvectorIter &it);
 			void	clientNew(fd_t clientFd);
 
 			std::string			_Password;
