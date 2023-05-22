@@ -12,14 +12,17 @@ namespace irc
 
 			void					ConnectServer();
 			const std::string		&getPass() const;
-			mapClientIter			getClient(const fd_t fd) const;
+
+		protected:
+			void			channelNew(Channel &channelNew);
+			void			disconnectClient(pollvectorIter &it);
+			mapClientIter	getClient(const fd_t fd) const;
 	
 		private:
 			void	socketInit();
 			void	setSocket();
 			void	checkEvents();
 			void	acceptConnection();
-			void	disconnectClient(pollvectorIter &it);
 			void	clientNew(fd_t clientFd);
 
 			std::string			_Password;
@@ -28,7 +31,6 @@ namespace irc
 			socket_t			_Sock;
 			pollvector			_PollVector;
 			mapClient			_ClientMap;
-	
+			mapChannel			_ChannelMap;
 	};
 }
-

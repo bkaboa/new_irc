@@ -62,6 +62,7 @@ void	Server::checkEvents()
 		{
 			bzero(&buffer, 512);
 			recvNChar = recv(it->fd, &buffer, 10, 0);
+			std::cout << buffer << '\n';
 			send(it->fd, buffer, recvNChar + 1, 0);
 		}
 		else if (it->revents == POLLHUP)

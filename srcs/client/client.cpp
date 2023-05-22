@@ -30,3 +30,7 @@ void	Client::changeNick(const std::string &nick)
 {
 	_Nick = nick;
 }
+
+fd_t	Client::getFd() const {
+	return (_Fd);
+}

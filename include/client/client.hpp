@@ -16,6 +16,7 @@ class Client
 		void				changeName(const std::string &name);
 		void				changeNick(const std::string &nick);
 		void				changeData(const std::string &name, const std::string &nick);
+		fd_t				getFd() const;
 
 	private:
 		fd_t		_Fd;

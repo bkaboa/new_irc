@@ -1,15 +1,15 @@
-// #include "../../include/channel/channel.hpp"
+#include "../../include/channel/channel.hpp"
 
-// bool irc::Channel::checkBan(std::string name)
-// {
-// 	for (int i = 0; i < this->_banned.size(); i++)
-// 	{
-// 		if (!strcmp(name, this->_banned.))
-// 	}
-// 	return (false);
-// }
+using namespace irc;
 
-// void irc::Channel::addMember(irc::Client newMember)
-// {
-// 	this->_members(1) = newMember.getName();
-// }
+Channel::Channel() {};
+
+Channel::~Channel() {};
+
+const std::string	&Channel::getName() const {
+	return (_Name);
+}
+
+bool	Channel::checkBan(std::string name) {
+	if ()
+}
