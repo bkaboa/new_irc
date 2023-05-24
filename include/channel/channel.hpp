@@ -11,7 +11,7 @@ namespace irc
 	class Channel
 	{
 	public:
-		Channel(Client* creator);
+		Channel(Client* creator, const std::string &name, const std::string &pass);
 		~Channel();
 		const std::string	&getName() const;
 
@@ -24,11 +24,13 @@ namespace irc
 		bool	checkBan(fd_t clientFd);
 		bool	checkOption(int);
 
-		std::string			_Name;
-		std::string 		_Topic;
-		int					_Options;
-		mapClient			_Members;
-		vectorFdClient		_FdAdmin;
-		vectorFdClient		_FdClientBanned;
+		std::string				_Password;
+		std::string				_Name;
+		std::string 			_Topic;
+		int						_ChannelOptions;
+		mapClient				_Members;
+		vectorFdClient			_FdAdmin;
+		vectorFdClient			_FdClientBanned;
+		optionClientInChannel	_ClientOption;
 	};
 }

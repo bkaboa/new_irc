@@ -3,7 +3,7 @@
 
 using namespace irc;
 
-Channel::Channel(Client *creator) {
+Channel::Channel(Client *creator, const std::string &name, const std::string &pass):_Name(name), _Password(pass) {
 	_Members.insert(std::make_pair(creator->getFd(), creator));
 };
 
