@@ -1,8 +1,11 @@
 #include "../../include/channel/channel.hpp"
+#include <utility>
 
 using namespace irc;
 
-Channel::Channel() {};
+Channel::Channel(Client *creator) {
+	_Members.insert(std::make_pair(creator->getFd(), creator));
+};
 
 Channel::~Channel() {};
 
@@ -19,4 +22,30 @@ bool	Channel::checkBan(fd_t clientFd) {
 			return (false);
 	}
 	return (true);
+}
+
+void	Channel::addMember(Client *newMember, bool admin)
+{
+	if (_Members.find(newMember->getFd()) != _Members.end())
+	{
+		std::cout << "client " << newMember->getNick() << " is already connected to the channel _Name" << std::endl;
+	}
+	else
+	{
+		if (admin == true)
+			_FdAdmin.push_back(newMember->getFd());
+		_Members.insert(std::make_pair(newMember->getFd(), newMember));
+	}
+}
+
+void	Channel::setAdmin(fd_t newAdminFd)
+{
+	if (_Members.find(newAdminFd) == _Members.end())
+		std::cout << "client doesn't in the channel " << _Name << std::endl;
+	else
+		_FdAdmin.push_back(newAdminFd);
+}
+
+void	Channel::kickMember(fd_t fd)
+{
 }

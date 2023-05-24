@@ -20,9 +20,13 @@ typedef std::vector<struct pollfd>::iterator	pollvectorIter;
 typedef std::map<fd_t, irc::Client*>			mapClient;
 typedef std::map<fd_t, irc::Client*>::iterator	mapClientIter;
 
-//typedef for channel Client list
-typedef std::map<std::string, irc::Channel>			mapChannel;
+//typedef for channel list
+typedef std::map<std::string, irc::Channel>				mapChannel;
 typedef std::map<std::string, irc::Channel>::iterator	mapChannelIter;
+
+//typedef for Client list in Channel
+typedef std::map<fd_t, irc::Client&>	mapChannelClient;
+typedef mapChannelClient::iterator		mapChannelClientIter;
 
 //typdef for store the client fd
 typedef std::vector<fd_t>			vectorFdClient;

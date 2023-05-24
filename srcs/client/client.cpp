@@ -2,7 +2,7 @@
 
 using namespace irc;
 
-Client::Client(fd_t fd):_Fd(fd) {}
+Client::Client(fd_t fd):_Fd(fd), _IsConnect(false){}
 
 Client::~Client() {}
 
@@ -33,4 +33,11 @@ void	Client::changeNick(const std::string &nick)
 
 fd_t	Client::getFd() const {
 	return (_Fd);
+}
+
+void	Client::setClient(const std::string &Nick, const std::string &Name, bool isConnect)
+{
+	_Nick = Nick;
+	_Name = Name;
+	_IsConnect = isConnect;
 }
