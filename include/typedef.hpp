@@ -35,3 +35,5 @@ typedef optionClientInChannel::iterator optionClientInChannelIter;
 //typdef for store the client fd
 typedef std::vector<fd_t>			vectorFdClient;
 typedef std::vector<fd_t>::iterator	vectorFdClientIter;
+
+//Command vector

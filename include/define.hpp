@@ -20,4 +20,9 @@
 #define NC			"\033[0m"
 
 //***************************		CHANNEL_OPTION
-//
+#define ONLY_INVIT	1
+
+
+//***************************		COMMAND
+#define NEW_CLIENT	1
+#define JOIN		2

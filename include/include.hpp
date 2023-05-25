@@ -29,3 +29,5 @@
 #include "typedef.hpp"
 #include "error.hpp"
 #include "client/client.hpp"
+#include "IrcMessage/IrcMessage.hpp"
+#include "channel/channel.hpp"

@@ -52,6 +52,7 @@ void	Server::checkEvents()
 	int			recvNChar = 0;
 	std::string message;
 	pollvectorIter it;
+	int		i = 0;
 
 	if (_PollVector.empty() || _PollVector.size() == 0)
 		return ;
@@ -60,10 +61,9 @@ void	Server::checkEvents()
 	{
 		if (it->revents == POLLIN)
 		{
-			bzero(&buffer, 512);
+			bzero(&buffer, 511);
 			recvNChar = recv(it->fd, &buffer, 10, 0);
-			std::cout << buffer << '\n';
-			send(it->fd, buffer, recvNChar + 1, 0);
+			std::cout << i++ << " " << buffer << '\n';
 		}
 		else if (it->revents == POLLHUP)
 		{
