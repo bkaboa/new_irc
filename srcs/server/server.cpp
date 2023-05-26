@@ -1,4 +1,5 @@
 #include "../../include/server/server.hpp"
+#include "../../include/client/client.hpp"
 
 using namespace irc;
 
@@ -50,7 +51,6 @@ void	Server::checkEvents()
 {
 	char		buffer[512];
 	int			recvNChar = 0;
-	std::string message;
 	pollvectorIter it;
 	int		i = 0;
 
@@ -66,7 +66,9 @@ void	Server::checkEvents()
 			std::cout << GREEN << buffer << std::endl;
 			if (recvNChar <= 0)
 				disconnectClient(it);
-			processMessage(it->fd, buffer);
+			else
+				_ClientMap[it->fd]->recvMessage(buffer);
+			_ClientMap[it->fd]->parseMessage();
 		}
 		else if (it->revents == POLLHUP)
 		{
