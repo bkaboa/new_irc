@@ -4,7 +4,7 @@
 
 namespace irc
 {
-class Client
+class Client : public IrcMessage
 {
 	public:
 		Client(fd_t fd);

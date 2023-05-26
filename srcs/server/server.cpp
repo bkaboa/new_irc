@@ -63,7 +63,8 @@ void	Server::checkEvents()
 		{
 			bzero(&buffer, 511);
 			recvNChar = recv(it->fd, &buffer, 10, 0);
-			std::cout << i++ << " " << buffer << '\n';
+			if (recvNChar <= 0)
+				disconnectClient(it);
 		}
 		else if (it->revents == POLLHUP)
 		{
