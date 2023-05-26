@@ -43,3 +43,11 @@ void	Client::setClient(const std::string &Nick, const std::string &Name, bool is
 	_Name = Name;
 	_IsConnect = isConnect;
 }
+
+void	Client::setIsConnect(bool truefalse)
+{
+	if (!truefalse)
+		this->_IsConnect = false;
+	else if (truefalse)
+		this->_IsConnect = true;
+}

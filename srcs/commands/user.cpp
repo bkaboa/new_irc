@@ -1,10 +1,15 @@
-#include "../../include/commands/commands.hpp"
+#include "../../include/server/server.hpp"
+#include "../../include/client/client.hpp"
 
-// #include "../../include/server/server.hpp"
+using namespace irc;
 
-void User(fd_t sender, Server *server, std::vector<std::string> args)
+void Server::User(fd_t sender, std::vector<std::string> args)
 {
-	(void) sender;
-	(void) args;
-	std::cout << "plou" << std::endl;
+	if (_ClientMap[sender]->isConnect())
+	{
+		std::string newname = args[0];
+		_ClientMap[sender]->changeName(newname);
+	}
+	// else
+	// 	sendStr("Cant change name");
 }

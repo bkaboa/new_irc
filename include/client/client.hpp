@@ -20,6 +20,7 @@ namespace irc
 			fd_t				getFd() const;
 			bool				getAdmin() const;
 			void				setAdmin(bool Admin);
+			void				setIsConnect(bool truefalse);
 	
 		private:
 			fd_t			_Fd;

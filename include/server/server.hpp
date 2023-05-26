@@ -49,3 +49,5 @@ namespace irc
 			void User(fd_t sender, std::vector<std::string> args);
 	};
 }
+
+void sendStr(std::string str);
