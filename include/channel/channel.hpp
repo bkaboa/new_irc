@@ -1,10 +1,6 @@
 #pragma once
 
 #include "../include.hpp"
-#include "../define.hpp"
-#include "../typedef.hpp"
-#include "../error.hpp"
-#include "../client/client.hpp"
 
 namespace irc
 {

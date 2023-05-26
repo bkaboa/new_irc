@@ -5,7 +5,6 @@
 namespace irc
 {
 	class Client;
-	struct Member;
 	class Channel;
 }
 //base typedef

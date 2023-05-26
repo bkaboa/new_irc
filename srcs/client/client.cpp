@@ -2,9 +2,9 @@
 
 using namespace irc;
 
-Client::Client(fd_t fd):_Fd(fd), _IsConnect(false){}
+Client::Client(fd_t fd):_Fd(fd), _IsConnect(false) {}
 
-Client::Client() {}
+Client::Client():_IsConnect(false) {}
 
 Client::~Client() {}
 
