@@ -5,7 +5,7 @@
 class IrcMessage
 {
 	public:
-		IrcMessage(std::string message);
+		IrcMessage();
 		~IrcMessage();
 		
 		//parsing

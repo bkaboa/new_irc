@@ -4,6 +4,8 @@ using namespace irc;
 
 Client::Client(fd_t fd):_Fd(fd), _IsConnect(false){}
 
+Client::Client() {}
+
 Client::~Client() {}
 
 const std::string	&Client::getNick() const

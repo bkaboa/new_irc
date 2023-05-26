@@ -8,6 +8,7 @@ class Client : public IrcMessage
 {
 	public:
 		Client(fd_t fd);
+		Client();
 		~Client();
 		void				setClient(const std::string &Nick, const std::string &name, bool isConnect);
 		const std::string	&getName() const;
