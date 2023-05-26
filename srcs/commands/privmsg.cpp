@@ -1,12 +1,12 @@
-// #include "../../include/include.hpp"
-// #include "../../include/IrcMessage/IrcMessage.hpp"
+#include "../../include/include.hpp"
+#include "../../include/IrcMessage/IrcMessage.hpp"
 
-// void	sendToChannel(IrcMessage message)
-// {
+void	sendToChannel(IrcMessage message)
+{
 
-// }
+}
 
-// // void Privmsg(irc::Client *Client)
-// // {
-// // 	std::cout << "TEST --- PRIVMSG" << std::endl;
-// // }
+void Privmsg()
+{
+	std::cout << "TEST --- PRIVMSG" << std::endl;
+}

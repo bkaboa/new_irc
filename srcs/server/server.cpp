@@ -63,8 +63,10 @@ void	Server::checkEvents()
 		{
 			bzero(&buffer, 511);
 			recvNChar = recv(it->fd, &buffer, 10, 0);
+			std::cout << GREEN << buffer << std::endl;
 			if (recvNChar <= 0)
 				disconnectClient(it);
+			processMessage(it->fd, buffer);
 		}
 		else if (it->revents == POLLHUP)
 		{
@@ -72,7 +74,7 @@ void	Server::checkEvents()
 		}
 		else if (it->revents == 17)
 		{
-			std::cout << RED << "Client unexpected deconection" << NC << '\n';
+			std::cout << RED << "Client unexpected deconnection" << NC << '\n';
 			disconnectClient(it);
 		}
 		if (it != _PollVector.end())
