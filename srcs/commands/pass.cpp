@@ -5,13 +5,21 @@ using namespace irc;
 
 void Server::Pass(fd_t sender, std::vector<std::string> args)
 {
-	if (!args[0].compare(_Password))
+	std::string pass = args[0];
+	if (_ClientMap[sender]->isConnect())
 	{
+		//ERR_ALREADYREGISTERED
 		return;
 	}
-	else if (args[0].compare(_Password))
+	if (pass.compare(_Password) == 0)
 	{
-		if ()
-		_ClientMap[sender]->setIsConnect(true);
+		_ClientMap[sender]->setPassOk(true);
+		return;
+	}
+	else if (pass.compare(_Password) != 0)
+	{
+		_ClientMap[sender]->setPassOk(false);
+		//ERR_PASSWDMISMATCH
+		return;
 	}
 }
