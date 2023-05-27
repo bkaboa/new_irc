@@ -22,15 +22,22 @@ void Server::Nick(fd_t sender, std::vector<std::string> args)
 	if (this->_ClientMap[sender]->isConnect())
 	{
 		if (!nameExist(name, this->_ClientMap))
+		{
 			this->_ClientMap[sender]->changeNick(name);
-		return;
+			return;
+		}
+		else if (nameExist(name, this->_ClientMap))
+		{
+			//ERR_NICKNAMEINUSE
+			return;
+		}
 	}
 	//we are not registered and need to check if pass is ok and if nick is ok
 	else if (!this->_ClientMap[sender]->isConnect())
 	{
 		if (!this->_ClientMap[sender]->getPassOk())
 		{
-			//error: pass not ok
+			//bad pass
 			return;
 		}
 		if (this->_ClientMap[sender]->getPassOk())
