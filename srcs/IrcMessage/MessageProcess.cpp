@@ -5,12 +5,11 @@
 
 using namespace irc;
 
-void Server::processMessage(fd_t sender, char *message)
+typedef void (Server::*FunctionPointer)(fd_t, std::vector<std::string>);
+
+void Server::execCommand(messageData_t &command)
 {
-	std::string request(message);
-	std::vector<std::string> requestTab;
-	// requestTab = strSplit(request, ' ');
-	// std::cout << "Beginning for loop" << std::endl;
-	// for(int i = 0; !requestTab[i].empty(); i++)
-	// 	std::cout << YELLOW << requestTab[i] << std::endl;
+	FunctionPointer functions[12] = { &Server::Ban, &Server::Invite, &Server::Invite, &Server::Invite, &Server::Invite , \
+									  &Server::Invite, &Server::Invite, &Server::Invite, &Server::Invite, &Server::Invite, \
+									  &Server::Invite, &Server::Invite };
 }

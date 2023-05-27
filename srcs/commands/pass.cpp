@@ -6,7 +6,7 @@ using namespace irc;
 void Server::Pass(fd_t sender, std::vector<std::string> args)
 {
 	std::string pass = args[0];
-	if (_ClientMap[sender]->isRegistered())
+	if (_ClientMap[sender]->isConnect())
 	{
 		//ERR_ALREADYREGISTERED
 		return;

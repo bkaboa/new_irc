@@ -19,7 +19,7 @@ void Server::User(fd_t sender, std::vector<std::string> args)
 {
 	std::string newname = args[0];
 	//if already registered
-	if (_ClientMap[sender]->isRegistered() && newname.compare(_ClientMap[sender]->getName()) != 0)
+	if (_ClientMap[sender]->isConnect() && newname.compare(_ClientMap[sender]->getName()) != 0)
 	{
 		if (nameExist(newname, _ClientMap))
 			_ClientMap[sender]->changeName(_ClientMap[sender]->getNick());
@@ -29,7 +29,7 @@ void Server::User(fd_t sender, std::vector<std::string> args)
 		return;
 	}
 	//if not registered
-	else if (!_ClientMap[sender]->isRegistered())
+	else if (!_ClientMap[sender]->isConnect())
 	{
 		if (!_ClientMap[sender]->getPassOk() || !_ClientMap[sender]->getNickOk())
 		{

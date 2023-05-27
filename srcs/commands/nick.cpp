@@ -19,7 +19,7 @@ void Server::Nick(fd_t sender, std::vector<std::string> args)
 {
 	std::string name = args[0];
 	//we are already registered and just want to change the nickname
-	if (this->_ClientMap[sender]->isRegistered())
+	if (this->_ClientMap[sender]->isConnect())
 	{
 		if (!nameExist(name, this->_ClientMap))
 		{
@@ -33,11 +33,11 @@ void Server::Nick(fd_t sender, std::vector<std::string> args)
 		}
 	}
 	//we are not registered and need to check if pass is ok and if nick is ok
-	else if (!this->_ClientMap[sender]->isRegistered())
+	else if (!this->_ClientMap[sender]->isConnect())
 	{
 		if (!this->_ClientMap[sender]->getPassOk())
 		{
-			//bad pass
+			//bad
 			return;
 		}
 		if (this->_ClientMap[sender]->getPassOk())

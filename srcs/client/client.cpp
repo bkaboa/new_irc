@@ -18,7 +18,7 @@ const std::string	&Client::getName() const
 	return (_Name);
 }
 
-bool	Client::isRegistered() const
+bool	Client::isConnect() const
 {
 	return (_IsRegistered);
 }
