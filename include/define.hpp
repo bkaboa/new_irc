@@ -24,8 +24,7 @@
 
 
 //***************************		COMMAND
-#define NEW_CLIENT	1
-#define JOIN		2
+#define COMMAND_NAME {std::string("JOIN"), std::string("PASS")}
 
 
 //***************************		SERVER_REPLY

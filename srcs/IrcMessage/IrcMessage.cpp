@@ -1,4 +1,5 @@
 #include "../../include/IrcMessage/IrcMessage.hpp"
+#include <strings.h>
 
 using namespace irc;
 
@@ -26,10 +27,21 @@ void	IrcMessage::recvMessage(const std::string &message)
 	}
 }
 
-void	IrcMessage::parseMessage()
+struct messageData_t	IrcMessage::parseMessage()
 {
+	struct messageData_t	messageData;
+
+	bzero(&messageData, sizeof(struct messageData_t));
 	if (_MessageCompleted == false)
-		return ;
+		return (messageData);
 	_MessageCompleted = false;
-	
+
+	return (messageData);
+}
+
+void	IrcMessage::checkCommand(const std::string &commandName)
+{
+	int		i = 0;
+
+	//while ()
 }

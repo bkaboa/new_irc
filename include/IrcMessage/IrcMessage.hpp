@@ -11,7 +11,7 @@ namespace irc
 			virtual ~IrcMessage();
 		 	
 			//parsing
-			void						parseMessage();
+			struct messageData_t		parseMessage();
 	
 			fd_t						getClientRequest() const;
 			std::vector<std::string>	getParams() const;
@@ -20,6 +20,8 @@ namespace irc
 			void						recvMessage(const std::string &message);
 	
 		private:
+			void						checkCommand(const std::string &commandName);
+
 			fd_t						_ClientRequest;
 			std::vector<std::string>	_params;
 			int							_Command;

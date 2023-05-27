@@ -42,6 +42,7 @@ typedef std::vector<fd_t>::iterator	vectorFdClientIter;
 
 //IrcMessage Data
 struct messageData_t{
-	std::vector<std::string> params;
-	
+	fd_t						clientRequest;
+	std::vector<std::string>	params;
+	int							command;
 };
