@@ -2,9 +2,9 @@
 
 using namespace irc;
 
-Client::Client(fd_t fd):_Fd(fd), _IsConnect(false) , _passOk(false), _nickOk(false){}
+Client::Client(fd_t fd):_Fd(fd), _IsRegistered(false) , _passOk(false), _nickOk(false){}
 
-Client::Client():_IsConnect(false) {}
+Client::Client():_IsRegistered(false) {}
 
 Client::~Client() {}
 
@@ -18,9 +18,9 @@ const std::string	&Client::getName() const
 	return (_Name);
 }
 
-bool	Client::isConnect() const
+bool	Client::isRegistered() const
 {
-	return (_IsConnect);
+	return (_IsRegistered);
 }
 
 void	Client::changeName(const std::string &name)
@@ -41,15 +41,15 @@ void	Client::setClient(const std::string &Nick, const std::string &Name, bool is
 {
 	_Nick = Nick;
 	_Name = Name;
-	_IsConnect = isConnect;
+	_IsRegistered = isConnect;
 }
 
-void	Client::setIsConnect(bool truefalse)
+void	Client::setIsRegistered(bool truefalse)
 {
 	if (!truefalse)
-		this->_IsConnect = false;
+		this->_IsRegistered = false;
 	else if (truefalse)
-		this->_IsConnect = true;
+		this->_IsRegistered = true;
 }
 
 bool	Client::getPassOk(void)
