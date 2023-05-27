@@ -26,3 +26,9 @@
 //***************************		COMMAND
 #define NEW_CLIENT	1
 #define JOIN		2
+
+
+//***************************		SERVER_REPLY
+#define ERR_INPUTTOOLONG (client) std::string(client) + " :Input line was too long"
+
+#define ERR_UNKNOWNCOMMAND (client)(command) std::string(client) + std::string(command) + " :Unknown command"

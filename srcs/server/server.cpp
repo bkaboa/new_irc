@@ -62,8 +62,7 @@ void	Server::checkEvents()
 		if (it->revents == POLLIN)
 		{
 			bzero(&buffer, 511);
-			recvNChar = recv(it->fd, &buffer, 10, 0);
-			std::cout << GREEN << buffer << std::endl;
+			recvNChar = recv(it->fd, &buffer, 512, 0);
 			if (recvNChar <= 0)
 				disconnectClient(it);
 			else

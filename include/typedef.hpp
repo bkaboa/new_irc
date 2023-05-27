@@ -1,6 +1,7 @@
 #pragma once
 
 #include "include.hpp"
+#include <vector>
 
 namespace irc
 {
@@ -36,3 +37,11 @@ typedef std::vector<fd_t>			vectorFdClient;
 typedef std::vector<fd_t>::iterator	vectorFdClientIter;
 
 //Command vector
+
+
+
+//IrcMessage Data
+struct messageData_t{
+	std::vector<std::string> params;
+	
+};
