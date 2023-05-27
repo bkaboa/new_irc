@@ -1,1 +1,2 @@
-#include "../../include/commands/commands.hpp"
+#include "../../include/server/server.hpp"
+#include "../../include/client/client.hpp"
