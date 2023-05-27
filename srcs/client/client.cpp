@@ -2,7 +2,7 @@
 
 using namespace irc;
 
-Client::Client(fd_t fd):_Fd(fd), _IsConnect(false) {}
+Client::Client(fd_t fd):_Fd(fd), _IsConnect(false) , _passOk(false), _nickOk(false){}
 
 Client::Client():_IsConnect(false) {}
 
@@ -50,4 +50,30 @@ void	Client::setIsConnect(bool truefalse)
 		this->_IsConnect = false;
 	else if (truefalse)
 		this->_IsConnect = true;
+}
+
+bool	Client::getPassOk(void)
+{
+	return(_passOk);
+}
+
+bool	Client::getNickOk(void)
+{
+	return(_nickOk);
+}
+
+void	Client::setPassOk(bool truefalse)
+{
+	if (!truefalse)
+		this->_passOk = false;
+	else if (truefalse)
+		this->_passOk = true;
+}
+
+void	Client::setNickOk(bool truefalse)
+{
+	if (!truefalse)
+		this->_nickOk = false;
+	else if (truefalse)
+		this->_nickOk = true;
 }
