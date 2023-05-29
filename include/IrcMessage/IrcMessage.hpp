@@ -11,21 +11,27 @@ namespace irc
 			virtual ~IrcMessage();
 		 	
 			//parsing
-			struct messageData_t		parseMessage();
+			struct commandData_t		parseMessage();
 	
 			fd_t						getClientRequest() const;
 			std::vector<std::string>	getParams() const;
 			int							getCommand() const;
+			std::string					getMessage() const {return (_Message);}
 
 			void						recvMessage(const std::string &message);
 	
 		private:
-			void						checkCommand(const std::string &commandName);
+			int							checkCommand(std::string &sentence, int *command);
+			void						stringSlice(size_t nPos, std::string &original, std::string &sliced);
+			void						takeChannels(struct commandData_t *command, std::string &sliceMessage) const;
+			void						takeNickname(struct commandData_t *command, std::string &sliceMessage) const;
+			void						takePassword(struct commandData_t *command, std::string &sliceMessage) const;
+			void						takeMessage(struct commandData_t *command, std::string &sliceMessage) const;
+			void						takeUser(struct commandData_t *command, std::string &sliceMessage) const;
 
 			fd_t						_ClientRequest;
 			std::vector<std::string>	_params;
-			int							_Command;
 			std::string					_Message;
-			bool						_MessageCompleted;
+
 	};
 }

@@ -10,6 +10,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include <list>
 #include <signal.h>
 #include <utility>
 #include <sys/signal.h>
