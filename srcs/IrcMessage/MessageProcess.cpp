@@ -7,9 +7,10 @@ using namespace irc;
 
 typedef void (Server::*FunctionPointer)(fd_t, std::vector<std::string>);
 
-void Server::execCommand(messageData_t &command)
+void Server::execCommand(messageData_t &cmd)
 {
-	FunctionPointer functions[12] = { &Server::Ban, &Server::Invite, &Server::Invite, &Server::Invite, &Server::Invite , \
-									  &Server::Invite, &Server::Invite, &Server::Invite, &Server::Invite, &Server::Invite, \
-									  &Server::Invite, &Server::Invite };
+	FunctionPointer functions[12] = { &Server::Ban, &Server::Invite, &Server::Join, &Server::Kick, &Server::List , \
+									  &Server::Nick, &Server::Part, &Server::Pass, &Server::Privmsg, &Server::Quit, \
+									  &Server::Topic, &Server::User};
+	(this->*(functions[cmd.command]))(cmd.clientRequest, cmd.params);
 }
