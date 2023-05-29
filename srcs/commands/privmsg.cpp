@@ -5,7 +5,7 @@
 
 using namespace irc;
 
-void Server::Privmsg(fd_t sender, std::vector<std::string> args)
+void Server::Privmsg(fd_t sender, std::list<struct paramsData_t> args)
 {
 	(void)sender;
 	(void)args;

@@ -24,7 +24,7 @@ namespace irc
 			void	checkEvents();
 			void	acceptConnection();
 			void	clientNew(fd_t clientFd);
-			void	execCommand(messageData_t &command);
+			void	execCommand(commandData_t &cmd);
 
 			std::string			_Password;
 			fd_t				_Port;
@@ -34,19 +34,19 @@ namespace irc
 			mapClient			_ClientMap;
 			mapChannel			_ChannelMap;
 
-			//Commands
-			// void Ban(fd_t sender, std::vector<std::string> args);
-			// void Invite(fd_t sender, std::vector<std::string> args);
-			// void Join(fd_t sender, std::vector<std::string> args);
-			// void Kick(fd_t sender, std::vector<std::string> args);
-			// void List(fd_t sender, std::vector<std::string> args);
-			// void Nick(fd_t sender, std::vector<std::string> args);
-			// void Part(fd_t sender, std::vector<std::string> args);
-			// void Pass(fd_t sender, std::vector<std::string> args);
-			// void Privmsg(fd_t sender, std::vector<std::string> args);
-			// void Quit(fd_t sender, std::vector<std::string> args);
-			// void Topic(fd_t sender, std::vector<std::string> args);
-			// void User(fd_t sender, std::vector<std::string> args);
+			// Commands
+			void Ban(fd_t sender, std::list<struct paramsData_t>);
+			void Invite(fd_t sender, std::list<struct paramsData_t>);
+			void Join(fd_t sender, std::list<struct paramsData_t>);
+			void Kick(fd_t sender, std::list<struct paramsData_t>);
+			void List(fd_t sender, std::list<struct paramsData_t>);
+			void Nick(fd_t sender, std::list<struct paramsData_t>);
+			void Part(fd_t sender, std::list<struct paramsData_t>);
+			void Pass(fd_t sender, std::list<struct paramsData_t>);
+			void Privmsg(fd_t sender, std::list<struct paramsData_t>);
+			void Quit(fd_t sender, std::list<struct paramsData_t>);
+			void Topic(fd_t sender, std::list<struct paramsData_t>);
+			void User(fd_t sender, std::list<struct paramsData_t>);
 	};
 }
 

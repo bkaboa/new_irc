@@ -3,7 +3,7 @@
 
 using namespace irc;
 
-void Server::List(fd_t sender, std::vector<std::string> args)
+void Server::List(fd_t sender, std::list<struct paramsData_t> args)
 {
 	(void)sender;
 	(void)args;
