@@ -37,6 +37,7 @@ enum parsingType:u_int8_t {
 	MESS = 8,
 	USER = 16,
 	CAPC = 32,
+	TARG = 64
 };
 
 //***************************		COMMAND
@@ -48,7 +49,7 @@ enum parsingType:u_int8_t {
 #define NICK_MACRO(command)       (command) == "NICK" ? (NICK) : 0
 #define PART_MACRO(command)       (command) == "PART" ? (CHAN + MESS) : 0
 #define PASS_MACRO(command)       (command) == "PASS" ? (PASS) : 0
-#define PRIVMSG_MACRO(command)    (command) == "PRIVMSG" ? (NICK + MESS) : 0
+#define PRIVMSG_MACRO(command)    (command) == "PRIVMSG" ? (TARG + MESS) : 0
 #define QUIT_MACRO(command)       (command) == "QUIT" ? (MESS) : 0
 #define TOPIC_MACRO(command)      (command) == "TOPIC" ? (CHAN + MESS) : 0
 #define USER_MACRO(command)       (command) == "USER" ? (USER) : 0
