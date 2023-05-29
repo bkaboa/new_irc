@@ -3,12 +3,11 @@
 #include "../../include/server/server.hpp"
 #include "../../include/client/client.hpp"
 
-void	sendToChannel(irc::IrcMessage message)
-{
+using namespace irc;
 
-}
-
-void Privmsg()
+void Server::Privmsg(fd_t sender, std::vector<std::string> args)
 {
-	std::cout << "TEST --- PRIVMSG" << std::endl;
+	(void)sender;
+	(void)args;
+	std::cout << GREEN << "Privmsg FUNCTION" << std::endl;
 }

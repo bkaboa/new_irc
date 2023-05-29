@@ -1,6 +1,4 @@
 #include "../../include/server/server.hpp"
-#include <sys/poll.h>
-#include <sys/socket.h>
 #include "../../include/IrcMessage/IrcMessage.hpp"
 
 using namespace irc;
@@ -14,3 +12,4 @@ void Server::execCommand(messageData_t &cmd)
 									  &Server::Topic, &Server::User};
 	(this->*(functions[cmd.command]))(cmd.clientRequest, cmd.params);
 }
+git
