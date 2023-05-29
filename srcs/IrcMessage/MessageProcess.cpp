@@ -12,4 +12,3 @@ void Server::execCommand(messageData_t &cmd)
 									  &Server::Topic, &Server::User};
 	(this->*(functions[cmd.command]))(cmd.clientRequest, cmd.params);
 }
-git
