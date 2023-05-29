@@ -35,18 +35,18 @@ namespace irc
 			mapChannel			_ChannelMap;
 
 			// Commands
-			void Ban(fd_t sender, std::list<struct paramsData_t>);
-			void Invite(fd_t sender, std::list<struct paramsData_t>);
-			void Join(fd_t sender, std::list<struct paramsData_t>);
-			void Kick(fd_t sender, std::list<struct paramsData_t>);
-			void List(fd_t sender, std::list<struct paramsData_t>);
-			void Nick(fd_t sender, std::list<struct paramsData_t>);
-			void Part(fd_t sender, std::list<struct paramsData_t>);
-			void Pass(fd_t sender, std::list<struct paramsData_t>);
-			void Privmsg(fd_t sender, std::list<struct paramsData_t>);
-			void Quit(fd_t sender, std::list<struct paramsData_t>);
-			void Topic(fd_t sender, std::list<struct paramsData_t>);
-			void User(fd_t sender, std::list<struct paramsData_t>);
+			void Ban(fd_t sender, const commandData_t &args);
+			void Invite(fd_t sender, const commandData_t &args);
+			void Join(fd_t sender, const commandData_t &args);
+			void Kick(fd_t sender, const commandData_t &args);
+			void List(fd_t sender, const commandData_t &args);
+			void Nick(fd_t sender, const commandData_t &args);
+			void Part(fd_t sender, const commandData_t &args);
+			void Pass(fd_t sender, const commandData_t &args);
+			void Privmsg(fd_t sender, const commandData_t &args);
+			void Quit(fd_t sender, const commandData_t &args);
+			void Topic(fd_t sender, const commandData_t &args);
+			void User(fd_t sender, const commandData_t &args);
 	};
 }
 

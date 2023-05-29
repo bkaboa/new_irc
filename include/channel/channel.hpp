@@ -10,6 +10,7 @@ namespace irc
 		Channel(Client* creator, const std::string &name, const std::string &pass);
 		~Channel();
 		const std::string	&getName() const;
+		void channelMsg(std::string message);
 
 	protected:
 		void	addMember(irc::Client *newMember, bool admin);
