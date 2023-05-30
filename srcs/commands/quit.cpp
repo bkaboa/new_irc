@@ -3,7 +3,7 @@
 
 using namespace irc;
 
-void Server::Quit(fd_t sender, std::list<struct paramsData_t> args)
+void Server::Quit(fd_t sender, const commandData_t &args)
 {
 	(void)sender;
 	(void)args;

@@ -49,3 +49,17 @@ void	Channel::setAdmin(fd_t newAdminFd)
 void	Channel::kickMember(fd_t fd)
 {
 }
+
+void	Channel::channelMsg(std::string msg)
+{
+	if (!msg.empty())
+	{
+		mapClientIter iter;
+		for (iter = _Members.begin(); iter != _Members.end(); ++iter)
+		{
+			//check in member list if ban or else
+			//if (checkBan(iter->first))
+			sendStr(iter->first, )
+		}
+	}
+}

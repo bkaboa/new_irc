@@ -56,6 +56,6 @@ enum parsingType:u_int8_t {
 #define CAP_MACRO(command)        (command) == "CAP" ? (CAPC) : 0
 
 //***************************		SERVER_REPLY
-#define ERR_INPUTTOOLONG (client) std::string(client) + " :Input line was too long"
+#define ERR_INPUTTOOLONG(client) std::string(client) + " :Input line was too long"
 
-#define ERR_UNKNOWNCOMMAND (client)(command) std::string(client) + std::string(command) + " :Unknown command"
+#define ERR_UNKNOWNCOMMAND(client)(command) std::string(client) + std::string(command) + " :Unknown command"
