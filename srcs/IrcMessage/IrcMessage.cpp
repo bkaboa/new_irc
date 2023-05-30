@@ -64,15 +64,17 @@ struct commandData_t IrcMessage::parseMessage()
 	if (command.command != 0)
 	{
 		if (CHAN & command.binParams)
-			takeChannels(&command, sliceMessage);
+			takeParams(&command, sliceMessage, CHAN);
 		if (NICK & command.binParams)
-			takeNickname(&command, sliceMessage);
+			takeParams(&command, sliceMessage, NICK);
 		if (PASS & command.binParams)
-			takePassword(&command, sliceMessage);
+			takeParams(&command, sliceMessage, PASS);
 		if (MESS & command.binParams)
 			takeMessage(&command, sliceMessage);
 		if (USER & command.binParams)
-			takeUser(&command, sliceMessage);
+			takeParams(&command, sliceMessage, USER);
+		if (TARG & command.binParams)
+			takeParams(&command, sliceMessage, TARG);
 	}
 	return (command);
 }
@@ -130,18 +132,30 @@ int	IrcMessage::checkCommand(std::string &sentence, int *binParams)
 	return (0);
 }
 
-void	IrcMessage::takeChannels(struct commandData_t *command, std::string &sliceMessage) const
+void	IrcMessage::takeParams(struct commandData_t *command, std::string &sliceMessage, int params)
 {
-	struct paramsData_t	channels;
-	std::string			channel;
-	size_t				tokenPos = sliceMessage.find_first_of("#&"), endPos = 0;
+	int			npos = sliceMessage.find_first_of(" \n\r");
+	std::string param;
 
-	bzero(&channels, sizeof(struct paramsData_t));
-	while (tokenPos != std::string::npos)
+	stringSlice(npos, sliceMessage, param);
+	if (param.empty() || param.size() == 0)
 	{
-		channels.params.push_back(channel);
+		command->binParams -= params;
+		return;
 	}
-	if (channels.params.empty())
-		channels.type = NONE;
-	channels.type = CHAN;
+	command->params.push_back(param);
+}
+
+void	IrcMessage::takeMessage(struct commandData_t *command, std::string &sliceMessage)
+{
+	int			npos = sliceMessage.find_first_of("\n\r");
+	std::string param;
+
+	stringSlice(npos, sliceMessage, param);
+	if (param.empty() || param.size() == 0)
+	{
+		command->binParams -= MESS;
+		return;
+	}
+	command->params.push_back(param);
 }

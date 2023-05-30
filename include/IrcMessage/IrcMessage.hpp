@@ -23,11 +23,8 @@ namespace irc
 		private:
 			int							checkCommand(std::string &sentence, int *command);
 			void						stringSlice(size_t nPos, std::string &original, std::string &sliced);
-			void						takeChannels(struct commandData_t *command, std::string &sliceMessage) const;
-			void						takeNickname(struct commandData_t *command, std::string &sliceMessage) const;
-			void						takePassword(struct commandData_t *command, std::string &sliceMessage) const;
-			void						takeMessage(struct commandData_t *command, std::string &sliceMessage) const;
-			void						takeUser(struct commandData_t *command, std::string &sliceMessage) const;
+			void						takeParams(struct commandData_t *command, std::string &sliceMessage, int param);
+			void						takeMessage(struct commandData_t *command, std::string &sliceMessage);
 
 			fd_t						_ClientRequest;
 			std::vector<std::string>	_params;
