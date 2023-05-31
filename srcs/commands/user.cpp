@@ -3,7 +3,7 @@
 
 using namespace irc;
 
-static bool nameExist(std::string name, const mapClient &map)
+static bool nameExist(std::string name, mapClient &map)
 {
 	mapClientIter iter;
 	for (iter = map.begin(); iter != map.end(); ++iter)

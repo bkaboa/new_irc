@@ -41,6 +41,7 @@ void	IrcMessage::stringSlice(size_t nPos, std::string &original, std::string &sl
 
 struct commandData_t IrcMessage::parseMessage()
 {
+	std::cout << GREEN << "Parsing message " << this->_Message << std::endl;
 	struct commandData_t	command;
 	int						newLinePos = _Message.find_first_of('\n');
 	std::string				sliceMessage;
@@ -59,7 +60,8 @@ struct commandData_t IrcMessage::parseMessage()
 		stringSlice(newLinePos + 1, _Message, sliceMessage);
 		parseMessage();
 	}
-	command.originalCommand = sliceMessage.substr();
+	// std::cout << "SLICE SLICE " << sliceMessage << std::endl;
+	// command.originalCommand = sliceMessage.substr();
 	command.command = checkCommand(sliceMessage, &command.binParams);
 	if (command.command != 0)
 	{
@@ -76,6 +78,7 @@ struct commandData_t IrcMessage::parseMessage()
 		if (TARG & command.binParams)
 			takeParams(&command, sliceMessage, TARG);
 	}
+	std::cout << GREEN << "End of parsing" << std::endl;
 	return (command);
 }
 

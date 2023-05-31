@@ -15,9 +15,9 @@ static bool	nameExist(std::string name, mapClient &map)
 	return (false);
 }
 
-void Server::Nick(fd_t sender, std::vector<std::string> args)
+void Server::Nick(fd_t sender, const commandData_t &cmd)
 {
-	std::string name = args[0];
+	std::string name = "lol";
 	//we are already registered and just want to change the nickname
 	if (this->_ClientMap[sender]->isConnect())
 	{

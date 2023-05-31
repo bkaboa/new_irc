@@ -3,9 +3,9 @@
 
 using namespace irc;
 
-void Server::Pass(fd_t sender, std::vector<std::string> args)
+void Server::Pass(fd_t sender, const commandData_t &cmd)
 {
-	std::string pass = args[0];
+	std::string pass = "lol";
 	if (_ClientMap[sender]->isConnect())
 	{
 		//ERR_ALREADYREGISTERED
