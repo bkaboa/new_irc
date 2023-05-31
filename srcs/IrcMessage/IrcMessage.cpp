@@ -1,6 +1,4 @@
 #include "../../include/IrcMessage/IrcMessage.hpp"
-#include <limits>
-#include <strings.h>
 
 using namespace irc;
 

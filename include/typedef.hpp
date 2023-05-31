@@ -1,6 +1,7 @@
 #pragma once
 
 #include "include.hpp"
+#include <list>
 #include <vector>
 
 namespace irc
@@ -36,7 +37,8 @@ typedef optionClientInChannel::iterator optionClientInChannelIter;
 typedef std::vector<fd_t>			vectorFdClient;
 typedef std::vector<fd_t>::iterator	vectorFdClientIter;
 
-//Command vector
+//Command list
+typedef std::list<struct commandData_t>	commandList;
 
 
 
