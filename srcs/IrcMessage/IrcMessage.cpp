@@ -1,4 +1,5 @@
 #include "../../include/IrcMessage/IrcMessage.hpp"
+#include <strings.h>
 
 using namespace irc;
 
@@ -42,6 +43,7 @@ struct commandData_t IrcMessage::parseMessage()
 	struct commandData_t	command;
 	int						newLinePos = _Message.find_first_of('\n');
 	std::string				sliceMessage;
+	static int i = 0;
 
 	bzero(&command, sizeof(struct commandData_t));
 	command.clientRequest = _ClientRequest;
@@ -55,10 +57,12 @@ struct commandData_t IrcMessage::parseMessage()
 	if (newLinePos != std::string::npos)
 	{
 		stringSlice(newLinePos + 1, _Message, sliceMessage);
-		parseMessage();
+		if (!_Message.empty() || _Message.size() > 3)
+			parseMessage();
 	}
 	command.originalCommand = sliceMessage.substr();
 	command.command = checkCommand(sliceMessage, &command.binParams);
+	std::cout << command.originalCommand << '\n';
 	if (command.command != 0)
 	{
 		if (CHAN & command.binParams)
@@ -74,6 +78,7 @@ struct commandData_t IrcMessage::parseMessage()
 		if (TARG & command.binParams)
 			takeParams(&command, sliceMessage, TARG);
 	}
+	std::cout << command.originalCommand << '\n';
 	return (command);
 }
 

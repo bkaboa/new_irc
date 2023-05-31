@@ -71,7 +71,6 @@ void	Server::checkEvents()
 			}
 			else
 				_ClientMap[it->fd]->recvMessage(buffer);
-			std::cout << "command = " << buffer << '\n';
 			commandList.push_front(_ClientMap[it->fd]->parseMessage());
 			for(commandList::iterator itList = commandList.begin(); itList != commandList.end(); it++)
 			{
