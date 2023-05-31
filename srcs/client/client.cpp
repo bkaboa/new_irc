@@ -64,16 +64,31 @@ bool	Client::getNickOk(void)
 
 void	Client::setPassOk(bool truefalse)
 {
-	if (!truefalse)
-		this->_passOk = false;
-	else if (truefalse)
-		this->_passOk = true;
+	_passOk = truefalse;
 }
 
 void	Client::setNickOk(bool truefalse)
 {
-	if (!truefalse)
-		this->_nickOk = false;
-	else if (truefalse)
-		this->_nickOk = true;
+	_nickOk = truefalse;
+}
+
+void	Client::setIsInChannel(bool truefalse)
+{
+	_isInChannel = truefalse;
+}
+
+bool	Client::getIsInChannel(void)
+{
+	return(_isInChannel);
+}
+
+void	Client::setCurrentChannel(std::string channame)
+{
+	_currentChannel = channame;
+}
+
+std::string	Client::getCurrentChannel(void)
+{
+	if (!_currentChannel.empty())
+		return(_currentChannel);
 }
