@@ -50,4 +50,4 @@ namespace irc
 	};
 }
 
-void sendStr(std::string str);
+void sendStr(fd_t dest, std::string str);

@@ -1,6 +1,6 @@
 #include "../../include/include.hpp"
 
-void	sendStr(std::string str, fd_t clientFd)
+void	sendStr(fd_t clientFd, std::string str)
 {
 	const char *tosend = str.c_str();
 	size_t	nbytes = str.length();

@@ -1,5 +1,7 @@
 #include "../../include/channel/channel.hpp"
 #include "../../include/client/client.hpp"
+#include "../../include/server/server.hpp"
+
 
 using namespace irc;
 
@@ -57,9 +59,8 @@ void	Channel::channelMsg(std::string msg)
 		mapClientIter iter;
 		for (iter = _Members.begin(); iter != _Members.end(); ++iter)
 		{
-			//check in member list if ban or else
-			//if (checkBan(iter->first))
-			sendStr(iter->first, )
+			if (!checkBan(iter->first))
+				sendStr(iter->first, msg);
 		}
 	}
 }

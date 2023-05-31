@@ -56,6 +56,19 @@ enum parsingType:u_int8_t {
 #define CAP_MACRO(command)        (command) == "CAP" ? (CAPC) : 0
 
 //***************************		SERVER_REPLY
+#define RPL_WELCOME(client)(networkname)(nick)(user)(host) std::string(client) + " :Welcome to the " + std::string (networkname) + " Network, " + std::string(nick) + "[!" + std::string(user) + "@" + std::string(host) + "]"
 #define ERR_INPUTTOOLONG(client) std::string(client) + " :Input line was too long"
-
 #define ERR_UNKNOWNCOMMAND(client)(command) std::string(client) + std::string(command) + " :Unknown command"
+#define ERR_NOSUCHNICK(client)(nick) std::string(client) + " " + std::string(nick) + " :No such nick/channel"
+#define ERR_NOSUCHSERVER(client)(server) std::string(client) + " " + std::string(server) + " :No such server"
+#define ERR_NOSUCHCHANNEL(client)(chan) std::string(client) + " " + std::string(chan) + " :No such channel"
+#define ERR_CANNOTSENDTOCHAN(client)(chan) std::string(client) + " " + std::string(chan) + " :Cannot send to channel"
+#define ERR_TOOMANYCHANNELS(client)(chan) std::string(client) + " " + std::string(chan) + " :You have joined too many channels"
+#define ERR_WASNOSUCHNICK(client) std::string(client) + " :There was no such nickname"
+#define ERR_NORECIPIENT(client)(command) std::string(client) + " :No recipient given " + std::string(command)
+#define ERR_NOTEXTTOSEND(client) std::string(client) + " :No text to send"
+#define ERR_NONICKNAMEGIVEN(client) std::string(client) + " :No nickname given"
+#define ERR_ERRONEUSNICKNAME(client)(nick) std::string(client) + " " + std::string(nick) + " :Erroneus nickname"
+#define ERR_NICKNAMEINUSE(client)(nick) std::string(client) + " " + std::string(nick) + " :Nickname is already in use"
+#define ERR_USERNOTINCHANNEL(client)(nick)(chan) std::string(client) + " " + std::string(nick) + " " + std::string(chan) + " :They aren't on that channel"
+#define ERR
