@@ -5,10 +5,15 @@ using namespace irc;
 
 void Server::Pass(fd_t sender, const commandData_t &cmd)
 {
-	std::string pass = "lol";
+	if (!(cmd.binParams & PASS))
+	{
+		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getNick(), cmd.originalCommand));
+		return;
+	}
+	std::string pass = cmd.params[0];
 	if (_ClientMap[sender]->isConnect())
 	{
-		//ERR_ALREADYREGISTERED
+		sendStr(sender, ERR_ALREADYREGISTERED(_ClientMap[sender]->getNick()));
 		return;
 	}
 	if (pass.compare(_Password) == 0)
@@ -19,7 +24,7 @@ void Server::Pass(fd_t sender, const commandData_t &cmd)
 	else if (pass.compare(_Password) != 0)
 	{
 		_ClientMap[sender]->setPassOk(false);
-		//ERR_PASSWDMISMATCH
+		sendStr(sender, ERR_PASSWDMISMATCH(_ClientMap[sender]->getNick()));
 		return;
 	}
 }

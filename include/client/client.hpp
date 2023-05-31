@@ -22,21 +22,15 @@ namespace irc
 			void				setAdmin(bool Admin);
 			void				setIsRegistered(bool truefalse);
 			bool				getIsRegistered(bool truefalse);
-			void				setCurrentChannel(std::string chanName);
-			std::string			getCurrentChannel(void);
 			void				setPassOk(bool truefalse);
 			bool				getPassOk(void);
 			void				setNickOk(bool truefalse);
 			bool				getNickOk(void);
-			void				setIsInChannel(bool truefalse);
-			bool				getIsInChannel(void);
 	
 		private:
 			fd_t			_Fd;
 			std::string		_Nick;
 			std::string 	_Name;
-			std::string		_currentChannel;
-			bool			_isInChannel;
 			bool			_IsRegistered;
 			bool			_passOk;
 			bool			_nickOk;

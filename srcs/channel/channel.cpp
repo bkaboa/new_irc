@@ -64,3 +64,11 @@ void	Channel::channelMsg(std::string msg)
 		}
 	}
 }
+
+bool Channel::isInChannel(fd_t clientFd)
+{
+	mapClientIter iter = _Members.find(clientFd);
+	if (iter == _Members.end())
+		return(false);
+	return (true);
+}

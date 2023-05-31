@@ -17,8 +17,12 @@ static bool	nameExist(std::string name, mapClient &map)
 
 void Server::Nick(fd_t sender, const commandData_t &cmd)
 {
-	std::string name = "lol";
-	//we are already registered and just want to change the nickname
+	if (!(cmd.binParams & PASS))
+	{
+		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getNick(), cmd.originalCommand));
+		return;
+	}
+	std::string name = cmd.params[0];
 	if (this->_ClientMap[sender]->isConnect())
 	{
 		if (!nameExist(name, this->_ClientMap))
