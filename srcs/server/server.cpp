@@ -69,14 +69,6 @@ void	Server::checkEvents()
 				disconnectClient(it);
 				return ;
 			}
-			else
-				_ClientMap[it->fd]->recvMessage(buffer);
-			commandList.push_front(_ClientMap[it->fd]->parseMessage());
-			for(commandList::iterator itList = commandList.begin(); itList != commandList.end(); it++)
-			{
-				for (std::vector<std::string>::iterator it = itList->params.begin(); it != itList->params.end(); it++)
-					std::cout << *it << '\n';
-			}
 		}
 		else if (it->revents == POLLHUP)
 		{

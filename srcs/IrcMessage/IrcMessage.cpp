@@ -1,4 +1,5 @@
 #include "../../include/IrcMessage/IrcMessage.hpp"
+#include <string>
 #include <strings.h>
 
 using namespace irc;
@@ -7,17 +8,18 @@ IrcMessage::IrcMessage() {}
 
 IrcMessage::~IrcMessage() {}
 
-void	IrcMessage::recvMessage(const std::string &message)
+void	IrcMessage::recvMessage(std::string &message)
 {
 	std::string		endMessage = "\r\n";
 
-	_Message = message;
-	if (_Message.size() > 512)
+	if (message.size() > 512 || message.size() < 3)
 	{
-		_Message.clear();
+		message.clear();
+		return ;
 	}
 	if ((message.end() - 2).base() == endMessage)
-			_Message.erase(_Message.end() - 2, _Message.end());
+			message.erase(message.end() - 2, message.end());
+	_Message.str(message);
 }
 
 void	IrcMessage::stringSlice(size_t nPos, std::string &original, std::string &sliced)
@@ -38,48 +40,41 @@ void	IrcMessage::stringSlice(size_t nPos, std::string &original, std::string &sl
 	}
 }
 
-struct commandData_t IrcMessage::parseMessage()
+void IrcMessage::parseMessage(commandList &commandList)
 {
-	struct commandData_t	command;
-	int						newLinePos = _Message.find_first_of('\n');
-	std::string				sliceMessage;
-	static int i = 0;
+	struct commandData_t		command;
+	std::vector<std::string>	commands;
+	std::vector<std::string>	params;
+	std::string					tmp;
+	size_t						nPos = 0;
 
-	bzero(&command, sizeof(struct commandData_t));
-	command.clientRequest = _ClientRequest;
-	if (_Message.empty())
-		return (command);
-	while (newLinePos <= 3 && newLinePos != std::string::npos)
+	if (_Message.str().empty())
+		return ;
+	while (std::getline(_Message, tmp, '\n'))
+		commands.push_back(tmp);
+	for (std::vector<std::string>::iterator it = commands.begin(); it != commands.end(); it++)
 	{
-		_Message.erase(0, newLinePos + 1);
-		newLinePos = _Message.find_first_of('\n');
+		bzero(&command, sizeof(command));
+		if (it->empty() || it->size() < 3)
+			commandList.push_back(command);
+		else
+		{
+			checkCommand(*it, &command.binParams, &command.command);
+			if (command.binParams & CHAN)
+				takeChannel(&command, *it);
+			if (command.binParams & NICK)
+				takeNick(&command, *it);
+			if (command.binParams & TARG)
+				takeParams(&command, *it, TARG);
+			if (command.binParams & PASS)
+				takeParams(&command, *it, PASS);
+			if (command.binParams & MESS)
+				takeMessage(&command, *it);
+			if (command.binParams & USER)
+				takeUser(&command, *it);
+			commandList.push_back(command);
+		}
 	}
-	if (newLinePos != std::string::npos)
-	{
-		stringSlice(newLinePos + 1, _Message, sliceMessage);
-		if (!_Message.empty() || _Message.size() > 3)
-			parseMessage();
-	}
-	command.originalCommand = sliceMessage.substr();
-	command.command = checkCommand(sliceMessage, &command.binParams);
-	std::cout << command.originalCommand << '\n';
-	if (command.command != 0)
-	{
-		if (CHAN & command.binParams)
-			takeParams(&command, sliceMessage, CHAN);
-		if (NICK & command.binParams)
-			takeParams(&command, sliceMessage, NICK);
-		if (PASS & command.binParams)
-			takeParams(&command, sliceMessage, PASS);
-		if (MESS & command.binParams)
-			takeMessage(&command, sliceMessage);
-		if (USER & command.binParams)
-			takeParams(&command, sliceMessage, USER);
-		if (TARG & command.binParams)
-			takeParams(&command, sliceMessage, TARG);
-	}
-	std::cout << command.originalCommand << '\n';
-	return (command);
 }
 
 int BAN(const std::string& s) { return BAN_MACRO(s); }
@@ -96,7 +91,7 @@ int TOPIC(const std::string& s) { return TOPIC_MACRO(s); }
 int USERC(const std::string& s) { return USER_MACRO(s); }
 int CAP(const std::string& s) { return CAP_MACRO(s); }
 
-int	IrcMessage::checkCommand(std::string &sentence, int *binParams)
+void	IrcMessage::checkCommand(std::string &sentence, int *binParams, int *command)
 {
 	int			result;
     using macroFunction = int (*)(const std::string&);
@@ -122,17 +117,75 @@ int	IrcMessage::checkCommand(std::string &sentence, int *binParams)
 		word = sentence;
 	else
 		stringSlice(result, sentence, word);
-	if (word.empty() || word.size() <= 2)
-		return (0);
+	if (word.empty() || word.size() <= 3)
+		return ;
 	for(int i = 0; i < 13; i++)
 	{
 		if ((result = macros[i](word)) != 0)
 		{
 			*binParams = result;
-			return (i);
+			*command = i;
 		}
 	}
-	return (0);
+	*command = i;
+}
+
+void	IrcMessage::takeUser(struct commandData_t *command, std::string &sliceMessage)
+{
+	std::istringstream	istring;
+	std::string			user;
+
+	if (sliceMessage.empty() || sliceMessage.size() == 0)
+	{
+		command->binParams -= USER;
+		return;
+	}
+	istring.str(sliceMessage);
+	while (std::getline(istring, user, ' '))
+	{
+		std::cout << user << '\n';
+		command->params.push_back(user);
+	}
+}
+
+void	IrcMessage::takeChannel(struct commandData_t *command, std::string &sliceMessage)
+{
+	int					npos = sliceMessage.find_first_of(" \n\r");
+	std::istringstream	istring;
+	std::string			channel;
+
+	stringSlice(npos, sliceMessage, channel);
+	if (channel.empty() || channel.size() == 0)
+	{
+		command->binParams -= CHAN;
+		return ;
+	}
+	istring.str(channel);
+	while (std::getline(istring, channel, ','))
+	{
+		std::cout << channel << '\n';
+		command->params.push_back(channel);
+	}
+}
+
+void	IrcMessage::takeNick(struct commandData_t *command, std::string &sliceMessage)
+{
+	int					npos = sliceMessage.find_first_of(" \n\r");
+	std::istringstream	istring;
+	std::string			nick;
+
+	stringSlice(npos, sliceMessage, nick);
+	if (nick.empty() || nick.size() == 0)
+	{
+		command->binParams -= NICK;
+		return ;
+	}
+	istring.str(nick);
+	while (std::getline(istring, nick, ','))
+	{
+		std::cout << nick << '\n';
+		command->params.push_back(nick);
+	}
 }
 
 void	IrcMessage::takeParams(struct commandData_t *command, std::string &sliceMessage, int params)
