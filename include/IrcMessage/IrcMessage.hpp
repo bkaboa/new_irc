@@ -17,20 +17,21 @@ namespace irc
 			std::vector<std::string>	getParams() const;
 			int							getCommand() const;
 
-			void						recvMessage(std::string &message);
+			void						recvMessage(std::string message);
 	
 		private:
 			void						checkCommand(std::string &sentence, int *binParams, int *command);
-			void						stringSlice(size_t nPos, std::string &original, std::string &sliced);
-			void						takeParams(struct commandData_t *command, std::string &sliceMessage, int param);
+			bool						stringSlice(size_t nPos, std::string &original, std::string &sliced);
+			void						takeTarget(struct commandData_t *command, std::string &sliceMessage);
 			void						takeMessage(struct commandData_t *command, std::string &sliceMessage);
 			void						takeChannel(struct commandData_t *command, std::string &sliceMessage);
 			void						takeNick(struct commandData_t *command, std::string &sliceMessage);
 			void						takeUser(struct commandData_t *command, std::string &sliceMessage);
+			void						takePass(struct commandData_t *command, std::string &sliceMessage);
 
 			fd_t						_ClientRequest;
 			std::vector<std::string>	_params;
-			std::istringstream			_Message;
+			std::string					_Message;
 
 	};
 }

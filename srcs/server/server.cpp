@@ -1,5 +1,6 @@
 #include "../../include/server/server.hpp"
 #include "../../include/client/client.hpp"
+#include <vector>
 
 using namespace irc;
 
@@ -49,7 +50,7 @@ void	Server::setSocket()
 
 void	Server::checkEvents()
 {
-	char			buffer[512];
+	char			buffer[4096];
 	int				recvNChar = 0;
 	pollvectorIter	it;
 	commandList		commandList;
@@ -62,12 +63,23 @@ void	Server::checkEvents()
 	{
 		if (it->revents == POLLIN)
 		{
-			bzero(&buffer, 511);
-			recvNChar = recv(it->fd, &buffer, 512, 0);
+			bzero(&buffer, 4095);
+			recvNChar = recv(it->fd, &buffer, 4095, 0);
 			if (recvNChar <= 0)
 			{
 				disconnectClient(it);
 				return ;
+			}
+			std::cout << buffer << '\n';
+			_ClientMap[it->fd]->recvMessage(buffer);
+			_ClientMap[it->fd]->parseMessage(commandList);
+			for (commandList::iterator itList = commandList.begin(); itList != commandList.end(); itList++)
+			{
+				std::cout << "original = " << itList->originalCommand << '\n' << "nCommand = " << itList->command << '\n';
+				if (itList->params.empty())
+					std::cout << "empty param" << '\n';
+				for (std::vector<std::string>::iterator it = itList->params.begin(); it != itList->params.end(); it++)
+					std::cout << "param = " << *it << '\n';
 			}
 		}
 		else if (it->revents == POLLHUP)
