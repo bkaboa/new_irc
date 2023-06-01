@@ -2,7 +2,7 @@
 
 using namespace irc;
 
-Client::Client(fd_t fd):_Fd(fd), _IsRegistered(false) , _passOk(false), _nickOk(false), _isInChannel(false){}
+Client::Client(fd_t fd):_Fd(fd), _IsRegistered(false) , _passOk(false), _nickOk(false){}
 
 Client::Client():_IsRegistered(false) {}
 
@@ -72,24 +72,4 @@ void	Client::setPassOk(bool truefalse)
 void	Client::setNickOk(bool truefalse)
 {
 	_nickOk = truefalse;
-}
-
-void	Client::setIsInChannel(bool truefalse)
-{
-	_isInChannel = truefalse;
-}
-
-bool	Client::getIsInChannel(void)
-{
-	return(_isInChannel);
-}
-
-void	Client::setCurrentChannel(std::string channame)
-{
-	_currentChannel = channame;
-}
-
-std::string	Client::getCurrentChannel(void)
-{
-	return(_currentChannel);
 }
