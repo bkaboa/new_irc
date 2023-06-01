@@ -51,3 +51,4 @@ namespace irc
 }
 
 void sendStr(fd_t dest, std::string str);
+std::vector<std::string> strSplit(const std::string &str, char separator);

@@ -40,6 +40,11 @@ void	Channel::addMember(Client *newMember, bool admin)
 	}
 }
 
+// void	Channel::removeMember(fd_t clientFd)
+// {
+
+// }
+
 void	Channel::setAdmin(fd_t newAdminFd)
 {
 	if (_Members.find(newAdminFd) == _Members.end())
