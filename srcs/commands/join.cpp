@@ -6,6 +6,7 @@ using namespace irc;
 
 void Server::Join(fd_t sender, const commandData_t &args)
 {
+	std::cout << NC << "Client with fd " << sender << " requested a Join command" << std::endl;
 	if (args.binParams == NONE || !(args.binParams & CHAN))
 		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getNick(), "JOIN"));
 	// else if (_ChannelMap.size() < _maxChannels)

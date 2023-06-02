@@ -17,6 +17,7 @@ static bool nameExist(std::string name, mapClient &map)
 
 void Server::User(fd_t sender, const commandData_t &cmd)
 {
+	std::cout << NC << "Client with fd " << sender << " requested a User command" << std::endl;
 	if (cmd.binParams == NONE || !(cmd.binParams & USER))
 		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getName(), "USER"));
 	std::string newname = cmd.params[0];

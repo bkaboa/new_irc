@@ -76,6 +76,7 @@ void	Server::checkEvents()
 			std::cout << GREEN << "-----PARSING DONE !-----" << std::endl;
 			for (commandList::iterator itList = commandList.begin(); itList != commandList.end(); itList++)
 			{
+				std::cout << YELLOW << "-----STARTING EXEC...-----" << std::endl;
 				std::cout << NC << "Original command = " << itList->originalCommand << '\n' << "nCommand = " << itList->command << '\n';
 				if (itList->params.empty())
 					std::cout << NC << "Empty param" << '\n';

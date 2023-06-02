@@ -5,8 +5,10 @@ using namespace irc;
 
 void Server::Pass(fd_t sender, const commandData_t &cmd)
 {
+	std::cout << NC << "Client with fd " << sender << " requested a Pass command" << std::endl;
 	if (!(cmd.binParams & PASS))
 	{
+		std::cout << "EMPTY PASS" << std::endl;
 		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getNick(), cmd.originalCommand));
 		return;
 	}
