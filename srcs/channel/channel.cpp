@@ -40,10 +40,24 @@ void	Channel::addMember(Client *newMember, bool admin)
 	}
 }
 
-// void	Channel::removeMember(fd_t clientFd)
-// {
+void	Channel::removeMember(fd_t clientFd)
+{
+	if (_Members.find(clientFd) != _Members.end())
+	{
+		_Members.erase(clientFd);
+	}
+	else
+	{
+		std::cout << "Member is not on channel " << _Name << std::endl;
+	}
+}
 
-// }
+bool	Channel::checkPass(std::string pass)
+{
+	if (pass.compare(_Password) != 0)
+		return (false);
+	return(true);
+}
 
 void	Channel::setAdmin(fd_t newAdminFd)
 {
@@ -76,4 +90,9 @@ bool Channel::isInChannel(fd_t clientFd)
 	if (iter == _Members.end())
 		return(false);
 	return (true);
+}
+
+std::string	Channel::getName(void)
+{
+	return (_Name);
 }

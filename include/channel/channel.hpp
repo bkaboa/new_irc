@@ -12,6 +12,9 @@ namespace irc
 		const std::string	&getName() const;
 		void channelMsg(std::string message);
 		bool isInChannel(fd_t clientFd);
+		void removeMember(fd_t clientFd);
+		std::string getName(void);
+		bool checkPass(std::string pass);
 
 	protected:
 		void	addMember(irc::Client *newMember, bool admin);

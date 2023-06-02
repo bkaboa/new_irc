@@ -17,9 +17,9 @@ static bool nameExist(std::string name, mapClient &map)
 
 void Server::User(fd_t sender, const commandData_t &cmd)
 {
-	if (cmd.binParams == NONE)
+	if (cmd.binParams == NONE || !(cmd.binParams & USER))
 		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getName(), "USER"));
-	std::string newname = "POOP";
+	std::string newname = cmd.params[0];
 	//if already registered
 	if (_ClientMap[sender]->isConnect() && newname.compare(_ClientMap[sender]->getName()) != 0)
 	{

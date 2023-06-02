@@ -70,9 +70,11 @@ void	Server::checkEvents()
 				disconnectClient(it);
 				return ;
 			}
-			std::cout << buffer << '\n';
+			std::cout << YELLOW << it->fd << '\n';
 			_ClientMap[it->fd]->recvMessage(buffer);
-			_ClientMap[it->fd]->parseMessage(commandList);
+			_ClientMap[it->fd]->parseMessage(commandList, it->fd);
+			if (commandList.empty())
+				std::cout << "truc" << '\n';
 			for (commandList::iterator itList = commandList.begin(); itList != commandList.end(); itList++)
 			{
 				std::cout << "original = " << itList->originalCommand << '\n' << "nCommand = " << itList->command << '\n';
@@ -80,7 +82,9 @@ void	Server::checkEvents()
 					std::cout << "empty param" << '\n';
 				for (std::vector<std::string>::iterator it = itList->params.begin(); it != itList->params.end(); it++)
 					std::cout << "param = " << *it << '\n';
+				execCommand(*itList);
 			}
+			commandList.clear();
 		}
 		else if (it->revents == POLLHUP)
 		{

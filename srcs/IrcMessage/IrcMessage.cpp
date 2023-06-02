@@ -33,7 +33,7 @@ bool	IrcMessage::stringSlice(size_t nPos, std::string &original, std::string &sl
 	{
 		sliced = original.substr();
 		original.clear();
-		return (false);
+		return (true);
 	}
 	else
 	{
@@ -45,7 +45,7 @@ bool	IrcMessage::stringSlice(size_t nPos, std::string &original, std::string &sl
 	return (true);
 }
 
-void IrcMessage::parseMessage(commandList &commandList)
+void IrcMessage::parseMessage(commandList &commandList, fd_t fd)
 {
 	struct commandData_t		command;
 	std::vector<std::string>	commands;
@@ -55,11 +55,15 @@ void IrcMessage::parseMessage(commandList &commandList)
 
 	if (_Message.empty())
 		return ;
+	std::cout << _Message << '\n';
 	while (stringSlice(_Message.find_first_of('\n'), _Message, tmp))
+	{
 		commands.push_back(tmp);
+	}
 	for (std::vector<std::string>::iterator it = commands.begin(); it != commands.end(); it++)
 	{
 		bzero(&command, sizeof(command));
+		command.clientRequest = fd;
 		if (it->empty() || it->size() < 3)
 			commandList.push_back(command);
 		else
@@ -132,7 +136,7 @@ void	IrcMessage::checkCommand(std::string &sentence, int *binParams, int *comman
 		if ((result = macros[i](word)) != 0)
 		{
 			*binParams = result;
-			*command = i + 1;
+			*command = i;
 			return;
 		}
 	}

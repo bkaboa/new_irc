@@ -11,6 +11,5 @@ void Server::execCommand(commandData_t &cmd)
 	FunctionPointer functions[13] = { &Server::Ban, &Server::Invite, &Server::Join, &Server::Kick, &Server::List , \
 									  &Server::Nick, &Server::Part, &Server::Pass, &Server::Privmsg, &Server::Quit, \
 									  &Server::Topic, &Server::User};
-	(this->*(functions[11]))(cmd.clientRequest, cmd);
 	(this->*(functions[cmd.command]))(cmd.clientRequest, cmd);
 }

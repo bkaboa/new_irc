@@ -33,6 +33,7 @@ namespace irc
 			pollvector			_PollVector;
 			mapClient			_ClientMap;
 			mapChannel			_ChannelMap;
+			int					_maxChannels;
 
 			// Commands
 			void Ban(fd_t sender, const commandData_t &args);
