@@ -34,6 +34,7 @@ void Server::User(fd_t sender, const commandData_t &cmd)
 	//if not registered
 	else if (!_ClientMap[sender]->isConnect())
 	{
+		std::cout << RED << "username : " << newname << std::endl;
 		if (!_ClientMap[sender]->getPassOk() || !_ClientMap[sender]->getNickOk())
 		{
 			//authent error pass or nick not ok
@@ -49,6 +50,7 @@ void Server::User(fd_t sender, const commandData_t &cmd)
 			else if (!nameExist(newname, _ClientMap))
 				_ClientMap[sender]->changeName(newname);
 			_ClientMap[sender]->setIsRegistered(true);
+			sendStr(sender, "You successfuly registered !\r\n");
 			return;
 		}
 	}

@@ -83,6 +83,7 @@ void	Server::checkEvents()
 				for (std::vector<std::string>::iterator it = itList->params.begin(); it != itList->params.end(); it++)
 					std::cout << NC << "Param = " << *it << '\n';
 				execCommand(*itList);
+				std::cout << RED << "client " << _ClientMap[it->fd]->getPassOk() << std::endl;
 			}
 			commandList.clear();
 		}
