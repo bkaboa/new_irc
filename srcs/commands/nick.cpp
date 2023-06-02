@@ -33,7 +33,7 @@ void Server::Nick(fd_t sender, const commandData_t &cmd)
 		}
 		else if (nameExist(name, this->_ClientMap))
 		{
-			//ERR_NICKNAMEINUSE
+			sendStr(sender, ERR_NICKNAMEINUSE(_ClientMap[sender]->getNick(), name));
 			return;
 		}
 	}

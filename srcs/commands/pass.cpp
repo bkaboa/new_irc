@@ -20,8 +20,6 @@ void Server::Pass(fd_t sender, const commandData_t &cmd)
 		sendStr(sender, ERR_ALREADYREGISTERED(_ClientMap[sender]->getNick()));
 		return;
 	}
-	std::cout << RED << "pass = " << pass << std::endl;
-	std::cout << RED << "pass = " << _Password << "|" << std::endl;
 	if (pass.compare(_Password) == 0)
 	{
 		_ClientMap[sender]->setPassOk(true);
