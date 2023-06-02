@@ -70,18 +70,17 @@ void	Server::checkEvents()
 				disconnectClient(it);
 				return ;
 			}
-			std::cout << YELLOW << it->fd << '\n';
 			_ClientMap[it->fd]->recvMessage(buffer);
+			std::cout << YELLOW << "-----STARTING PARSING...-----" << std::endl;
 			_ClientMap[it->fd]->parseMessage(commandList, it->fd);
-			if (commandList.empty())
-				std::cout << "truc" << '\n';
+			std::cout << GREEN << "-----PARSING DONE !-----" << std::endl;
 			for (commandList::iterator itList = commandList.begin(); itList != commandList.end(); itList++)
 			{
-				std::cout << "original = " << itList->originalCommand << '\n' << "nCommand = " << itList->command << '\n';
+				std::cout << NC << "Original command = " << itList->originalCommand << '\n' << "nCommand = " << itList->command << '\n';
 				if (itList->params.empty())
-					std::cout << "empty param" << '\n';
+					std::cout << NC << "Empty param" << '\n';
 				for (std::vector<std::string>::iterator it = itList->params.begin(); it != itList->params.end(); it++)
-					std::cout << "param = " << *it << '\n';
+					std::cout << NC << "Param = " << *it << '\n';
 				execCommand(*itList);
 			}
 			commandList.clear();

@@ -20,8 +20,6 @@ const std::string	&Client::getName() const
 
 bool	Client::isConnect() const
 {
-	if (!_IsRegistered)
-		std::cout << "TEST NOT CONNECT" << std::endl;
 	return (_IsRegistered);
 }
 

@@ -7,5 +7,4 @@ void Server::Kick(fd_t sender, const commandData_t &args)
 {
 	(void)sender;
 	(void)args;
-	std::cout << GREEN << "KICK FUNCTION" << std::endl;
 }

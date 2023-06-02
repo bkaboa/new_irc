@@ -7,5 +7,4 @@ void Server::Topic(fd_t sender, const commandData_t &args)
 {
 	(void)sender;
 	(void)args;
-	std::cout << GREEN << "TOPIC FUNCTION" << std::endl;
 }

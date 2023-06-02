@@ -7,5 +7,4 @@ void Server::Quit(fd_t sender, const commandData_t &args)
 {
 	(void)sender;
 	(void)args;
-	std::cout << GREEN << "QUIT FUNCTION" << std::endl;
 }

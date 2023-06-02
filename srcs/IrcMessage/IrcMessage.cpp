@@ -55,7 +55,6 @@ void IrcMessage::parseMessage(commandList &commandList, fd_t fd)
 
 	if (_Message.empty())
 		return ;
-	std::cout << _Message << '\n';
 	while (stringSlice(_Message.find_first_of('\n'), _Message, tmp))
 	{
 		commands.push_back(tmp);
@@ -128,7 +127,7 @@ void	IrcMessage::checkCommand(std::string &sentence, int *binParams, int *comman
 		word = sentence;
 	else
 		stringSlice(result, sentence, word);
-	std::cout << "command =" << word <<'|'<< '\n';
+	std::cout << NC << "command =" << word <<'|'<< '\n';
 	if (word.empty() || word.size() <= 3)
 		return ;
 	for(int i = 0; i < 13; i++)
@@ -161,7 +160,6 @@ void	IrcMessage::takeUser(struct commandData_t *command, std::string &sliceMessa
 	istring.str(sliceMessage);
 	while (std::getline(istring, user, ' '))
 	{
-		std::cout << user << '\n';
 		command->params.push_back(user);
 	}
 }

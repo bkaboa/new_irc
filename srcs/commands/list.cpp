@@ -7,5 +7,4 @@ void Server::List(fd_t sender, const commandData_t &args)
 {
 	(void)sender;
 	(void)args;
-	std::cout << GREEN << "LIST FUNCTION" << std::endl;
 }
