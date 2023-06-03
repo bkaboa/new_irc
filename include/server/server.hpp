@@ -14,7 +14,7 @@ namespace irc
 			const std::string		&getPass() const;
 
 		protected:
-			void			channelNew(Channel &channelNew);
+			void			channelNew(Client *creator, std::string name, std::string pass);
 			void			disconnectClient(pollvectorIter &it);
 			mapClientIter	getClient(const fd_t fd) const;
 	
@@ -33,7 +33,6 @@ namespace irc
 			pollvector			_PollVector;
 			mapClient			_ClientMap;
 			mapChannel			_ChannelMap;
-			int					_maxChannels;
 
 			// Commands
 			void Ban(fd_t sender, const commandData_t &args);

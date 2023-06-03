@@ -4,7 +4,7 @@
 
 using namespace irc;
 
-// void	Server::channelNew(Channel &newChannel)
-// {
-// 	_ChannelMap.insert(std::make_pair(newChannel.getName(), newChannel));
-// }
+void	Server::channelNew(Client *creator, std::string name, std::string pass)
+{
+	_ChannelMap.insert(std::make_pair(name, new Channel(creator, name, pass)));
+}

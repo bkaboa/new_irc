@@ -26,11 +26,11 @@ void Server::Part(fd_t sender, const commandData_t &args)
 			sendStr(sender, ERR_NOSUCHCHANNEL(_ClientMap[sender]->getNick(), *itera));
 		if (_ChannelMap.find(*itera) != _ChannelMap.end())
 		{
-			Channel chan = _ChannelMap.find(*itera)->second;
-			if (chan.isInChannel(sender))
-				chan.removeMember(sender);
-			else if (!chan.isInChannel(sender))
-				sendStr(sender, ERR_NOTONCHANNEL(_ClientMap[sender]->getNick(), chan.getName()));
+			Channel *chan = _ChannelMap.find(*itera)->second;
+			if (chan->isInChannel(sender))
+				chan->removeMember(sender);
+			else if (!chan->isInChannel(sender))
+				sendStr(sender, ERR_NOTONCHANNEL(_ClientMap[sender]->getNick(), chan->getName()));
 		}
 	}
 }

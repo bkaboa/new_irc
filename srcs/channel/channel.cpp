@@ -59,6 +59,11 @@ bool	Channel::checkPass(std::string pass)
 	return(true);
 }
 
+std::string Channel::getPass(void)
+{
+	return (_Password);
+}
+
 void	Channel::setAdmin(fd_t newAdminFd)
 {
 	if (_Members.find(newAdminFd) == _Members.end())

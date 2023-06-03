@@ -22,7 +22,7 @@ typedef std::map<fd_t, irc::Client*>			mapClient;
 typedef std::map<fd_t, irc::Client*>::iterator	mapClientIter;
 
 //typedef for channel list
-typedef std::map<std::string, irc::Channel&>				mapChannel;
+typedef std::map<std::string, irc::Channel*>				mapChannel;
 typedef std::map<std::string, irc::Channel&>::iterator	mapChannelIter;
 
 //typedef for Client list in Channel

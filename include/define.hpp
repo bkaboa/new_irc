@@ -12,6 +12,8 @@
 
 #define MESSAGE_LIMIT	511
 
+#define MAX_CHANNELS	10
+
 //***************************		COLORS
 #define RED			"\033[0;31m"
 #define GREEN		"\033[1;32m"
@@ -55,8 +57,7 @@ enum parsingType:u_int8_t {
 #define USER_MACRO(command)       (command) == "USER" ? (USER) : 0
 #define CAP_MACRO(command)        (command) == "CAP" ? (CAPC) : 0
 
-//***************************		SERVER_REPLY
-#define RPL_WELCOME(client, networkname, nick, user, host) std::string(client) + " :Welcome to the " + std::string (networkname) + " Network, " + std::string(nick) + "[!" + std::string(user) + "@" + std::string(host) + "]\r\n"
+//***************************		SERVER_ERR
 #define ERR_INPUTTOOLONG(client) std::string(client) + " :Input line was too long\r\n"
 #define ERR_UNKNOWNCOMMAND(client, command) std::string(client) + std::string(command) + " :Unknown command\r\n"
 #define ERR_NOSUCHNICK(client, nick) std::string(client) + " " + std::string(nick) + " :No such nick/channel\r\n"
@@ -87,3 +88,10 @@ enum parsingType:u_int8_t {
 #define ERR_CHANOPRIVSNEEDED(client, chan) std::string(client) + " " + std::string(chan) + " :Your're not channel operator\r\n"
 #define ERR_UMODEUNKNOWNFLAG(client) std::string(client) + " :Unknown MODE flag\r\n"
 #define ERR_USERSDONTMATCH(client) std::string(client) + " :Can't change mode for other users\r\n"
+
+//*****************SERVER_RPL
+#define RPL_WELCOME(client, networkname, nick, user, host) std::string(client) + " :Welcome to the " + std::string (networkname) + " Network, " + std::string(nick) + "[!" + std::string(user) + "@" + std::string(host) + "]\r\n"
+#define RPL_TOPIC(client, chan, topic) std::string(client) + " " + std::string(chan) + " :" + std::string(topic) + "\r\n"
+#define RPL_LIST(client, chan, clientcount, topic) std::string(client) + " " + std::string(chan) + " " + int(clientcount) + " :" + std::string(topic) + "\r\n"
+#define RPL_NAMREPLY(client, symbol, channel, prefix, nick)
+#define RPL_ENDOFNAMES(client, channel) std::string(client) + " " + std::string(channel) + " :End of /NAMES list\r\n"

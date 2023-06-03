@@ -15,9 +15,10 @@ namespace irc
 		void removeMember(fd_t clientFd);
 		std::string getName(void);
 		bool checkPass(std::string pass);
+		void	addMember(irc::Client *newMember, bool admin);
+		std::string	getPass(void);
 
 	protected:
-		void	addMember(irc::Client *newMember, bool admin);
 		void	setAdmin(fd_t fd);
 		void	kickMember(fd_t fd);
 
