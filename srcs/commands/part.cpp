@@ -22,13 +22,19 @@ void Server::Part(fd_t sender, const commandData_t &args)
 	{
 		if (!((*itera)[0] == '#' || (*itera)[0] == '&'))
 			sendStr(sender, ERR_NOSUCHCHANNEL(_ClientMap[sender]->getNick(), *itera));
-		if (_ChannelMap.find(*itera) == _ChannelMap.end())
+		else if (_ChannelMap.find(*itera) == _ChannelMap.end())
+		{
 			sendStr(sender, ERR_NOSUCHCHANNEL(_ClientMap[sender]->getNick(), *itera));
-		if (_ChannelMap.find(*itera) != _ChannelMap.end())
+		}
+		else if (_ChannelMap.find(*itera) != _ChannelMap.end())
 		{
 			Channel *chan = _ChannelMap.find(*itera)->second;
 			if (chan->isInChannel(sender))
+			{
 				chan->removeMember(sender);
+				std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " PART " + chan->getName() + "\r\n";
+				sendStr(sender, reply);
+			}
 			else if (!chan->isInChannel(sender))
 				sendStr(sender, ERR_NOTONCHANNEL(_ClientMap[sender]->getNick(), chan->getName()));
 		}
