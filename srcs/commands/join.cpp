@@ -16,6 +16,7 @@ void Server::Join(fd_t sender, const commandData_t &args)
 
 		for (; iter != channelsToJoin.end(); ++iter)
 		{
+			//channel does not exist
 			if (_ChannelMap.find(*iter) == _ChannelMap.end())
 			{
 				std::string newChanName = *iter;
@@ -25,14 +26,19 @@ void Server::Join(fd_t sender, const commandData_t &args)
 						channelNew(_ClientMap[sender], newChanName, args.params[1]);
 					else
 					{
-						std::string j = "JOIN " + newChanName + "\r\n";
 						channelNew(_ClientMap[sender], newChanName, "");
-						send(sender, j.c_str(), j.size(), 0);
+						std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + newChanName + "\r\n";
+						sendStr(sender, reply);
+						if (!(_ChannelMap[newChanName]->getTopic().empty()))
+							sendStr(sender, RPL_TOPIC(_ClientMap[sender]->getNick(), _ChannelMap[newChanName]->getName(), _ChannelMap[newChanName]->getTopic()));
+						sendStr(sender, RPL_NAMREPLY(_ClientMap[sender]->getName(), "!", newChanName, "@", _ClientMap[sender]->getNick(), ""));
+						sendStr(sender, RPL_ENDOFNAMES(_ClientMap[sender]->getName(), newChanName));
 					}
 				}
 				else 
 					sendStr(sender, "To create a Channel, you need to add the prefix # or &\r\n");
 			}
+			//channel does exist
 			else
 			{
 				Channel *chan = _ChannelMap[*iter];

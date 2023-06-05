@@ -5,7 +5,7 @@
 
 using namespace irc;
 
-Channel::Channel(Client *creator, const std::string &name, const std::string &pass):_Name(name), _Password(pass) {
+Channel::Channel(Client *creator, const std::string &name, const std::string &pass):_Name(name), _Password(pass), _Topic(""){
 	_Members.insert(std::make_pair(creator->getFd(), creator));
 };
 
@@ -100,4 +100,14 @@ bool Channel::isInChannel(fd_t clientFd)
 std::string	Channel::getName(void)
 {
 	return (_Name);
+}
+
+void	Channel::setTopic(std::string topic)
+{
+	_Topic = topic;
+}
+
+const std::string	Channel::getTopic()
+{
+	return(_Topic);
 }

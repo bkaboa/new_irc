@@ -14,6 +14,8 @@
 
 #define MAX_CHANNELS	10
 
+#define SERVER_NAME		"LeoCharlitoServ"
+
 //***************************		COLORS
 #define RED			"\033[0;31m"
 #define GREEN		"\033[1;32m"
@@ -90,8 +92,8 @@ enum parsingType:u_int8_t {
 #define ERR_USERSDONTMATCH(client) std::string(client) + " :Can't change mode for other users\r\n"
 
 //*****************SERVER_RPL
-#define RPL_WELCOME(client, networkname, nick, user, host) std::string(client) + " :Welcome to the " + std::string (networkname) + " Network, " + std::string(nick) + "[!" + std::string(user) + "@" + std::string(host) + "]\r\n"
-#define RPL_TOPIC(client, chan, topic) std::string(client) + " " + std::string(chan) + " :" + std::string(topic) + "\r\n"
-#define RPL_LIST(client, chan, clientcount, topic) std::string(client) + " " + std::string(chan) + " " + int(clientcount) + " :" + std::string(topic) + "\r\n"
-#define RPL_NAMREPLY(client, symbol, channel, prefix, nick)
-#define RPL_ENDOFNAMES(client, channel) std::string(client) + " " + std::string(channel) + " :End of /NAMES list\r\n"
+#define RPL_WELCOME(client, networkname, nick, user, host) ":" + std::string(SERVER_NAME) + " 001" + std::string(client) + " :Welcome to the " + std::string (networkname) + " Network, " + std::string(nick) + "[!" + std::string(user) + "@" + std::string(host) + "]\r\n"
+#define RPL_TOPIC(client, chan, topic) ":" + std::string(SERVER_NAME) + " 332 " + std::string(client) + " " + std::string(chan) + " :" + std::string(topic) + "\r\n"
+#define RPL_LIST(client, chan, clientcount, topic) ":" + std::string(SERVER_NAME) " 322 " + std::string(client) + " " + std::string(chan) + " " + int(clientcount) + " :" + std::string(topic) + "\r\n"
+#define RPL_NAMREPLY(client, symbol, channel, prefix, nick, othernicks) ":" + std::string(SERVER_NAME) + " 353 " + std::string(client) + " " + std::string(symbol) + " " + std::string(channel) + " :" + std::string(prefix) + std::string(nick) + std::string(othernicks) + "\r\n"
+#define RPL_ENDOFNAMES(client, channel) ":" + std::string(SERVER_NAME)  + " 366 " + std::string(client) + " " + std::string(channel) + " :End of /NAMES list\r\n"

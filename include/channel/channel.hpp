@@ -17,6 +17,8 @@ namespace irc
 		bool checkPass(std::string pass);
 		void	addMember(irc::Client *newMember, bool admin);
 		std::string	getPass(void);
+		const std::string getTopic();
+		void	setTopic(std::string topic);
 
 	protected:
 		void	setAdmin(fd_t fd);
