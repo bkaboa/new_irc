@@ -23,21 +23,20 @@ void Server::Join(fd_t sender, const commandData_t &args)
 				if (newChanName[0] == '#' || newChanName[0] == '&')
 				{
 					std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + newChanName + "\r\n";
+					//creating channel with password
 					if (args.binParams & PASS)
 					{
 						channelNew(_ClientMap[sender], newChanName, args.params[1]);
 						_ChannelMap[newChanName]->channelMsg(-1, reply);
-						if (!(_ChannelMap[newChanName]->getTopic().empty()))
-							sendStr(sender, RPL_TOPIC(_ClientMap[sender]->getNick(), _ChannelMap[newChanName]->getName(), _ChannelMap[newChanName]->getTopic()));
-						sendStr(sender, RPL_NAMREPLY(_ClientMap[sender]->getName(), "!", newChanName, "@", _ClientMap[sender]->getNick(), ""));
-						sendStr(sender, RPL_ENDOFNAMES(_ClientMap[sender]->getName(), newChanName));
+						_ChannelMap[newChanName]->joinNameReply(sender);
 					}
+					//creating channel without pass
 					else
 					{
 						channelNew(_ClientMap[sender], newChanName, "");
 						_ChannelMap[newChanName]->channelMsg(-1, reply);
 						if (!(_ChannelMap[newChanName]->getTopic().empty()))
-							sendStr(sender, RPL_TOPIC(_ClientMap[sender]->getNick(), _ChannelMap[newChanName]->getName(), _ChannelMap[newChanName]->getTopic()));
+							_ChannelMap[newChanName]->channelMsg(-1, RPL_TOPIC(_ClientMap[sender]->getNick(), _ChannelMap[newChanName]->getName(), _ChannelMap[newChanName]->getTopic()));
 						sendStr(sender, RPL_NAMREPLY(_ClientMap[sender]->getName(), "!", newChanName, "@", _ClientMap[sender]->getNick(), ""));
 						sendStr(sender, RPL_ENDOFNAMES(_ClientMap[sender]->getName(), newChanName));
 					}

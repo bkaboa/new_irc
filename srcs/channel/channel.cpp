@@ -116,3 +116,27 @@ const std::string	Channel::getTopic()
 {
 	return(_Topic);
 }
+
+void	Channel::joinNameReply(fd_t sender)
+{
+	mapClientIter iter;
+	if (!(getTopic().empty()))
+	{
+		iter = _Members.begin();
+		for (; iter != _Members.end(); ++iter)
+		{
+			sendStr(iter->first, RPL_TOPIC(iter->second->getNick(), getName(), getTopic()));
+			sendStr(iter->first, RPL_NAMREPLY(iter->second->getName(), "!", getName(), "@", iter->second->getNick(), ""));
+			sendStr(iter->first, RPL_ENDOFNAMES(iter->second->getName(), getName()));
+		}
+	}
+	else
+	{
+		iter = _Members.begin();
+		for (; iter != _Members.end(); ++iter)
+		{
+			sendStr(iter->first, RPL_NAMREPLY(iter->second->getName(), "!", getName(), "@", iter->second->getNick(), ""));
+			sendStr(iter->first, RPL_ENDOFNAMES(iter->second->getName(), getName()));
+		}
+	}
+}

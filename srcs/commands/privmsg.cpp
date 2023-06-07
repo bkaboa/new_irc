@@ -66,7 +66,6 @@ void Server::Privmsg(fd_t sender, const commandData_t &args)
 				fd_t targetfd = getClientFd(target);
 				if (targetfd != -1)
 				{
-					DEBUG;
 					std::string finalmsg = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + "@" + SERVER_NAME + " PRIVMSG " + target + " " + message;
 					sendStr(targetfd, finalmsg);
 				}
