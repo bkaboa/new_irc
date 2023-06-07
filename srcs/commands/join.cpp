@@ -26,7 +26,7 @@ void Server::Join(fd_t sender, const commandData_t &args)
 					if (args.binParams & PASS)
 					{
 						channelNew(_ClientMap[sender], newChanName, args.params[1]);
-						_ChannelMap[newChanName]->channelMsg(reply);
+						_ChannelMap[newChanName]->channelMsg(-1, reply);
 						if (!(_ChannelMap[newChanName]->getTopic().empty()))
 							sendStr(sender, RPL_TOPIC(_ClientMap[sender]->getNick(), _ChannelMap[newChanName]->getName(), _ChannelMap[newChanName]->getTopic()));
 						sendStr(sender, RPL_NAMREPLY(_ClientMap[sender]->getName(), "!", newChanName, "@", _ClientMap[sender]->getNick(), ""));
@@ -35,7 +35,7 @@ void Server::Join(fd_t sender, const commandData_t &args)
 					else
 					{
 						channelNew(_ClientMap[sender], newChanName, "");
-						_ChannelMap[newChanName]->channelMsg(reply);
+						_ChannelMap[newChanName]->channelMsg(-1, reply);
 						if (!(_ChannelMap[newChanName]->getTopic().empty()))
 							sendStr(sender, RPL_TOPIC(_ClientMap[sender]->getNick(), _ChannelMap[newChanName]->getName(), _ChannelMap[newChanName]->getTopic()));
 						sendStr(sender, RPL_NAMREPLY(_ClientMap[sender]->getName(), "!", newChanName, "@", _ClientMap[sender]->getNick(), ""));
@@ -75,7 +75,7 @@ void Server::Join(fd_t sender, const commandData_t &args)
 					{
 						chan->addMember(_ClientMap[sender], 0);
 						std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";
-						chan->channelMsg(reply);
+						chan->channelMsg(-1, reply);
 						if (!(chan->getTopic().empty()))
 							sendStr(sender, RPL_TOPIC(_ClientMap[sender]->getNick(), chan->getName(), chan->getTopic()));
 						sendStr(sender, RPL_NAMREPLY(_ClientMap[sender]->getName(), "!", chan->getName(), "@", _ClientMap[sender]->getNick(), ""));

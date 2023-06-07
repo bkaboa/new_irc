@@ -76,13 +76,21 @@ void	Channel::kickMember(fd_t fd)
 {
 }
 
-void	Channel::channelMsg(std::string msg)
+void	Channel::channelMsg(fd_t sender, std::string msg)
 {
 	mapClientIter iter;
 	for (iter = _Members.begin(); iter != _Members.end(); ++iter)
 	{
-		if (checkBan(iter->first))
-			sendStr(iter->first, msg);
+		if (sender == -1)
+		{
+			if (checkBan(iter->first))
+				sendStr(iter->first, msg);
+		}
+		else
+		{
+			if (checkBan(iter->first) && iter->first != sender)
+				sendStr(iter->first, msg);
+		}
 	}
 }
 

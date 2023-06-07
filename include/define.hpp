@@ -97,3 +97,6 @@ enum parsingType:u_int8_t {
 #define RPL_LIST(client, chan, clientcount, topic) ":" + std::string(SERVER_NAME) " 322 " + std::string(client) + " " + std::string(chan) + " " + int(clientcount) + " :" + std::string(topic) + "\r\n"
 #define RPL_NAMREPLY(client, symbol, channel, prefix, nick, othernicks) ":" + std::string(SERVER_NAME) + " 353 " + std::string(client) + " " + std::string(symbol) + " " + std::string(channel) + " :" + std::string(prefix) + std::string(nick) + std::string(othernicks) + "\r\n"
 #define RPL_ENDOFNAMES(client, channel) ":" + std::string(SERVER_NAME)  + " 366 " + std::string(client) + " " + std::string(channel) + " :End of /NAMES list\r\n"
+
+//******************DEBUG
+#define DEBUG std::cout << RED << "---DEBUG---" << std::endl

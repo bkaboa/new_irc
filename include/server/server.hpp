@@ -25,6 +25,7 @@ namespace irc
 			void	acceptConnection();
 			void	clientNew(fd_t clientFd);
 			void	execCommand(commandData_t &cmd);
+			fd_t	getClientFd(std::string name);
 
 			std::string			_Password;
 			fd_t				_Port;

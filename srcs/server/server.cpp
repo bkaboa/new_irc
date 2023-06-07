@@ -138,3 +138,14 @@ void	Server::ConnectServer()
 	}
 	close(_Sock);
 }
+
+fd_t	Server::getClientFd(const std::string nick)
+{
+	mapClientIter iter = _ClientMap.begin();
+	for (; iter != _ClientMap.end(); ++iter)
+	{
+		if (iter->second->getNick().compare(nick) == 0)
+			return(iter->first);
+	}
+	return (-1);
+}
