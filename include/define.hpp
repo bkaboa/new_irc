@@ -45,11 +45,11 @@ enum parsingType:u_int8_t {
 };
 
 //***************************		COMMAND
-#define BAN_MACRO(command)        (command) == "BAN" ? (NICK + MESS) : 0
 #define INVITE_MACRO(command)     (command) == "INVITE" ? (CHAN + NICK + PASS + MESS) : 0
 #define JOIN_MACRO(command)       (command) == "JOIN" ? (CHAN + NICK + PASS) : 0
 #define KICK_MACRO(command)       (command) == "KICK" ? (CHAN + NICK + MESS) : 0
 #define LIST_MACRO(command)       (command) == "LIST" ? (CHAN) : 0
+#define MODE_MACRO(command) 	  (command) == "MODE" ? (CHAN) : 0
 #define NICK_MACRO(command)       (command) == "NICK" ? (NICK) : 0
 #define PART_MACRO(command)       (command) == "PART" ? (CHAN + MESS) : 0
 #define PASS_MACRO(command)       (command) == "PASS" ? (PASS) : 0

@@ -22,11 +22,11 @@ void Server::Join(fd_t sender, const commandData_t &args)
 				std::string newChanName = *iter;
 				if (newChanName[0] == '#' || newChanName[0] == '&')
 				{
+					std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + newChanName + "\r\n";
 					if (args.binParams & PASS)
 					{
 						channelNew(_ClientMap[sender], newChanName, args.params[1]);
-						std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + newChanName + "\r\n";
-						sendStr(sender, reply);
+						_ChannelMap[newChanName]->channelMsg(reply);
 						if (!(_ChannelMap[newChanName]->getTopic().empty()))
 							sendStr(sender, RPL_TOPIC(_ClientMap[sender]->getNick(), _ChannelMap[newChanName]->getName(), _ChannelMap[newChanName]->getTopic()));
 						sendStr(sender, RPL_NAMREPLY(_ClientMap[sender]->getName(), "!", newChanName, "@", _ClientMap[sender]->getNick(), ""));
@@ -35,8 +35,7 @@ void Server::Join(fd_t sender, const commandData_t &args)
 					else
 					{
 						channelNew(_ClientMap[sender], newChanName, "");
-						std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + newChanName + "\r\n";
-						sendStr(sender, reply);
+						_ChannelMap[newChanName]->channelMsg(reply);
 						if (!(_ChannelMap[newChanName]->getTopic().empty()))
 							sendStr(sender, RPL_TOPIC(_ClientMap[sender]->getNick(), _ChannelMap[newChanName]->getName(), _ChannelMap[newChanName]->getTopic()));
 						sendStr(sender, RPL_NAMREPLY(_ClientMap[sender]->getName(), "!", newChanName, "@", _ClientMap[sender]->getNick(), ""));
@@ -76,7 +75,7 @@ void Server::Join(fd_t sender, const commandData_t &args)
 					{
 						chan->addMember(_ClientMap[sender], 0);
 						std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";
-						sendStr(sender, reply);
+						chan->channelMsg(reply);
 						if (!(chan->getTopic().empty()))
 							sendStr(sender, RPL_TOPIC(_ClientMap[sender]->getNick(), chan->getName(), chan->getTopic()));
 						sendStr(sender, RPL_NAMREPLY(_ClientMap[sender]->getName(), "!", chan->getName(), "@", _ClientMap[sender]->getNick(), ""));

@@ -87,11 +87,11 @@ void IrcMessage::parseMessage(commandList &commandList, fd_t fd)
 	_Message.clear();
 }
 
-int BAN(const std::string& s) { return BAN_MACRO(s); }
 int INVITE(const std::string& s) { return INVITE_MACRO(s); }
 int JOIN(const std::string& s) { return JOIN_MACRO(s); }
 int KICK(const std::string& s) { return KICK_MACRO(s); }
 int LIST(const std::string& s) { return LIST_MACRO(s); }
+int MODE(const std::string& s) { return MODE_MACRO(s);}
 int NICKC(const std::string& s) { return NICK_MACRO(s); }
 int PART(const std::string& s) { return PART_MACRO(s); }
 int PASSC(const std::string& s) { return PASS_MACRO(s); }
@@ -108,11 +108,11 @@ void	IrcMessage::checkCommand(std::string &sentence, int *binParams, int *comman
 	std::string word;
 
     macroFunction macros[] = {
-        BAN,
         INVITE,
         JOIN,
         KICK,
         LIST,
+		MODE,
         NICKC,
         PART,
         PASSC,

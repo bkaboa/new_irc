@@ -35,11 +35,11 @@ namespace irc
 			mapChannel			_ChannelMap;
 
 			// Commands
-			void Ban(fd_t sender, const commandData_t &args);
 			void Invite(fd_t sender, const commandData_t &args);
 			void Join(fd_t sender, const commandData_t &args);
 			void Kick(fd_t sender, const commandData_t &args);
 			void List(fd_t sender, const commandData_t &args);
+			void Mode(fd_t sender, const commandData_t &args);
 			void Nick(fd_t sender, const commandData_t &args);
 			void Part(fd_t sender, const commandData_t &args);
 			void Pass(fd_t sender, const commandData_t &args);
