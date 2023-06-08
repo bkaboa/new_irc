@@ -19,7 +19,7 @@ namespace irc
 		std::string	getPass(void);
 		const std::string getTopic();
 		void	setTopic(std::string topic);
-		void	joinNameReply(bool topic);
+		void	joinNameReply(fd_t sender, std::string sendername);
 
 	protected : 
 		void setAdmin(fd_t fd);
@@ -28,6 +28,7 @@ namespace irc
 	private:
 		bool	checkBan(fd_t clientFd);
 		bool	checkOption(int);
+		bool	isAdmin(fd_t client);
 
 		std::string				_Password;
 		std::string				_Name;

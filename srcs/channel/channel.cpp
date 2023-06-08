@@ -7,6 +7,7 @@ using namespace irc;
 
 Channel::Channel(Client *creator, const std::string &name, const std::string &pass):_Name(name), _Password(pass), _Topic(""){
 	_Members.insert(std::make_pair(creator->getFd(), creator));
+	setAdmin(creator->getFd());
 };
 
 Channel::~Channel() {};
@@ -67,9 +68,20 @@ std::string Channel::getPass(void)
 void	Channel::setAdmin(fd_t newAdminFd)
 {
 	if (_Members.find(newAdminFd) == _Members.end())
-		std::cout << "client doesn't in the channel " << _Name << std::endl;
+		std::cout << "client is not in the channel " << _Name << std::endl;
 	else
 		_FdAdmin.push_back(newAdminFd);
+}
+
+bool	Channel::isAdmin(fd_t clientfd)
+{
+	std::vector<fd_t>::iterator iter = _FdAdmin.begin();
+	for (; iter != _FdAdmin.end(); ++iter)
+	{
+		if (*iter == clientfd)
+			return (true);
+	}
+	return(false);
 }
 
 void	Channel::kickMember(fd_t fd)
@@ -117,26 +129,18 @@ const std::string	Channel::getTopic()
 	return(_Topic);
 }
 
-void	Channel::joinNameReply(fd_t sender)
+void	Channel::joinNameReply(fd_t sender, std::string sendername)
 {
 	mapClientIter iter;
+	iter = _Members.begin();
 	if (!(getTopic().empty()))
+		sendStr(sender, RPL_TOPIC(iter->second->getNick(), getName(), getTopic()));
+	for (; iter != _Members.end(); ++iter)
 	{
-		iter = _Members.begin();
-		for (; iter != _Members.end(); ++iter)
-		{
-			sendStr(iter->first, RPL_TOPIC(iter->second->getNick(), getName(), getTopic()));
-			sendStr(iter->first, RPL_NAMREPLY(iter->second->getName(), "!", getName(), "@", iter->second->getNick(), ""));
-			sendStr(iter->first, RPL_ENDOFNAMES(iter->second->getName(), getName()));
-		}
+		if (isAdmin(iter->first))
+			sendStr(sender, RPL_NAMREPLY(iter->second->getName(), "!", _Name, "@", iter->second->getNick(), ""));
+		else
+			sendStr(sender, RPL_NAMREPLY(iter->second->getName(), "!", _Name, " ", iter->second->getNick(), ""));
 	}
-	else
-	{
-		iter = _Members.begin();
-		for (; iter != _Members.end(); ++iter)
-		{
-			sendStr(iter->first, RPL_NAMREPLY(iter->second->getName(), "!", getName(), "@", iter->second->getNick(), ""));
-			sendStr(iter->first, RPL_ENDOFNAMES(iter->second->getName(), getName()));
-		}
-	}
+	sendStr(sender, RPL_ENDOFNAMES(sendername, _Name));
 }
