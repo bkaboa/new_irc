@@ -84,8 +84,10 @@ bool	Channel::isAdmin(fd_t clientfd)
 	return(false);
 }
 
-void	Channel::kickMember(fd_t fd)
+void	Channel::kickMember(fd_t kicked)
 {
+	if (!isAdmin(kicked))
+		_Members.erase(kicked);
 }
 
 void	Channel::channelMsg(fd_t sender, std::string msg)
@@ -117,6 +119,11 @@ bool Channel::isInChannel(fd_t clientFd)
 std::string	Channel::getName(void)
 {
 	return (_Name);
+}
+
+int	Channel::getNumClients(void)
+{
+	return (_Members.size());
 }
 
 void	Channel::setTopic(std::string topic)

@@ -52,6 +52,11 @@ void	Client::setIsRegistered(bool truefalse)
 		this->_IsRegistered = true;
 }
 
+bool	Client::getIsRegistered(void)
+{
+	return (_IsRegistered);
+}
+
 bool	Client::getPassOk(void)
 {
 	return(_passOk);

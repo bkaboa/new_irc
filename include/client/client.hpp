@@ -21,7 +21,7 @@ namespace irc
 			bool				getAdmin() const;
 			void				setAdmin(bool Admin);
 			void				setIsRegistered(bool truefalse);
-			bool				getIsRegistered(bool truefalse);
+			bool				getIsRegistered(void);
 			void				setPassOk(bool truefalse);
 			bool				getPassOk(void);
 			void				setNickOk(bool truefalse);

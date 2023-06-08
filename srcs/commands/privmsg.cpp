@@ -56,7 +56,12 @@ void Server::Privmsg(fd_t sender, const commandData_t &args)
 			{
 				std::string finalmsg = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + "@" + SERVER_NAME + " PRIVMSG " + target + " " + message;
 				if (_ChannelMap.find(target) != _ChannelMap.end())
-					_ChannelMap[target]->channelMsg(sender, finalmsg);
+				{
+					if (_ChannelMap.find(target)->second->isInChannel(sender))
+					{
+						_ChannelMap[target]->channelMsg(sender, finalmsg);
+					}
+				}
 				else
 					sendStr(sender, ERR_NOSUCHCHANNEL(_ClientMap[sender]->getName(), target));
 			}

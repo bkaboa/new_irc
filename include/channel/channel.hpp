@@ -20,15 +20,16 @@ namespace irc
 		const std::string getTopic();
 		void	setTopic(std::string topic);
 		void	joinNameReply(fd_t sender, std::string sendername);
+		int		getNumClients(void);
+		bool	isAdmin(fd_t client);
+		void	kickMember(fd_t fd);
 
 	protected : 
 		void setAdmin(fd_t fd);
-		void	kickMember(fd_t fd);
 
 	private:
 		bool	checkBan(fd_t clientFd);
 		bool	checkOption(int);
-		bool	isAdmin(fd_t client);
 
 		std::string				_Password;
 		std::string				_Name;
