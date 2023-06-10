@@ -6,7 +6,6 @@ using namespace irc;
 
 void Server::Part(fd_t sender, const commandData_t &args)
 {
-	std::cout << NC << "Client with fd " << sender << " requested a Part command" << std::endl;
 	if (args.binParams == NONE || !(args.binParams & CHAN))
 		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getNick(), "PART"));
 	std::string reason;

@@ -71,18 +71,17 @@ void	Server::checkEvents()
 				return ;
 			}
 			_ClientMap[it->fd]->recvMessage(buffer);
-			std::cout << YELLOW << "-----STARTING PARSING...-----" << std::endl;
 			_ClientMap[it->fd]->parseMessage(commandList, it->fd);
-			std::cout << GREEN << "-----PARSING DONE !-----" << std::endl;
 			for (commandList::iterator itList = commandList.begin(); itList != commandList.end(); itList++)
 			{
-				std::cout << YELLOW << "-----STARTING EXEC...-----" << std::endl;
+				std::cout << YELLOW << "-----Client " << _ClientMap[it->fd]->getName() << " request a command-----"<< std::endl;
 				std::cout << NC << "Original command = " << itList->originalCommand << '\n' << "nCommand = " << itList->command << '\n';
 				if (itList->params.empty())
 					std::cout << NC << "Empty param" << '\n';
 				for (std::vector<std::string>::iterator it = itList->params.begin(); it != itList->params.end(); it++)
 					std::cout << NC << "Param = " << *it << '\n';
 				execCommand(*itList);
+				std::cout << GREEN << "-----End of " << _ClientMap[it->fd]->getName() << " request-----" << std::endl;
 			}
 			commandList.clear();
 		}

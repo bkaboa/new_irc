@@ -31,7 +31,7 @@ void	Channel::addMember(Client *newMember, bool admin)
 {
 	if (_Members.find(newMember->getFd()) != _Members.end())
 	{
-		std::cout << "client " << newMember->getNick() << " is already connected to the channel _Name" << std::endl;
+		std::cout << "Client " << newMember->getNick() << " is already connected to the channel _Name" << std::endl;
 	}
 	else
 	{
@@ -68,7 +68,7 @@ std::string Channel::getPass(void)
 void	Channel::setAdmin(fd_t newAdminFd)
 {
 	if (_Members.find(newAdminFd) == _Members.end())
-		std::cout << "client is not in the channel " << _Name << std::endl;
+		std::cout << "Client is not in the channel " << _Name << std::endl;
 	else
 		_FdAdmin.push_back(newAdminFd);
 }

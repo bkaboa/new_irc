@@ -12,7 +12,7 @@ void	Server::clientNew(fd_t clientFd)
 	}
 	else
 	{
-		std::cout << GREEN << "new client connection established from " << NC << '\n';
+		std::cout << GREEN << "New client connection established from " << NC << '\n';
 		_ClientMap.insert(std::make_pair(clientFd, new Client(clientFd)));
 	}
 }
@@ -27,7 +27,7 @@ void	Server::disconnectClient(pollvectorIter &it)
 		_ClientMap.erase(mit);
 	}
 	else {
-		std::cout << BLUE << "client " << mit->second->getNick() << " disconnected" << NC << std::endl;
+		std::cout << BLUE << "Client " << mit->second->getNick() << " disconnected" << NC << std::endl;
 		_ClientMap.erase(mit);
 	}
 	_PollVector.erase(it);

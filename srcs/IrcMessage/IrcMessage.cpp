@@ -124,7 +124,7 @@ void	IrcMessage::checkCommand(std::string &sentence, int *binParams, int *comman
     };
 	*command = -1;
 	stringSlice(sentence.find_first_of(" \n"), sentence, word);
-	std::cout << NC << "command =" << word <<'|'<< '\n';
+	std::cout << NC << "Command = " << word << '\n';
 	if (word.empty() || word.size() <= 3)
 		return ;
 	for(int i = 0; i < 13; i++)
@@ -164,7 +164,7 @@ void	IrcMessage::takeChannel(struct commandData_t *command, std::string &sliceMe
 {
 	std::string			channel;
 
-	std::cout << "chan = " << sliceMessage << '\n';
+	std::cout << "Chan = " << sliceMessage << '\n';
 	if (sliceMessage[0] != '#')
 	{
 		command->binParams -= CHAN;

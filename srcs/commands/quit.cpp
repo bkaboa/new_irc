@@ -7,7 +7,6 @@ void Server::Quit(fd_t sender, const commandData_t &args)
 {
 	if (!(_ClientMap[sender]->getIsRegistered()))
 		return;
-	std::cout << NC << "Client with fd " << sender << " requested a Quit command" << std::endl;
 	(void)sender;
 	(void)args;
 }

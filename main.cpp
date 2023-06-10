@@ -4,7 +4,7 @@ int main(int argc, char **argv)
 {
 	if (argc != 3)
 	{
-		std::cout << RED << "need 2 argument for irc ./\"exec\" \"port\" and \"password\"" << NC << std::endl;
+		std::cout << RED << "Need 2 argument for irc ./\"exec\" \"port\" and \"password\"" << NC << std::endl;
 		return (1);
 	}
 	try {

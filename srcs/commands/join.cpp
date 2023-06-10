@@ -23,19 +23,21 @@ void Server::Join(fd_t sender, const commandData_t &args)
 				{
 					std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + newChanName + "\r\n";
 					//creating channel with password
-					if (args.binParams & PASS)
+					if (args.binParams & PASS && _ChannelMap.size() < MAX_CHANNELS)
 					{
 						channelNew(_ClientMap[sender], newChanName, args.params[1]);
 						_ChannelMap[newChanName]->channelMsg(-1, reply);
 						_ChannelMap[newChanName]->joinNameReply(sender, _ClientMap[sender]->getName());
 					}
 					//creating channel without pass
-					else
+					else if (_ChannelMap.size() < MAX_CHANNELS)
 					{
 						channelNew(_ClientMap[sender], newChanName, "");
 						_ChannelMap[newChanName]->channelMsg(-1, reply);
 						_ChannelMap[newChanName]->joinNameReply(sender, _ClientMap[sender]->getName());
 					}
+					else
+						sendStr(sender, ERR_TOOMANYCHANNELS(_ClientMap[sender]->getName(), newChanName));
 				}
 				else 
 					sendStr(sender, "To create a Channel, you need to add the prefix # or &\r\n");

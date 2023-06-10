@@ -12,6 +12,6 @@ void Server::execCommand(commandData_t &cmd)
 	FunctionPointer functions[13] = { &Server::Invite, &Server::Join, &Server::Kick, &Server::List , &Server::Mode, \
 									  &Server::Nick, &Server::Part, &Server::Pass, &Server::Privmsg, &Server::Quit, \
 									  &Server::Topic, &Server::User};
+	binParamDisplay(cmd.binParams);
 	(this->*(functions[cmd.command]))(cmd.clientRequest, cmd);
-	std::cout << GREEN << "-----EXEC DONE !-----" << std::endl;
 }

@@ -17,7 +17,6 @@ static bool	nameExist(std::string name, mapClient &map)
 
 void Server::Nick(fd_t sender, const commandData_t &cmd)
 {
-	std::cout << NC << "Client with fd " << sender << " requested a Nick command" << std::endl;
 	if (!(cmd.binParams & NICK))
 	{
 		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getNick(), cmd.originalCommand));
