@@ -21,5 +21,12 @@ void Server::Mode(fd_t sender, const commandData_t &args)
 		//err no chan in params
 		return;
 	}
+	std::vector<std::string> channelsToMode;
+	channelsToMode = strSplit(args.params[0], ',');
+	std::vector<std::string>::iterator chaniter = channelsToMode.begin();
+	for (; chaniter != channelsToMode.end(); ++chaniter)
+	{
+
+	}
 
 }
