@@ -23,6 +23,10 @@ namespace irc
 		int		getNumClients(void);
 		bool	isAdmin(fd_t client);
 		void	kickMember(fd_t fd);
+		void	setUserLimit(int limit);
+		int		getUserLimit(void);
+		void	setOptions(u_int8_t mode);
+		u_int8_t getOptions();
 
 	protected : 
 		void setAdmin(fd_t fd);
@@ -35,6 +39,7 @@ namespace irc
 		std::string				_Name;
 		std::string 			_Topic;
 		int						_ChannelOptions;
+		int						_userLimit;
 		mapClient				_Members;
 		vectorFdClient			_FdAdmin;
 		vectorFdClient			_FdClientBanned;

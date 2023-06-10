@@ -11,7 +11,7 @@ void Server::Pass(fd_t sender, const commandData_t &cmd)
 		return;
 	}
 	std::string pass = cmd.params[0];
-	if (_ClientMap[sender]->isConnect())
+	if (_ClientMap[sender]->isRegistered())
 	{
 		sendStr(sender, ERR_ALREADYREGISTERED(_ClientMap[sender]->getNick()));
 		return;

@@ -6,13 +6,17 @@ using namespace irc;
 
 void Server::Join(fd_t sender, const commandData_t &args)
 {
+	if (!(_ClientMap[sender]->isRegistered()))
+	{
+		sendStr(sender, "You are not registered on this server...\r\n");
+		return;
+	}
 	if (args.binParams == NONE)
 		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getNick(), "JOIN"));
 	else if (_ChannelMap.size() < MAX_CHANNELS)
 	{
 		std::vector<std::string> channelsToJoin = strSplit(args.params[0], ',');
 		std::vector<std::string>::iterator iter = channelsToJoin.begin();
-
 		for (; iter != channelsToJoin.end(); ++iter)
 		{
 			//channel does not exist

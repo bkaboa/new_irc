@@ -28,6 +28,7 @@ namespace irc
 			void						takeNick(struct commandData_t *command, std::string &sliceMessage);
 			void						takeUser(struct commandData_t *command, std::string &sliceMessage);
 			void						takePass(struct commandData_t *command, std::string &sliceMessage);
+			void						takeMode(struct commandData_t *command, std::string &sliceMessage);
 
 			std::string					_Message;
 

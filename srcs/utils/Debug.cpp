@@ -19,4 +19,6 @@ void binParamDisplay(int binparams)
 		std::cout << NC << "-CAPC" << std::endl;
 	if (binparams & TARG)
 		std::cout << NC << "-TARG" << std::endl;
+	if (binparams & MODE)
+		std::cout << NC << "-MODE" << std::endl;
 }

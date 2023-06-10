@@ -32,6 +32,7 @@ void Server::Part(fd_t sender, const commandData_t &args)
 			{
 				chan->removeMember(sender);
 				std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " PART " + chan->getName() + "\r\n";
+				chan->channelMsg(-1, reply);
 				sendStr(sender, reply);
 			}
 			else if (!chan->isInChannel(sender))

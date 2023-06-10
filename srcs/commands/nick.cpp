@@ -23,7 +23,7 @@ void Server::Nick(fd_t sender, const commandData_t &cmd)
 		return;
 	}
 	std::string name = cmd.params[0];
-	if (this->_ClientMap[sender]->isConnect())
+	if (this->_ClientMap[sender]->isRegistered())
 	{
 		if (!nameExist(name, this->_ClientMap))
 		{
@@ -37,7 +37,7 @@ void Server::Nick(fd_t sender, const commandData_t &cmd)
 		}
 	}
 	//we are not registered and need to check if pass is ok and if nick is ok
-	else if (!this->_ClientMap[sender]->isConnect())
+	else if (!this->_ClientMap[sender]->isRegistered())
 	{
 		if (!this->_ClientMap[sender]->getPassOk())
 		{

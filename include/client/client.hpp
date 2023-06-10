@@ -14,14 +14,13 @@ namespace irc
 			void				setClient(const std::string &Nick, const std::string &name, bool isConnect);
 			const std::string	&getName() const;
 			const std::string	&getNick() const;
-			bool				isConnect() const;
+			bool				isRegistered() const;
 			void				changeName(const std::string &name);
 			void				changeNick(const std::string &nick);
 			fd_t				getFd() const;
 			bool				getAdmin() const;
 			void				setAdmin(bool Admin);
 			void				setIsRegistered(bool truefalse);
-			bool				getIsRegistered(void);
 			void				setPassOk(bool truefalse);
 			bool				getPassOk(void);
 			void				setNickOk(bool truefalse);

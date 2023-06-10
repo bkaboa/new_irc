@@ -5,7 +5,7 @@ using namespace irc;
 
 void Server::Quit(fd_t sender, const commandData_t &args)
 {
-	if (!(_ClientMap[sender]->getIsRegistered()))
+	if (!(_ClientMap[sender]->isRegistered()))
 		return;
 	(void)sender;
 	(void)args;

@@ -1,9 +1,12 @@
 #include "../../include/IrcMessage/IrcMessage.hpp"
+#include "../../include/server/server.hpp"
 #include <cctype>
 #include <string>
 #include <strings.h>
 
 using namespace irc;
+
+typedef int (*macroFunction)(const std::string&);
 
 IrcMessage::IrcMessage() {}
 
@@ -81,6 +84,8 @@ void IrcMessage::parseMessage(commandList &commandList, fd_t fd)
 				takeMessage(&command, *it);
 			if (command.binParams & USER)
 				takeUser(&command, *it);
+			if (command.binParams & MODE)
+				takeMode(&command, *it);
 			commandList.push_back(command);
 		}
 	}
@@ -91,7 +96,7 @@ int INVITE(const std::string& s) { return INVITE_MACRO(s); }
 int JOIN(const std::string& s) { return JOIN_MACRO(s); }
 int KICK(const std::string& s) { return KICK_MACRO(s); }
 int LIST(const std::string& s) { return LIST_MACRO(s); }
-int MODE(const std::string& s) { return MODE_MACRO(s);}
+int MODEC(const std::string& s) { return MODE_MACRO(s);}
 int NICKC(const std::string& s) { return NICK_MACRO(s); }
 int PART(const std::string& s) { return PART_MACRO(s); }
 int PASSC(const std::string& s) { return PASS_MACRO(s); }
@@ -104,15 +109,15 @@ int CAP(const std::string& s) { return CAP_MACRO(s); }
 void	IrcMessage::checkCommand(std::string &sentence, int *binParams, int *command)
 {
 	int			result;
-    using macroFunction = int (*)(const std::string&);
+    typedef macroFunction MacroFunctionPtr;
 	std::string word;
 
-    macroFunction macros[] = {
+    MacroFunctionPtr macros[] = {
         INVITE,
         JOIN,
         KICK,
         LIST,
-		MODE,
+		MODEC,
         NICKC,
         PART,
         PASSC,
@@ -134,6 +139,35 @@ void	IrcMessage::checkCommand(std::string &sentence, int *binParams, int *comman
 			*binParams = result;
 			*command = i;
 			return;
+		}
+	}
+}
+
+void	IrcMessage::takeMode(struct commandData_t *command, std::string &sliceMessage)
+{
+	std::string modestr;
+	std::istringstream istream;
+
+	std::cout << YELLOW << "TAKE MODE - Slice = " << sliceMessage << std::endl;
+	if (sliceMessage.empty() || sliceMessage.size() == 0)
+	{
+		command->binParams -= MODE;
+		return;
+	}
+	if (!std::isalnum(sliceMessage[1]))
+	{
+		command->binParams -= MODE;
+		return;
+	}
+	istream.str(sliceMessage);
+	if (sliceMessage[0] == '+' || sliceMessage[0] == '-')
+	{
+		stringSlice(sliceMessage.find_first_of(" "), sliceMessage, modestr);
+		command->params.push_back(modestr);
+		while (std::getline(istream, modestr, ' '))
+		{
+			if (modestr[0] != '+' && modestr[0] != '-')
+				command->params.push_back(modestr);
 		}
 	}
 }

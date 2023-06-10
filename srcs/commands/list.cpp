@@ -6,8 +6,11 @@ using namespace irc;
 
 void Server::List(fd_t sender, const commandData_t &args)
 {
-	if (!(_ClientMap[sender]->getIsRegistered()))
+	if (!(_ClientMap[sender]->isRegistered()))
+	{
+		sendStr(sender, "You are not registered on this server...\r\n");
 		return;
+	}
 	if (args.binParams == NONE)
 	{
 		std::map<std::string, Channel*>::iterator iter = _ChannelMap.begin();
@@ -15,7 +18,7 @@ void Server::List(fd_t sender, const commandData_t &args)
 		for (; iter != _ChannelMap.end(); ++iter)
 		{
 			Channel *chan = iter->second;
-			sendStr(sender, RPL_LIST(_ClientMap[sender]->getName(), iter->first, std::to_string(chan->getNumClients()), chan->getTopic()));
+			// sendStr(sender, RPL_LIST(_ClientMap[sender]->getName(), iter->first, std::to_string(chan->getNumClients()), chan->getTopic()));
 		}
 		sendStr(sender, RPL_LISTEND(_ClientMap[sender]->getName()));
 	}

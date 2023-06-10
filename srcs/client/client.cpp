@@ -18,7 +18,7 @@ const std::string	&Client::getName() const
 	return (_Name);
 }
 
-bool	Client::isConnect() const
+bool	Client::isRegistered() const
 {
 	return (_IsRegistered);
 }
@@ -50,11 +50,6 @@ void	Client::setIsRegistered(bool truefalse)
 		this->_IsRegistered = false;
 	else if (truefalse)
 		this->_IsRegistered = true;
-}
-
-bool	Client::getIsRegistered(void)
-{
-	return (_IsRegistered);
 }
 
 bool	Client::getPassOk(void)

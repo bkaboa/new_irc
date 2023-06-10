@@ -10,7 +10,7 @@
 
 #define POLL_TIMEOUT	100
 
-#define MESSAGE_LIMIT	511
+#define MESSAGE_LIMIT 511l : Set / remove the user limit to channel
 
 #define MAX_CHANNELS	10
 
@@ -41,7 +41,8 @@ enum parsingType:u_int8_t {
 	MESS = 8,
 	USER = 16,
 	CAPC = 32,
-	TARG = 64
+	TARG = 64,
+	MODE = 128
 };
 
 //***************************		COMMAND
@@ -49,7 +50,7 @@ enum parsingType:u_int8_t {
 #define JOIN_MACRO(command)       (command) == "JOIN" ? (CHAN + PASS) : 0
 #define KICK_MACRO(command)       (command) == "KICK" ? (CHAN + NICK + MESS) : 0
 #define LIST_MACRO(command)       (command) == "LIST" ? (CHAN) : 0
-#define MODE_MACRO(command) 	  (command) == "MODE" ? (CHAN) : 0
+#define MODE_MACRO(command) 	  (command) == "MODE" ? (CHAN + MODE) : 0
 #define NICK_MACRO(command)       (command) == "NICK" ? (NICK) : 0
 #define PART_MACRO(command)       (command) == "PART" ? (CHAN + MESS) : 0
 #define PASS_MACRO(command)       (command) == "PASS" ? (PASS) : 0

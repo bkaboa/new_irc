@@ -5,7 +5,7 @@
 
 using namespace irc;
 
-Channel::Channel(Client *creator, const std::string &name, const std::string &pass):_Name(name), _Password(pass), _Topic(""){
+Channel::Channel(Client *creator, const std::string &name, const std::string &pass):_Name(name), _userLimit(0), _Password(pass), _Topic(""){
 	_Members.insert(std::make_pair(creator->getFd(), creator));
 	setAdmin(creator->getFd());
 };
@@ -73,6 +73,16 @@ void	Channel::setAdmin(fd_t newAdminFd)
 		_FdAdmin.push_back(newAdminFd);
 }
 
+void	Channel::setUserLimit(int limit)
+{
+	_userLimit = limit;
+}
+
+int		Channel::getUserLimit(void)
+{
+	return (_userLimit);
+}
+
 bool	Channel::isAdmin(fd_t clientfd)
 {
 	std::vector<fd_t>::iterator iter = _FdAdmin.begin();
@@ -95,11 +105,13 @@ void	Channel::channelMsg(fd_t sender, std::string msg)
 	mapClientIter iter;
 	for (iter = _Members.begin(); iter != _Members.end(); ++iter)
 	{
+		//SEND TO ALL MEMBERS
 		if (sender == -1)
 		{
 			if (checkBan(iter->first))
 				sendStr(iter->first, msg);
 		}
+		//SEND TO ALL EXCEPT SENDER
 		else
 		{
 			if (checkBan(iter->first) && iter->first != sender)
@@ -150,4 +162,14 @@ void	Channel::joinNameReply(fd_t sender, std::string sendername)
 			sendStr(sender, RPL_NAMREPLY(iter->second->getName(), "!", _Name, " ", iter->second->getNick(), ""));
 	}
 	sendStr(sender, RPL_ENDOFNAMES(sendername, _Name));
+}
+
+void	Channel::setOptions(u_int8_t mode)
+{
+	_ChannelOptions += mode;
+}
+
+u_int8_t Channel::getOptions()
+{
+	return (_ChannelOptions);
 }
