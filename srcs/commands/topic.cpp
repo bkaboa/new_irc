@@ -7,7 +7,6 @@ using namespace irc;
 void Server::Topic(fd_t sender, const commandData_t &args)
 {
 	//command need at least a channel
-	DEBUG;
 	if (args.binParams == NONE || !(args.binParams & CHAN))
 	{
 		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getName(), args.originalCommand));
@@ -48,7 +47,8 @@ void Server::Topic(fd_t sender, const commandData_t &args)
 				return;
 			}
 			std::string mess = args.params[1];
-			mess.erase(0,1);
+			if (mess[1] == ':')
+				mess.erase(0,1);
 			std::cout << RED << mess << std::endl;
 			if (!mess[1])
 			{
@@ -57,7 +57,8 @@ void Server::Topic(fd_t sender, const commandData_t &args)
 			}
 			else
 			{
-				mess.erase(0, 1);
+				if (mess[0] == ':')
+					mess.erase(0, 1);
 				_ChannelMap.find(targetChan)->second->setTopic(mess);
 				return;
 			}

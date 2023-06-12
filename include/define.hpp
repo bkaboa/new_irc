@@ -49,7 +49,6 @@ enum parsingType:u_int8_t {
 #define INVITE_MACRO(command)     (command) == "INVITE" ? (CHAN + NICK + PASS + MESS) : 0
 #define JOIN_MACRO(command)       (command) == "JOIN" ? (CHAN + PASS) : 0
 #define KICK_MACRO(command)       (command) == "KICK" ? (CHAN + NICK + MESS) : 0
-#define LIST_MACRO(command)       (command) == "LIST" ? (CHAN) : 0
 #define MODE_MACRO(command) 	  (command) == "MODE" ? (CHAN + MODE) : 0
 #define NICK_MACRO(command)       (command) == "NICK" ? (NICK) : 0
 #define PART_MACRO(command)       (command) == "PART" ? (CHAN + MESS) : 0

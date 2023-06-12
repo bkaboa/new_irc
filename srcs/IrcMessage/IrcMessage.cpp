@@ -24,7 +24,6 @@ void	IrcMessage::recvMessage(std::string message)
 	if ((message.end() - 2).base() == endMessage)
 			message.erase(message.end() - 2, message.end());
 	_Message = message;
-	std::cout << YELLOW << message << std::endl;
 }
 
 bool	IrcMessage::stringSlice(size_t nPos, std::string &original, std::string &sliced)
@@ -96,7 +95,6 @@ void IrcMessage::parseMessage(commandList &commandList, fd_t fd)
 int INVITE(const std::string& s) { return INVITE_MACRO(s); }
 int JOIN(const std::string& s) { return JOIN_MACRO(s); }
 int KICK(const std::string& s) { return KICK_MACRO(s); }
-int LIST(const std::string& s) { return LIST_MACRO(s); }
 int MODEC(const std::string& s) { return MODE_MACRO(s);}
 int NICKC(const std::string& s) { return NICK_MACRO(s); }
 int PART(const std::string& s) { return PART_MACRO(s); }
@@ -117,7 +115,6 @@ void	IrcMessage::checkCommand(std::string &sentence, int *binParams, int *comman
         INVITE,
         JOIN,
         KICK,
-        LIST,
 		MODEC,
         NICKC,
         PART,
@@ -133,7 +130,7 @@ void	IrcMessage::checkCommand(std::string &sentence, int *binParams, int *comman
 	std::cout << NC << "Command = " << word << '\n';
 	if (word.empty() || word.size() <= 3)
 		return ;
-	for(int i = 0; i < 13; i++)
+	for(int i = 0; i < 12; i++)
 	{
 		if ((result = macros[i](word)) != 0)
 		{

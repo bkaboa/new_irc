@@ -26,7 +26,10 @@ void Server::Mode(fd_t sender, const commandData_t &args)
 	std::vector<std::string>::iterator chaniter = channelsToMode.begin();
 	for (; chaniter != channelsToMode.end(); ++chaniter)
 	{
-
+		if (_ChannelMap.find(*chaniter) == _ChannelMap.end())
+		{
+			
+		}
 	}
 
 }

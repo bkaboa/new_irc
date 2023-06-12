@@ -9,7 +9,7 @@ void Server::execCommand(commandData_t &cmd)
 {
 	if (cmd.command == -1)
 		return;
-	FunctionPointer functions[13] = { &Server::Invite, &Server::Join, &Server::Kick, &Server::List , &Server::Mode, \
+	FunctionPointer functions[12] = { &Server::Invite, &Server::Join, &Server::Kick, &Server::Mode, \
 									  &Server::Nick, &Server::Part, &Server::Pass, &Server::Privmsg, &Server::Quit, \
 									  &Server::Topic, &Server::User};
 	binParamDisplay(cmd.binParams);
