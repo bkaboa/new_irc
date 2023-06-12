@@ -95,6 +95,7 @@ enum parsingType:u_int8_t {
 //*****************SERVER_RPL
 #define RPL_WELCOME(client, networkname, nick, user, host) ":" + std::string(SERVER_NAME) + " 001" + std::string(client) + " :Welcome to the " + std::string (networkname) + " Network, " + std::string(nick) + "[!" + std::string(user) + "@" + std::string(host) + "]\r\n"
 #define RPL_TOPIC(client, chan, topic) ":" + std::string(SERVER_NAME) + " 332 " + std::string(client) + " " + std::string(chan) + " :" + std::string(topic) + "\r\n"
+#define RPL_NOTOPIC(client, chan) ":" + std::string(SERVER_NAME) + " 331 " + std::string(client) + " " + std::string(chan) + " :No topic is set\r\n"
 #define RPL_LIST(client, chan, clientcount, topic) ":" + std::string(SERVER_NAME) + " 322 " + std::string(client) + " " + std::string(chan) + " " + std::string(clientcount) + " :" + std::string(topic) + "\r\n"
 #define RPL_NAMREPLY(client, symbol, channel, prefix, nick, othernicks) ":" + std::string(SERVER_NAME) + " 353 " + std::string(client) + " " + std::string(symbol) + " " + std::string(channel) + " :" + std::string(prefix) + std::string(nick) + std::string(othernicks) + "\r\n"
 #define RPL_ENDOFNAMES(client, channel) ":" + std::string(SERVER_NAME)  + " 366 " + std::string(client) + " " + std::string(channel) + " :End of /NAMES list\r\n"

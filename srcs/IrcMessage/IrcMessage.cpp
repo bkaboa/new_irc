@@ -24,6 +24,7 @@ void	IrcMessage::recvMessage(std::string message)
 	if ((message.end() - 2).base() == endMessage)
 			message.erase(message.end() - 2, message.end());
 	_Message = message;
+	std::cout << YELLOW << message << std::endl;
 }
 
 bool	IrcMessage::stringSlice(size_t nPos, std::string &original, std::string &sliced)
