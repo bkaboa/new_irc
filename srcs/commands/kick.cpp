@@ -20,7 +20,7 @@ void Server::Kick(fd_t sender, const commandData_t &args)
 				if (chan->isAdmin(sender))
 				{
 					fd_t targetFd = getClientFd(target);
-					if (targetFd != -1 && chan->isInChannel(targetFd))
+					if (targetFd != -1 && chan->isInChannel(targetFd) && sender != targetFd)
 					{
 						chan->kickMember(targetFd);
 						std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " KICK " + chantarget + " " + target + "\r\n";

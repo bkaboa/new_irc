@@ -123,14 +123,13 @@ void	IrcMessage::checkCommand(std::string &sentence, int *binParams, int *comman
         QUIT,
         TOPIC,
         USERC,
-        CAP
     };
 	*command = -1;
 	stringSlice(sentence.find_first_of(" \n"), sentence, word);
 	std::cout << NC << "Command = " << word << '\n';
 	if (word.empty() || word.size() <= 3)
 		return ;
-	for(int i = 0; i < 12; i++)
+	for(int i = 0; i < 11; i++)
 	{
 		if ((result = macros[i](word)) != 0)
 		{
@@ -153,6 +152,11 @@ void	IrcMessage::takeMode(struct commandData_t *command, std::string &sliceMessa
 		return;
 	}
 	if (!std::isalnum(sliceMessage[1]))
+	{
+		command->binParams -= MODE;
+		return;
+	}
+	if (sliceMessage[0] != '+' && sliceMessage[0] != '-')
 	{
 		command->binParams -= MODE;
 		return;

@@ -3,7 +3,7 @@
 
 using namespace irc;
 
-static bool	nameExist(std::string name, mapClient &map)
+static bool	nickExist(std::string name, mapClient &map)
 {
 	mapClientIter iter;
 	for(iter = map.begin(); iter != map.end(); ++iter)
@@ -25,12 +25,12 @@ void Server::Nick(fd_t sender, const commandData_t &cmd)
 	std::string name = cmd.params[0];
 	if (this->_ClientMap[sender]->isRegistered())
 	{
-		if (!nameExist(name, this->_ClientMap))
+		if (!nickExist(name, this->_ClientMap))
 		{
 			this->_ClientMap[sender]->changeNick(name);
 			return;
 		}
-		else if (nameExist(name, this->_ClientMap))
+		else if (nickExist(name, this->_ClientMap))
 		{
 			sendStr(sender, ERR_NICKNAMEINUSE(_ClientMap[sender]->getNick(), name));
 			return;
@@ -41,20 +41,31 @@ void Server::Nick(fd_t sender, const commandData_t &cmd)
 	{
 		if (!this->_ClientMap[sender]->getPassOk())
 		{
-			//bad
+			sendStr(sender, ERR_PASSWDMISMATCH(_ClientMap[sender]->getName()));
+			_ClientMap[sender]->setPassOk(false);
+			_ClientMap[sender]->setNickOk(false);
+			_ClientMap[sender]->setUserOk(false);
 			return;
 		}
 		if (this->_ClientMap[sender]->getPassOk())
 		{
-			if (nameExist(name, this->_ClientMap))
+			if (nickExist(name, this->_ClientMap))
 			{
-				this->_ClientMap[sender]->setPassOk(false);
+				_ClientMap[sender]->setPassOk(false);
+				_ClientMap[sender]->setNickOk(false);
+				_ClientMap[sender]->setUserOk(false);
+				sendStr(sender, ERR_NICKNAMEINUSE("new client", name));
 				return;
 			}
-			else if (!nameExist(name, this->_ClientMap))
+			else if (!nickExist(name, this->_ClientMap))
 			{
 				this->_ClientMap[sender]->changeNick(name);
 				this->_ClientMap[sender]->setNickOk(true);
+				if (_ClientMap[sender]->getPassOk() && _ClientMap[sender]->getNickOk() && _ClientMap[sender]->getUserOk())
+				{
+					_ClientMap[sender]->setIsRegistered(true);
+					sendStr(sender, "You successfuly registered !\r\n");
+				}
 			}
 			return;
 		}

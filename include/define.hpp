@@ -82,7 +82,7 @@ enum parsingType:u_int8_t {
 #define ERR_PASSWDMISMATCH(client) ":" + std::string(SERVER_NAME) + " 464 " + std::string(client) + " :Password incorrect\r\n"
 #define ERR_YOUREBANNEDCREEP(client) ":" + std::string(SERVER_NAME) + " 465 " + std::string(client) + " :You are banned from this server\r\n"
 #define ERR_CHANNELISFULL(client, chan) ":" + std::string(SERVER_NAME) + " 471 " + std::string(client) + " " + std::string(chan) + " :Cannot join channel, it is full\r\n"
-#define ERR_UNKNOWNMODE(client, mode) ":" + std::string(SERVER_NAME) + " 472 " + std::string(client) + " " + std::string(mode) + " :is unknown mode char to me\r\n"
+#define ERR_UNKNOWNMODE(client, mode) ":" + std::string(SERVER_NAME) + " 472 " + std::string(client) + " " + char(mode) + " :is unknown mode char to me\r\n"
 #define ERR_INVITEONLYCHAN(client, chan) ":" + std::string(SERVER_NAME) + " 473 " + std::string(client) + " " + std::string(chan) + " :Cannot join channel, invite only\r\n"
 #define ERR_BANNEDFROMCHAN(client, chan) ":" + std::string(SERVER_NAME) + " 474 " + std::string(client) + " " + std::string(chan) + " :Cannot join channel, you are banned\r\n"
 #define ERR_BADCHANNELKEY(client, chan) ":" + std::string(SERVER_NAME) + " 475 " + std::string(client) + " " + std::string(chan) + " :Cannot join channel, you need the right key\r\n"
@@ -100,6 +100,8 @@ enum parsingType:u_int8_t {
 #define RPL_ENDOFNAMES(client, channel) ":" + std::string(SERVER_NAME)  + " 366 " + std::string(client) + " " + std::string(channel) + " :End of /NAMES list\r\n"
 #define RPL_LISTSTART(client) ":" + std::string(SERVER_NAME) + " 321 " + std::string(client) + " Channels :Users  Name\r\n"
 #define RPL_LISTEND(client) ":" + std::string(SERVER_NAME) + " 323 " + std::string(client) + " :End of /LIST\r\n"
+#define RPL_UMODEIS(client, usermodes) ":" + std::string(SERVER_NAME) + " 221 " + std::string(client) + " " + std::string(usermodes) + "\r\n"
+#define RPL_CHANNELMODEIS(client, channel, modestring, modeargs) ":" + std::string(SERVER_NAME) + " 324 " + std::string(client) + " " + std::string(channel) + " " + std::string(modestring) + " " + std::string(modeargs) + "...\r\n"
 
 //******************DEBUG
 #define DEBUG std::cout << RED << "---DEBUG---" << std::endl

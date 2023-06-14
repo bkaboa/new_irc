@@ -32,7 +32,6 @@ namespace irc
 		void setAdmin(fd_t fd);
 
 	private:
-		bool	checkBan(fd_t clientFd);
 		bool	checkOption(int);
 
 		std::string				_Password;
@@ -42,7 +41,6 @@ namespace irc
 		int						_userLimit;
 		mapClient				_Members;
 		vectorFdClient			_FdAdmin;
-		vectorFdClient			_FdClientBanned;
 		optionClientInChannel	_ClientOption;
 	};
 }

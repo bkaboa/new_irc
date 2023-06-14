@@ -38,17 +38,24 @@ void Server::User(fd_t sender, const commandData_t &cmd)
 			//authent error pass or nick not ok
 			_ClientMap[sender]->setPassOk(false);
 			_ClientMap[sender]->setNickOk(false);
+			_ClientMap[sender]->setUserOk(false);
 			return;
 		}
 		else if (_ClientMap[sender]->getPassOk() && _ClientMap[sender]->getNickOk())
 		{
-			//if username exist we use the nickname, else we change the username and registration is done
+			//NEED TO CHECK DOC FOR USERNAME CHANGE
 			if (nameExist(newname, _ClientMap))
 				_ClientMap[sender]->changeName(_ClientMap[sender]->getNick());
 			else if (!nameExist(newname, _ClientMap))
+			{
 				_ClientMap[sender]->changeName(newname);
-			_ClientMap[sender]->setIsRegistered(true);
-			sendStr(sender, "You successfuly registered !\r\n");
+				_ClientMap[sender]->setUserOk(true);
+			}
+			if (_ClientMap[sender]->getPassOk() && _ClientMap[sender]->getNickOk() && _ClientMap[sender]->getUserOk())
+			{
+				_ClientMap[sender]->setIsRegistered(true);
+				sendStr(sender, "You successfuly registered !\r\n");
+			}
 			return;
 		}
 	}

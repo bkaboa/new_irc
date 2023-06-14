@@ -24,6 +24,8 @@ void Server::Pass(fd_t sender, const commandData_t &cmd)
 	else if (pass.compare(_Password) != 0)
 	{
 		_ClientMap[sender]->setPassOk(false);
+		_ClientMap[sender]->setNickOk(false);
+		_ClientMap[sender]->setUserOk(false);
 		sendStr(sender, ERR_PASSWDMISMATCH(_ClientMap[sender]->getNick()));
 		return;
 	}

@@ -52,12 +52,12 @@ void	Client::setIsRegistered(bool truefalse)
 		this->_IsRegistered = true;
 }
 
-bool	Client::getPassOk(void)
+bool	Client::getPassOk(void) const
 {
 	return(_passOk);
 }
 
-bool	Client::getNickOk(void)
+bool	Client::getNickOk(void) const
 {
 	return(_nickOk);
 }
@@ -70,4 +70,14 @@ void	Client::setPassOk(bool truefalse)
 void	Client::setNickOk(bool truefalse)
 {
 	_nickOk = truefalse;
+}
+
+void	Client::setUserOk(bool truefalse)
+{
+	_userOk = truefalse;
+}
+
+bool	Client::getUserOk(void) const
+{
+	return (_userOk);
 }

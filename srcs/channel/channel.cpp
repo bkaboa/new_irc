@@ -16,17 +16,6 @@ const std::string	&Channel::getName() const {
 	return (_Name);
 }
 
-bool	Channel::checkBan(fd_t clientFd) {
-	vectorFdClientIter vIter = _FdClientBanned.begin();
-
-	for (;vIter != _FdClientBanned.end(); vIter++)
-	{
-		if (clientFd == *vIter.base())
-			return (false);
-	}
-	return (true);
-}
-
 void	Channel::addMember(Client *newMember, bool admin)
 {
 	if (_Members.find(newMember->getFd()) != _Members.end())
@@ -108,13 +97,12 @@ void	Channel::channelMsg(fd_t sender, std::string msg)
 		//SEND TO ALL MEMBERS
 		if (sender == -1)
 		{
-			if (checkBan(iter->first))
-				sendStr(iter->first, msg);
+			sendStr(iter->first, msg);
 		}
 		//SEND TO ALL EXCEPT SENDER
 		else
 		{
-			if (checkBan(iter->first) && iter->first != sender)
+			if (iter->first != sender)
 				sendStr(iter->first, msg);
 		}
 	}

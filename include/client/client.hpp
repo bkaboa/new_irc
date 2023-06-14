@@ -22,9 +22,11 @@ namespace irc
 			void				setAdmin(bool Admin);
 			void				setIsRegistered(bool truefalse);
 			void				setPassOk(bool truefalse);
-			bool				getPassOk(void);
+			bool				getPassOk(void) const;
 			void				setNickOk(bool truefalse);
-			bool				getNickOk(void);
+			bool				getNickOk(void) const;
+			void				setUserOk(bool truefalse);
+			bool				getUserOk(void) const;
 	
 		private:
 			fd_t			_Fd;
@@ -33,5 +35,6 @@ namespace irc
 			bool			_IsRegistered;
 			bool			_passOk;
 			bool			_nickOk;
+			bool			_userOk;
 	};
 }
