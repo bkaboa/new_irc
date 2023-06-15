@@ -29,6 +29,10 @@ namespace irc
 		u_int8_t getOptions();
 		void 	setAdmin(fd_t fd, bool truefalse);
 		void	setPassword(std::string pass);
+		void	addInvite(fd_t invited);
+		void	removeInvite(fd_t toremove);
+		bool	isInvited(fd_t clientFd);
+		void	clearInvite();
 
 	protected :
 		bool checkOption(int);
@@ -40,6 +44,7 @@ namespace irc
 		int						_ChannelOptions;
 		int						_userLimit;
 		mapClient				_Members;
+		vectorFdClient			_Invited;
 		vectorFdClient			_FdAdmin;
 		optionClientInChannel	_ClientOption;
 	};

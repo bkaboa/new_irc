@@ -58,10 +58,29 @@ void Server::Join(fd_t sender, const commandData_t &args)
 						//channel does not need password to be joined
 						else
 						{
-							chan->addMember(_ClientMap[sender], 0);
-							std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";
-							chan->channelMsg(-1, reply);
-							chan->joinNameReply(sender, _ClientMap[sender]->getName());
+							//channel has invite only mode
+							if (chan->getOptions() & i)
+							{
+								if (chan->isInvited(sender))
+								{
+									chan->removeInvite(sender);
+									std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";
+									chan->addMember(_ClientMap[sender], 0);
+									chan->channelMsg(-1, reply);
+									chan->joinNameReply(sender, _ClientMap[sender]->getName());
+									std::cout << YELLOW << sender << std::endl;
+								}
+								else if (!chan->isInvited(sender))
+									sendStr(sender, ERR_INVITEONLYCHAN(_ClientMap[sender]->getNick(), chan->getName()));
+							}
+							//no invite only, just join
+							else
+							{
+								chan->addMember(_ClientMap[sender], 0);
+								std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";
+								chan->channelMsg(-1, reply);
+								chan->joinNameReply(sender, _ClientMap[sender]->getName());
+							}
 						}
 					}
 				}
@@ -112,15 +131,37 @@ void Server::Join(fd_t sender, const commandData_t &args)
 						// channel has password
 						if (!(chan->getPass().empty()))
 						{
-							if (chan->checkPass(*passiter))
+							if (chan->getOptions() & i)
 							{
-								chan->addMember(_ClientMap[sender], 0);
-								std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";
-								chan->channelMsg(-1, reply);
-								chan->joinNameReply(sender, _ClientMap[sender]->getName());
+								if (chan->checkPass(*passiter))
+								{
+									if (chan->isInvited(sender))
+									{
+										chan->addMember(_ClientMap[sender], 0);
+										std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";
+										chan->channelMsg(-1, reply);
+										chan->joinNameReply(sender, _ClientMap[sender]->getName());
+										chan->removeInvite(sender);
+									}
+									else
+										sendStr(sender, ERR_INVITEONLYCHAN(_ClientMap[sender]->getNick(), chan->getName()));
+								}
+								else
+									sendStr(sender, ERR_BADCHANNELKEY(_ClientMap[sender]->getName(), chan->getName()));
 							}
 							else
-								sendStr(sender, ERR_BADCHANNELKEY(_ClientMap[sender]->getName(), chan->getName()));
+							{
+								if (chan->checkPass(*passiter))
+								{
+									chan->addMember(_ClientMap[sender], 0);
+									std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";
+									chan->channelMsg(-1, reply);
+									chan->joinNameReply(sender, _ClientMap[sender]->getName());
+									chan->removeInvite(sender);
+								}
+								else
+									sendStr(sender, ERR_BADCHANNELKEY(_ClientMap[sender]->getName(), chan->getName()));
+							}
 						}
 						// channel does not need password to be joined
 						else

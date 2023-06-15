@@ -10,7 +10,10 @@ static void	channelmode_i(int sign, Channel *channel)
 	if (sign && !(channel->getOptions() & i))
 		channel->setOptions(i, sign);
 	else if (!sign && (channel->getOptions() & i))
+	{
+		channel->clearInvite();
 		channel->setOptions(i, sign);
+	}
 }
 
 //  t: toggle the restrictions of the TOPIC command to channel operators
@@ -124,7 +127,6 @@ void Server::Mode(fd_t sender, const commandData_t &args)
 					sign = 0;
 				for (int index = 1; index < modestring.size(); index++)
 				{
-					std::cout << YELLOW << "SIGN " << sign << "check " << modestring[index] << std::endl;
 					if (modestring[index] == 'i')
 						channelmode_i(sign, channel);
 					else if (modestring[index] == 't')

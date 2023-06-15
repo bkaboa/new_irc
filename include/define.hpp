@@ -48,7 +48,7 @@ enum parsingType:u_int8_t {
 };
 
 //***************************		COMMAND
-#define INVITE_MACRO(command)     (command) == "INVITE" ? (CHAN + NICK + PASS + MESS) : 0
+#define INVITE_MACRO(command)     (command) == "INVITE" ? (NICK + TARG) : 0
 #define JOIN_MACRO(command)       (command) == "JOIN" ? (CHAN + PASS) : 0
 #define KICK_MACRO(command)       (command) == "KICK" ? (CHAN + NICK + MESS) : 0
 #define MODE_MACRO(command) 	  (command) == "MODE" ? (CHAN + MODE) : 0
@@ -104,6 +104,8 @@ enum parsingType:u_int8_t {
 #define RPL_LISTEND(client) ":" + std::string(SERVER_NAME) + " 323 " + std::string(client) + " :End of /LIST\r\n"
 #define RPL_UMODEIS(client, usermodes) ":" + std::string(SERVER_NAME) + " 221 " + std::string(client) + " " + std::string(usermodes) + "\r\n"
 #define RPL_CHANNELMODEIS(client, channel, modestring, modeargs) ":" + std::string(SERVER_NAME) + " 324 " + std::string(client) + " " + std::string(channel) + " " + std::string(modestring) + " " + std::string(modeargs) + "...\r\n"
+#define RPL_INVITING(client, nick, channel)":" + std::string(SERVER_NAME) + " 341 " + std::string(client) + " " + std::string(nick) + " " + std::string(channel) + "\r\n"
+
 
 //******************DEBUG
 #define DEBUG std::cout << RED << "---DEBUG---" << std::endl

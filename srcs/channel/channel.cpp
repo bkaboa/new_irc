@@ -189,3 +189,46 @@ u_int8_t Channel::getOptions()
 {
 	return (_ChannelOptions);
 }
+
+void	Channel::addInvite(fd_t invited)
+{
+	std::vector<fd_t>::iterator iter = _Invited.begin();
+	for (; iter != _Invited.end(); ++iter)
+	{
+		if (*iter == invited)
+			return;
+	}
+	_Invited.push_back(invited);
+}
+
+void	Channel::removeInvite(fd_t toremove)
+{
+	std::vector<fd_t>::iterator iter = _Invited.begin();
+	for (; iter != _Invited.end(); ++iter)
+	{
+		std::cout << YELLOW << "fd : " << toremove << std::endl;
+		std::cout << YELLOW << "iter : " << *iter << std::endl;
+		if (*iter == toremove)
+		{
+			_Invited.erase(iter);
+			return;
+		}	
+	}
+	return;
+}
+
+void	Channel::clearInvite()
+{
+	_Invited.clear();
+}
+
+bool	Channel::isInvited(fd_t clientFd)
+{
+	std::vector<fd_t>::iterator iter = _Invited.begin();
+	for (; iter != _Invited.end(); ++iter)
+	{
+		if (*iter == clientFd)
+			return(true);
+	}
+	return(false);
+}
