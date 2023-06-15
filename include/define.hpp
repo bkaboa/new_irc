@@ -24,12 +24,14 @@
 #define NC			"\033[0m"
 
 //***************************		CHANNEL_MODE
-enum channelMode:u_int8_t {
-	i = 1,	//Set/remove Invite-only channel
-	t = 2,	//Set/remove the restrictions of the TOPIC command to channel operators
-	k = 4,	//Set/remove the channel key (password)
-	o = 8,	//Give/take channel operator privilege
-	l = 16	//Set/remove the user limit to channel
+enum channelMode : u_int8_t
+{
+	noOptions = 0,
+	i = 1, // Set/remove Invite-only channel
+	t = 2, // Set/remove the restrictions of the TOPIC command to channel operators
+	k = 4, // Set/remove the channel key (password)
+	o = 8, // Give/take channel operator privilege
+	l = 16 // Set/remove the user limit to channel
 };
 
 //***************************		PARSING_TYPE

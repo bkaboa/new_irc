@@ -5,9 +5,11 @@
 
 using namespace irc;
 
-Channel::Channel(Client *creator, const std::string &name, const std::string &pass):_Name(name), _userLimit(0), _Password(pass), _Topic(""){
+Channel::Channel(Client *creator, const std::string &name, const std::string &pass):_Name(name), _userLimit(0), _Password(pass), _Topic(""), _ChannelOptions(0){
 	_Members.insert(std::make_pair(creator->getFd(), creator));
-	setAdmin(creator->getFd());
+	if (!_Password.empty())
+		_ChannelOptions += k;
+	setAdmin(creator->getFd(), true);
 };
 
 Channel::~Channel() {};
@@ -54,12 +56,37 @@ std::string Channel::getPass(void)
 	return (_Password);
 }
 
-void	Channel::setAdmin(fd_t newAdminFd)
+void	Channel::setAdmin(fd_t newAdminFd, bool truefalse)
 {
 	if (_Members.find(newAdminFd) == _Members.end())
 		std::cout << "Client is not in the channel " << _Name << std::endl;
 	else
-		_FdAdmin.push_back(newAdminFd);
+	{
+		if (truefalse && !isAdmin(newAdminFd))
+		{
+			_FdAdmin.push_back(newAdminFd);
+			return;
+		}
+		else if (!truefalse)
+		{
+			std::vector<fd_t>::iterator iter = _FdAdmin.begin();
+			for(; iter != _FdAdmin.end(); ++iter)
+			{
+				if (*iter == newAdminFd)
+				{
+					_FdAdmin.erase(iter);
+					return;
+				}	
+			}
+		}
+	}
+}
+
+void	Channel::setPassword(std::string pass)
+{
+	if (pass.empty())
+		_Password.clear();
+	_Password = pass;
 }
 
 void	Channel::setUserLimit(int limit)
@@ -96,9 +123,7 @@ void	Channel::channelMsg(fd_t sender, std::string msg)
 	{
 		//SEND TO ALL MEMBERS
 		if (sender == -1)
-		{
 			sendStr(iter->first, msg);
-		}
 		//SEND TO ALL EXCEPT SENDER
 		else
 		{
@@ -152,9 +177,12 @@ void	Channel::joinNameReply(fd_t sender, std::string sendername)
 	sendStr(sender, RPL_ENDOFNAMES(sendername, _Name));
 }
 
-void	Channel::setOptions(u_int8_t mode)
+void	Channel::setOptions(u_int8_t mode, int sign)
 {
-	_ChannelOptions += mode;
+	if (sign)
+		_ChannelOptions += mode;
+	else if (!sign)
+		_ChannelOptions -= mode;
 }
 
 u_int8_t Channel::getOptions()

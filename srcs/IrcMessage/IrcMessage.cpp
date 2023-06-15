@@ -145,7 +145,6 @@ void	IrcMessage::takeMode(struct commandData_t *command, std::string &sliceMessa
 	std::string modestr;
 	std::istringstream istream;
 
-	std::cout << YELLOW << "TAKE MODE - Slice = " << sliceMessage << std::endl;
 	if (sliceMessage.empty() || sliceMessage.size() == 0)
 	{
 		command->binParams -= MODE;

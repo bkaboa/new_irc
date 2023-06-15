@@ -53,7 +53,7 @@ void Server::Join(fd_t sender, const commandData_t &args)
 					else if (!(chan->isInChannel(sender)))
 					{
 						//channel has password
-						if (!(chan->getPass().empty()))
+						if (chan->getOptions() & k)
 							sendStr(sender, ERR_BADCHANNELKEY(_ClientMap[sender]->getName(), chan->getName()));
 						//channel does not need password to be joined
 						else

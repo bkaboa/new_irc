@@ -25,15 +25,15 @@ namespace irc
 		void	kickMember(fd_t fd);
 		void	setUserLimit(int limit);
 		int		getUserLimit(void);
-		void	setOptions(u_int8_t mode);
+		void	setOptions(u_int8_t mode, int sign);
 		u_int8_t getOptions();
+		void 	setAdmin(fd_t fd, bool truefalse);
+		void	setPassword(std::string pass);
 
-	protected : 
-		void setAdmin(fd_t fd);
+	protected :
+		bool checkOption(int);
 
-	private:
-		bool	checkOption(int);
-
+	private : 
 		std::string				_Password;
 		std::string				_Name;
 		std::string 			_Topic;

@@ -4,48 +4,70 @@
 
 using namespace irc;
 
-static void	channelmode_i(fd_t sender, int sign, Channel *channel)
+//  i: toggle Invite-only channel
+static void	channelmode_i(int sign, Channel *channel)
 {
-
+	if (sign && !(channel->getOptions() & i))
+		channel->setOptions(i, sign);
+	else if (!sign && (channel->getOptions() & i))
+		channel->setOptions(i, sign);
 }
 
-static void channelmode_t(fd_t sender, int sign, Channel *channel)
+//  t: toggle the restrictions of the TOPIC command to channel operators
+static void channelmode_t(int sign, Channel *channel)
 {
+	if (sign && !(channel->getOptions() & t))
+		channel->setOptions(t, sign);
+	else if (!sign && (channel->getOptions() & t))
+		channel->setOptions(t, sign);
 }
 
+//  k: Set/remove the channel key (password)
 static void channelmode_k(fd_t sender, int sign, Channel *channel, std::string pass)
 {
+	if (sign && !(channel->getOptions() & k))
+	{
+		if (pass.empty())
+		{
+			sendStr(sender, "Error : In order to Mode a key to the channel, you need to enter a password !\r\n");
+			return;
+		}
+		channel->setOptions(k, sign);
+		channel->setPassword(pass);
+	}
+	else if (!sign && (channel->getOptions() & k))
+	{
+		channel->setOptions(k, sign);
+		channel->setPassword("");
+	}
 }
 
-static void channelmode_l(fd_t sender, int sign, Channel *channel, int limit)
+//  l: Set/remove the user limit to channel
+static void channelmode_l(int sign, Channel *channel, int limit)
 {
-}
-
-static void channelmode_o(fd_t sender, int sign, Channel *channel, std::string usertarg)
-{
+	if (sign && !(channel->getOptions() & l))
+	{
+		channel->setOptions(l, sign);
+		if (limit > 0)
+			channel->setUserLimit(limit);
+	}
+	else if (!sign && (channel->getOptions() & l))
+		channel->setOptions(l, sign);
 }
 
 void Server::Mode(fd_t sender, const commandData_t &args)
 {
-	// user mode :
-	// mode for channel only :
-	//  i: toggle Invite-only channel
-	//  t: toggle the restrictions of the TOPIC command to channel operators
-	//  k: Set/remove the channel key (password)
-	//  l: Set/remove the user limit to channel
-	//  o: Give/take channel operator privilege
 	if (!(_ClientMap[sender]->isRegistered()))
 	{
 		sendStr(sender, ERR_NOTREGISTERED(_ClientMap[sender]->getNick()));
 		return;
 	}
-	if (args.binParams == NONE || !(args.binParams & TARG))
+	if (args.binParams == NONE || !(args.binParams & CHAN))
 	{
 		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getNick(), "MODE"));
 		return;
 	}
 	std::string target = args.params[0];
-	//target is a channel
 	if (target[0] == '#' || target[0] == '&')
 	{
 		if (_ChannelMap.find(target) == _ChannelMap.end())
@@ -58,32 +80,40 @@ void Server::Mode(fd_t sender, const commandData_t &args)
 			sendStr(sender, ERR_NOTONCHANNEL(_ClientMap[sender]->getNick(), target));
 			return;
 		}
-		if (!(_ChannelMap.find(target)->second->isAdmin(sender)))
-		{
-			sendStr(sender, ERR_CHANOPRIVSNEEDED(_ClientMap[sender]->getNick(), target));
-			return;
-		}
 		//can exec
 		else
 		{
-			Channel *chan = _ChannelMap.find(target)->second;
-			//no mode, default mode display of channel
+			Channel *channel = _ChannelMap.find(target)->second;
+			//no mode change, display of channel modes
 			if (!(args.binParams & MODE))
 			{
 				std::string replymodestring = "";
 				std::string replyuserlimit = "";
-				if (chan->getOptions() & l)
+				if (channel->getOptions() != noOptions)
+					replymodestring += "+";
+				if (channel->getOptions() & i)
+					replymodestring += "i";
+				if (channel->getOptions() & t)
+					replymodestring += "t";
+				if (channel->getOptions() & k)
+					replymodestring += "k";
+				if (channel->getOptions() & l)
 				{
-					
-					replyuserlimit = std::to_string(chan->getUserLimit());
+					replymodestring += "l";
+					replyuserlimit = channel->getUserLimit();
 				}
 				sendStr(sender, RPL_CHANNELMODEIS(_ClientMap[sender]->getNick(), target, replymodestring, replyuserlimit));
 				return;
 			}
-			//check modes
-			else
+			//mode changes
+			else if (args.binParams & MODE)
 			{
-				int sign = 0;
+				if (!channel->isAdmin(sender))
+				{
+					sendStr(sender, ERR_CHANOPRIVSNEEDED(_ClientMap[sender]->getNick(), channel->getName()));
+					return;
+				}
+				int sign = -1;
 				std::string modestring = args.params[1];
 				std::string modeparam = "";
 				if (!args.params[2].empty())
@@ -91,20 +121,38 @@ void Server::Mode(fd_t sender, const commandData_t &args)
 				if (modestring[0] == '+')
 					sign = 1;
 				if (modestring[0] == '-')
-					sign = -1;
-				for (int i = 1; i < modestring.size(); i++)
+					sign = 0;
+				for (int index = 1; index < modestring.size(); index++)
 				{
-					if (modestring[i] == 'i')
-						channelmode_i(sender, sign, chan);
-					else if (modestring[i] == 't')
-						channelmode_t(sender, sign, chan);
-					else if (modestring[i] == 'k')
-						channelmode_k(sender, sign, chan, modeparam);
-					else if (modestring[i] == 'l')
-						channelmode_l(sender, sign, chan, ft_stoi(modeparam));
-					else if (modestring[i] == 'o')
-						channelmode_o(sender, sign, chan, modeparam);
+					std::cout << YELLOW << "SIGN " << sign << "check " << modestring[index] << std::endl;
+					if (modestring[index] == 'i')
+						channelmode_i(sign, channel);
+					else if (modestring[index] == 't')
+						channelmode_t(sign, channel);
+					else if (modestring[index] == 'k')
+						channelmode_k(sender, sign, channel, modeparam);
+					else if (modestring[index] == 'l')
+						channelmode_l(sign, channel, ft_stoi(modeparam));
+					//mode o : give / take operator privileges
+					else if (modestring[index] == 'o')
+					{
+						fd_t targetfd = getClientFd(modeparam);
+						if (targetfd == -1)
+							sendStr(sender, ERR_NOSUCHNICK(_ClientMap[sender]->getNick(), modeparam));
+						else if (sender == targetfd)
+							;
+						else if (!channel->isInChannel(targetfd))
+							sendStr(sender, ERR_USERNOTINCHANNEL(_ClientMap[sender]->getNick(), modeparam, target));
+						else
+						{
+							if (sign && !channel->isAdmin(targetfd))
+								channel->setAdmin(targetfd, true);
+							else if (!sign && channel->isAdmin(targetfd))
+								channel->setAdmin(targetfd, false);
+						}
+					}
 				}
+				return;
 			}
 		}
 	}
