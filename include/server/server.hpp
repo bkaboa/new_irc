@@ -51,6 +51,7 @@ namespace irc
 			
 			void deleteClient();
 			void deleChannel();
+			void deleteParams(struct commandData_t command) const;
 	};
 }
 

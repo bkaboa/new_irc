@@ -294,3 +294,4 @@ void	IrcMessage::takePass(struct commandData_t *command, std::string &sliceMessa
 	}
 	command->params.push_back(param);
 }
+
