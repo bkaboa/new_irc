@@ -35,7 +35,7 @@ void	Server::disconnectClient(pollvectorIter &it)
 	_PollVector.erase(it);
 }
 
-void	Server::deleteClient()
+void	Server::deleteAllClient()
 {
 	for (mapClient::iterator it = _ClientMap.begin(); it != _ClientMap.end(); it++)
 	{
