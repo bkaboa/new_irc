@@ -12,18 +12,26 @@ IrcMessage::IrcMessage() {}
 
 IrcMessage::~IrcMessage() {}
 
-void	IrcMessage::recvMessage(std::string message)
+int	IrcMessage::recvMessage(std::string message)
 {
 	std::string		endMessage = "\r\n";
 
-	if (message.size() > 512 || message.size() < 3)
+	if (!_Message.empty())
+		_Message.append(message);
+	else
+		_Message = message;
+	if (*(_Message.end() - 1) != '\n')
+		return (MSG_NOT_TERMINATED);
+	if (_Message.size() > 512)
 	{
-		message.clear();
-		return ;
+		_Message.clear();
+		return (MSG_ERR);
 	}
-	if ((message.end() - 2).base() == endMessage)
-			message.erase(message.end() - 2, message.end());
-	_Message = message;
+	if ((_Message.end() - 2).base() == endMessage)
+		_Message.erase(_Message.end() - 2, _Message.end());
+	else
+		_Message.erase(_Message.end() - 1, _Message.end());
+	return (MSG_TERM);
 }
 
 bool	IrcMessage::stringSlice(size_t nPos, std::string &original, std::string &sliced)
@@ -176,21 +184,23 @@ void	IrcMessage::takeUser(struct commandData_t *command, std::string &sliceMessa
 {
 	std::istringstream	istring;
 	std::string			user;
+	std::string			user1;
 
-	if (!std::isalnum(sliceMessage[0]))
+	stringSlice(sliceMessage.find_first_of("\r\n"), sliceMessage, user);
+	if (user.empty() || user.size() == 0)
 	{
 		command->binParams -= USER;
 		return;
 	}
-	if (sliceMessage.empty() || sliceMessage.size() == 0)
+	if (!std::isalnum(user[0]))
 	{
 		command->binParams -= USER;
 		return;
 	}
-	istring.str(sliceMessage);
-	while (std::getline(istring, user, ' '))
+	istring.str(user);
+	while (std::getline(istring, user1, ' '))
 	{
-		command->params.push_back(user);
+		command->params.push_back(user1);
 	}
 }
 
@@ -198,14 +208,14 @@ void	IrcMessage::takeChannel(struct commandData_t *command, std::string &sliceMe
 {
 	std::string			channel;
 
-	std::cout << "Chan = " << sliceMessage << '\n';
-	if (sliceMessage[0] != '#')
+	stringSlice(sliceMessage.find_first_of(" \r\n"), sliceMessage, channel);
+	if (channel.empty() || channel.size() == 0)
 	{
 		command->binParams -= CHAN;
 		return ;
 	}
-	stringSlice(sliceMessage.find_first_of(" \r\n"), sliceMessage, channel);
-	if (channel.empty() || channel.size() == 0)
+	std::cout << "Chan = " << sliceMessage << '\n';
+	if (channel[0] != '#' || channel[0] != '&')
 	{
 		command->binParams -= CHAN;
 		return ;
@@ -215,16 +225,15 @@ void	IrcMessage::takeChannel(struct commandData_t *command, std::string &sliceMe
 
 void	IrcMessage::takeNick(struct commandData_t *command, std::string &sliceMessage)
 {
-	int					npos = sliceMessage.find_first_of(" \r\n");
 	std::string			nick;
 
-	if (!std::isalnum(sliceMessage[0]))
+	stringSlice(sliceMessage.find_first_of(" \r\n"), sliceMessage, nick);
+	if (nick.empty() || nick.size() == 0)
 	{
 		command->binParams -= NICK;
 		return ;
 	}
-	stringSlice(npos, sliceMessage, nick);
-	if (nick.empty() || nick.size() == 0)
+	if (!std::isalnum(nick[0]))
 	{
 		command->binParams -= NICK;
 		return ;
@@ -236,15 +245,15 @@ void	IrcMessage::takeTarget(struct commandData_t *command, std::string &sliceMes
 {
 	std::string param;
 
-	if (!std::isalnum(sliceMessage[0]) && sliceMessage[0] != '#')
-	{
-		command -= PASS;
-		return;
-	}
 	stringSlice(sliceMessage.find_first_of(" \r\n"), sliceMessage, param);
 	if (param.empty() || param.size() == 0)
 	{
 		command->binParams -= PASS;
+		return;
+	}
+	if (!std::isalnum(param[0]) && (param[0] != '#' || param[0] != '&'))
+	{
+		command -= PASS;
 		return;
 	}
 	command->params.push_back(param);
@@ -254,13 +263,13 @@ void	IrcMessage::takeMessage(struct commandData_t *command, std::string &sliceMe
 {
 	std::string param;
 
-	if (sliceMessage[0] != ':')
+	stringSlice(sliceMessage.find_first_of("\r\n"), sliceMessage, param);
+	if (param.empty() || param.size() == 0)
 	{
 		command->binParams -= MESS;
 		return;
 	}
-	stringSlice(sliceMessage.find_first_of("\r\n"), sliceMessage, param);
-	if (param.empty() || param.size() == 0)
+	if (param[0] != ':')
 	{
 		command->binParams -= MESS;
 		return;
@@ -272,13 +281,13 @@ void	IrcMessage::takePass(struct commandData_t *command, std::string &sliceMessa
 {
 	std::string param;
 
-	if (!(std::isalnum(sliceMessage[0])))
+	stringSlice(sliceMessage.find_first_of("\r\n"), sliceMessage, param);
+	if (param.empty() || param.size() == 0)
 	{
 		command->binParams -= PASS;
 		return;
 	}
-	stringSlice(sliceMessage.find_first_of("\r\n"), sliceMessage, param);
-	if (param.empty() || param.size() == 0)
+	if (!(std::isalnum(param[0])))
 	{
 		command->binParams -= PASS;
 		return;

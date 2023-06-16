@@ -54,6 +54,7 @@ void	Server::checkEvents()
 	int				recvNChar = 0;
 	pollvectorIter	it;
 	commandList		commandList;
+	int				retRecv;
 
 	if (_PollVector.empty() || _PollVector.size() == 0)
 		return ;
@@ -69,20 +70,26 @@ void	Server::checkEvents()
 				disconnectClient(it);
 				return ;
 			}
-			_ClientMap[it->fd]->recvMessage(buffer);
-			_ClientMap[it->fd]->parseMessage(commandList, it->fd);
-			for (commandList::iterator itList = commandList.begin(); itList != commandList.end(); itList++)
+			retRecv = _ClientMap[it->fd]->recvMessage(buffer);
+			if (retRecv == MSG_TERM)
 			{
-				std::cout << YELLOW << "-----Client " << _ClientMap[it->fd]->getName() << " request a command-----"<< std::endl;
-				std::cout << NC << "Original command = " << itList->originalCommand << '\n' << "nCommand = " << itList->command << '\n';
-				if (itList->params.empty())
-					std::cout << NC << "Empty param" << '\n';
-				for (std::vector<std::string>::iterator it = itList->params.begin(); it != itList->params.end(); it++)
-					std::cout << NC << "Param = " << *it << '\n';
-				execCommand(*itList);
-				std::cout << GREEN << "-----End of " << _ClientMap[it->fd]->getName() << " request-----" << std::endl;
+				std::cout << "truc" << '\n';
+				_ClientMap[it->fd]->parseMessage(commandList, it->fd);
+				for (commandList::iterator itList = commandList.begin(); itList != commandList.end(); itList++)
+				{
+					std::cout << YELLOW << "-----Client " << _ClientMap[it->fd]->getName() << " request a command-----"<< std::endl;
+					std::cout << NC << "Original command = " << itList->originalCommand << '\n' << "nCommand = " << itList->command << '\n';
+					if (itList->params.empty())
+						std::cout << NC << "Empty param" << '\n';
+					for (std::vector<std::string>::iterator it = itList->params.begin(); it != itList->params.end(); it++)
+						std::cout << NC << "Param = " << *it << '\n';
+					execCommand(*itList);
+					std::cout << GREEN << "-----End of " << _ClientMap[it->fd]->getName() << " request-----" << std::endl;
+				}
+				commandList.clear();
 			}
-			commandList.clear();
+			else if (retRecv == MSG_ERR)
+				sendStr(it->fd, ERR_INPUTTOOLONG(_ClientMap[it->fd]->getName()));
 		}
 		else if (it->revents == POLLHUP)
 		{
@@ -128,12 +135,14 @@ void	Server::ConnectServer()
 {
 	socketInit();
 	setSocket();
-	while (RUNTIME)
+	while (globalRuntime)
 	{
 		poll(_PollVector.data(), _PollVector.size(), POLL_TIMEOUT);
 		checkEvents();
 		acceptConnection();
 	}
+	deleChannel();
+	deleteClient();
 	close(_Sock);
 }
 

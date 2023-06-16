@@ -8,3 +8,11 @@ void	Server::channelNew(Client *creator, std::string name, std::string pass)
 {
 	_ChannelMap.insert(std::make_pair(name, new Channel(creator, name, pass)));
 }
+
+void Server::deleChannel()
+{
+	for (mapChannel::iterator it = _ChannelMap.begin(); it != _ChannelMap.end(); it++)
+	{
+		delete it->second;
+	}
+}

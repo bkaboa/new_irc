@@ -4,8 +4,6 @@
 
 #define INETADDR_ANY	"0.0.0.0"
 
-#define RUNTIME			1
-
 #define ACCEPT_CLIENT	1
 
 #define POLL_TIMEOUT	100
@@ -15,6 +13,14 @@
 #define MAX_CHANNELS	10
 
 #define SERVER_NAME		"LeoCharlitoServ"
+
+#define MSG_NOT_TERMINATED	1
+
+#define MSG_ERR			2
+
+#define MSG_TERM		0
+
+extern int	globalRuntime;
 
 //***************************		COLORS
 #define RED			"\033[0;31m"

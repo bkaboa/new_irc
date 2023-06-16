@@ -48,6 +48,9 @@ namespace irc
 			void Quit(fd_t sender, const commandData_t &args);
 			void Topic(fd_t sender, const commandData_t &args);
 			void User(fd_t sender, const commandData_t &args);
+			
+			void deleteClient();
+			void deleChannel();
 	};
 }
 

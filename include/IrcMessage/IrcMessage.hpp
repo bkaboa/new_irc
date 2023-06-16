@@ -17,9 +17,9 @@ namespace irc
 			std::vector<std::string>	getParams() const;
 			int							getCommand() const;
 
-			void						recvMessage(std::string message);
+			int 						recvMessage(std::string message);
 
-				private : 
+		private : 
 			void 						checkCommand(std::string &sentence, int *binParams, int *command);
 			bool						stringSlice(size_t nPos, std::string &original, std::string &sliced);
 			void						takeTarget(struct commandData_t *command, std::string &sliceMessage);
@@ -31,6 +31,7 @@ namespace irc
 			void						takeMode(struct commandData_t *command, std::string &sliceMessage);
 
 			std::string					_Message;
+			int							_messageNotTerminated;
 
 	};
 }

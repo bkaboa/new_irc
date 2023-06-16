@@ -24,11 +24,24 @@ void	Server::disconnectClient(pollvectorIter &it)
 	if (mit->second->getName().empty())
 	{
 		std::cout << BLUE << "Unknown client disconnected" << NC << std::endl;
+		delete mit->second;
 		_ClientMap.erase(mit);
 	}
 	else {
 		std::cout << BLUE << "Client " << mit->second->getNick() << " disconnected" << NC << std::endl;
+		delete mit->second;
 		_ClientMap.erase(mit);
 	}
 	_PollVector.erase(it);
+}
+
+void	Server::deleteClient()
+{
+	for (mapClient::iterator it = _ClientMap.begin(); it != _ClientMap.end(); it++)
+	{
+
+		delete it->second;
+		std::cout << GREEN << "disconnect client " << it->second->getName() << NC << '\n';
+		close(it->first);
+	}
 }
