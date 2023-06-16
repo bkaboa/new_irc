@@ -63,6 +63,9 @@ void IrcMessage::parseMessage(commandList &commandList, fd_t fd)
 	std::vector<std::string>	commands;
 	std::string					tmp;
 
+	command.binParams = 0;
+	command.command = 0;
+	command.clientRequest = 0;
 	if (_Message.empty())
 		return ;
 	while (stringSlice(_Message.find_first_of('\n'), _Message, tmp))
@@ -71,7 +74,6 @@ void IrcMessage::parseMessage(commandList &commandList, fd_t fd)
 	}
 	for (std::vector<std::string>::iterator it = commands.begin(); it != commands.end(); it++)
 	{
-		bzero(&command, sizeof(command));
 		command.clientRequest = fd;
 		if (it->empty() || it->size() < 3)
 			commandList.push_back(command);
@@ -94,6 +96,7 @@ void IrcMessage::parseMessage(commandList &commandList, fd_t fd)
 			if (command.binParams & MODE)
 				takeMode(&command, *it);
 			commandList.push_back(command);
+			command.params.clear();
 		}
 	}
 	commands.clear();

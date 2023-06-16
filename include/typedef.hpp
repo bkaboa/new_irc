@@ -46,7 +46,7 @@ typedef std::list<struct commandData_t>	commandList;
 struct commandData_t{
 	fd_t							clientRequest;
 	int								command;
-	std::string						originalCommand;
 	int								binParams;
+	std::string						originalCommand;
 	std::vector<std::string>		params;
 };
