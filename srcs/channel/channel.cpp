@@ -5,7 +5,7 @@
 
 using namespace irc;
 
-Channel::Channel(Client *creator, const std::string &name, const std::string &pass):_Name(name), _userLimit(0), _Password(pass), _Topic(""), _ChannelOptions(0){
+Channel::Channel(Client *creator, const std::string &name, const std::string &pass):_Password(pass), _Name(name), _Topic(""), _ChannelOptions(0), _userLimit(0){
 	_Members.insert(std::make_pair(creator->getFd(), creator));
 	if (!_Password.empty())
 		_ChannelOptions += k;

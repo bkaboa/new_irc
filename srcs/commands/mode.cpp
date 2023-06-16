@@ -125,7 +125,7 @@ void Server::Mode(fd_t sender, const commandData_t &args)
 					sign = 1;
 				if (modestring[0] == '-')
 					sign = 0;
-				for (int index = 1; index < modestring.size(); index++)
+				for (int index = 1; index < static_cast<int>(modestring.size()); index++)
 				{
 					if (modestring[index] == 'i')
 						channelmode_i(sign, channel);

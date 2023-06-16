@@ -54,7 +54,6 @@ void	Server::checkEvents()
 	int				recvNChar = 0;
 	pollvectorIter	it;
 	commandList		commandList;
-	int		i = 0;
 
 	if (_PollVector.empty() || _PollVector.size() == 0)
 		return ;

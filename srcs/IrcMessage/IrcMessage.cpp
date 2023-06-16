@@ -54,7 +54,6 @@ void IrcMessage::parseMessage(commandList &commandList, fd_t fd)
 	std::vector<std::string>	commands;
 	std::vector<std::string>	params;
 	std::string					tmp;
-	size_t						nPos = 0;
 
 	if (_Message.empty())
 		return ;
