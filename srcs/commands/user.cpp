@@ -33,7 +33,7 @@ void Server::User(fd_t sender, const commandData_t &cmd)
 	//if not registered
 	else if (!_ClientMap[sender]->isRegistered())
 	{
-		if (!_ClientMap[sender]->getPassOk() || !_ClientMap[sender]->getNickOk())
+		if (!(_ClientMap[sender]->getPassOk()))
 		{
 			//authent error pass or nick not ok
 			_ClientMap[sender]->setPassOk(false);
@@ -41,7 +41,7 @@ void Server::User(fd_t sender, const commandData_t &cmd)
 			_ClientMap[sender]->setUserOk(false);
 			return;
 		}
-		else if (_ClientMap[sender]->getPassOk() && _ClientMap[sender]->getNickOk())
+		else if (_ClientMap[sender]->getPassOk())
 		{
 			//NEED TO CHECK DOC FOR USERNAME CHANGE
 			if (nameExist(newname, _ClientMap))

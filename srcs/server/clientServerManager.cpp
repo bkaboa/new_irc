@@ -40,8 +40,8 @@ void	Server::deleteClient()
 	for (mapClient::iterator it = _ClientMap.begin(); it != _ClientMap.end(); it++)
 	{
 
-		delete it->second;
 		std::cout << GREEN << "disconnect client " << it->second->getName() << NC << '\n';
+		delete it->second;
 		close(it->first);
 	}
 }

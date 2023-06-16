@@ -31,6 +31,7 @@ int	IrcMessage::recvMessage(std::string message)
 		_Message.erase(_Message.end() - 2, _Message.end());
 	else
 		_Message.erase(_Message.end() - 1, _Message.end());
+	std::cout << RED << message << std::endl;
 	return (MSG_TERM);
 }
 
@@ -60,7 +61,6 @@ void IrcMessage::parseMessage(commandList &commandList, fd_t fd)
 {
 	struct commandData_t		command;
 	std::vector<std::string>	commands;
-	std::vector<std::string>	params;
 	std::string					tmp;
 
 	if (_Message.empty())
@@ -96,6 +96,7 @@ void IrcMessage::parseMessage(commandList &commandList, fd_t fd)
 			commandList.push_back(command);
 		}
 	}
+	commands.clear();
 	_Message.clear();
 }
 
@@ -215,7 +216,7 @@ void	IrcMessage::takeChannel(struct commandData_t *command, std::string &sliceMe
 		return ;
 	}
 	std::cout << "Chan = " << sliceMessage << '\n';
-	if (channel[0] != '#' || channel[0] != '&')
+	if (channel[0] != '#' && channel[0] != '&')
 	{
 		command->binParams -= CHAN;
 		return ;
@@ -251,7 +252,7 @@ void	IrcMessage::takeTarget(struct commandData_t *command, std::string &sliceMes
 		command->binParams -= PASS;
 		return;
 	}
-	if (!std::isalnum(param[0]) && (param[0] != '#' || param[0] != '&'))
+	if (!std::isalnum(param[0]) && (param[0] != '#' && param[0] != '&'))
 	{
 		command -= PASS;
 		return;

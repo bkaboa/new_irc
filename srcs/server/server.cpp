@@ -73,7 +73,6 @@ void	Server::checkEvents()
 			retRecv = _ClientMap[it->fd]->recvMessage(buffer);
 			if (retRecv == MSG_TERM)
 			{
-				std::cout << "truc" << '\n';
 				_ClientMap[it->fd]->parseMessage(commandList, it->fd);
 				for (commandList::iterator itList = commandList.begin(); itList != commandList.end(); itList++)
 				{
@@ -86,7 +85,6 @@ void	Server::checkEvents()
 					execCommand(*itList);
 					std::cout << GREEN << "-----End of " << _ClientMap[it->fd]->getName() << " request-----" << std::endl;
 					deleteParams(*itList);
-					
 				}
 				commandList.clear();
 			}
