@@ -87,7 +87,7 @@ void	Server::checkEvents()
 				commandList.clear();
 			}
 			else if (retRecv == MSG_ERR)
-				sendStr(it->fd, ERR_INPUTTOOLONG(_ClientMap[it->fd]->getName()));
+				sendStr(it->fd, ERR_INPUTTOOLONG(_ClientMap[it->fd]->getNick()));
 		}
 		else if (it->revents == POLLHUP)
 		{

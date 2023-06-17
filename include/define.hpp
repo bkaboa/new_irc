@@ -20,6 +20,8 @@
 
 #define MSG_TERM		0
 
+#define USERLEN			10
+
 extern int	globalRuntime;
 
 //***************************		COLORS

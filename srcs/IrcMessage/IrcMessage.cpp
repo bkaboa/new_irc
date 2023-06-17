@@ -33,7 +33,6 @@ int	IrcMessage::recvMessage(std::string message)
 		_Message.erase(_Message.end() - 2, _Message.end());
 	else
 		_Message.erase(_Message.end() - 1, _Message.end());
-	std::cout << RED << message << std::endl;
 	return (MSG_TERM);
 }
 

@@ -10,7 +10,7 @@ void Server::Privmsg(fd_t sender, const commandData_t &args)
 {
 	if (!(args.binParams & MESS))
 	{
-		sendStr(sender, ERR_NOTEXTTOSEND(_ClientMap[sender]->getName()));
+		sendStr(sender, ERR_NOTEXTTOSEND(_ClientMap[sender]->getNick()));
 		return;
 	}
 	else if (args.binParams & MESS)
@@ -34,7 +34,7 @@ void Server::Privmsg(fd_t sender, const commandData_t &args)
 						_ChannelMap[target]->channelMsg(sender, message);
 					}
 					else
-						sendStr(sender, ERR_NOSUCHCHANNEL(_ClientMap[sender]->getName(), target));
+						sendStr(sender, ERR_NOSUCHCHANNEL(_ClientMap[sender]->getNick(), target));
 				}
 				//target is a user
 				else
@@ -45,7 +45,7 @@ void Server::Privmsg(fd_t sender, const commandData_t &args)
 						sendStr(targetfd, message);
 					}
 					else
-						sendStr(sender, ERR_NOSUCHNICK(_ClientMap[sender]->getName(), target));
+						sendStr(sender, ERR_NOSUCHNICK(_ClientMap[sender]->getNick(), target));
 				}
 			}
 		}
@@ -65,7 +65,7 @@ void Server::Privmsg(fd_t sender, const commandData_t &args)
 					}
 				}
 				else
-					sendStr(sender, ERR_NOSUCHCHANNEL(_ClientMap[sender]->getName(), target));
+					sendStr(sender, ERR_NOSUCHCHANNEL(_ClientMap[sender]->getNick(), target));
 			}
 			//target is a user
 			else
@@ -77,7 +77,7 @@ void Server::Privmsg(fd_t sender, const commandData_t &args)
 					sendStr(targetfd, finalmsg);
 				}
 				else
-					sendStr(sender, ERR_NOSUCHNICK(_ClientMap[sender]->getName(), target));
+					sendStr(sender, ERR_NOSUCHNICK(_ClientMap[sender]->getNick(), target));
 			}
 		}
 	}

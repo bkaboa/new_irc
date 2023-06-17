@@ -19,7 +19,10 @@ void Server::Nick(fd_t sender, const commandData_t &cmd)
 {
 	if (!(cmd.binParams & NICK))
 	{
-		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getNick(), cmd.originalCommand));
+		sendStr(sender, ERR_NONICKNAMEGIVEN(_ClientMap[sender]->getNick()));
+		_ClientMap[sender]->setPassOk(false);
+		_ClientMap[sender]->setNickOk(false);
+		_ClientMap[sender]->setUserOk(false);
 		return;
 	}
 	std::string name = cmd.params[0];
@@ -33,6 +36,9 @@ void Server::Nick(fd_t sender, const commandData_t &cmd)
 		else if (nickExist(name, this->_ClientMap))
 		{
 			sendStr(sender, ERR_NICKNAMEINUSE(_ClientMap[sender]->getNick(), name));
+			_ClientMap[sender]->setPassOk(false);
+			_ClientMap[sender]->setNickOk(false);
+			_ClientMap[sender]->setUserOk(false);
 			return;
 		}
 	}
@@ -41,7 +47,7 @@ void Server::Nick(fd_t sender, const commandData_t &cmd)
 	{
 		if (!this->_ClientMap[sender]->getPassOk())
 		{
-			sendStr(sender, ERR_PASSWDMISMATCH(_ClientMap[sender]->getName()));
+			sendStr(sender, ERR_PASSWDMISMATCH(_ClientMap[sender]->getNick()));
 			_ClientMap[sender]->setPassOk(false);
 			_ClientMap[sender]->setNickOk(false);
 			_ClientMap[sender]->setUserOk(false);

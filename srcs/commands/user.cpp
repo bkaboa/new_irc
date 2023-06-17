@@ -19,7 +19,7 @@ void Server::User(fd_t sender, const commandData_t &cmd)
 {
 	if (cmd.binParams == NONE || !(cmd.binParams & USER))
 	{
-		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getName(), "USER"));
+		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getNick(), "USER"));
 		return;
 	}
 	std::string newname = cmd.params[0];
@@ -46,14 +46,9 @@ void Server::User(fd_t sender, const commandData_t &cmd)
 		}
 		else if (_ClientMap[sender]->getPassOk())
 		{
-			//NEED TO CHECK DOC FOR USERNAME CHANGE
-			if (nameExist(newname, _ClientMap))
-				_ClientMap[sender]->changeName(_ClientMap[sender]->getNick());
-			else if (!nameExist(newname, _ClientMap))
-			{
-				_ClientMap[sender]->changeName(newname);
-				_ClientMap[sender]->setUserOk(true);
-			}
+
+			_ClientMap[sender]->changeName(newname);
+			_ClientMap[sender]->setUserOk(true);
 			if (_ClientMap[sender]->getPassOk() && _ClientMap[sender]->getNickOk() && _ClientMap[sender]->getUserOk())
 			{
 				_ClientMap[sender]->setIsRegistered(true);

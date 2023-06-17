@@ -1,6 +1,8 @@
+#include "../../include/include.hpp"
+#include "../../include/IrcMessage/IrcMessage.hpp"
 #include "../../include/server/server.hpp"
-#include "../../include/client/client.hpp"
 #include "../../include/channel/channel.hpp"
+#include "../../include/client/client.hpp"
 
 using namespace irc;
 
@@ -56,6 +58,16 @@ static void channelmode_l(int sign, Channel *channel, int limit)
 	}
 	else if (!sign && (channel->getOptions() & l))
 		channel->setOptions(l, sign);
+}
+
+static void modeReply(std::string reply, Channel *channel)
+{
+	if (!(reply.empty()))
+	{
+		reply += "\r\n";
+		channel->channelMsg(-1, reply);
+		reply.clear();
+	}
 }
 
 void Server::Mode(fd_t sender, const commandData_t &args)
@@ -116,42 +128,79 @@ void Server::Mode(fd_t sender, const commandData_t &args)
 					sendStr(sender, ERR_CHANOPRIVSNEEDED(_ClientMap[sender]->getNick(), channel->getName()));
 					return;
 				}
+				std::string mreply;
 				int sign = -1;
 				std::string modestring = args.params[1];
 				std::string modeparam = "";
-				if (!args.params[2].empty())
+				if (args.params.size() > 2)
 					modeparam = args.params[2];
-				if (modestring[0] == '+')
-					sign = 1;
-				if (modestring[0] == '-')
-					sign = 0;
 				for (int index = 1; index < static_cast<int>(modestring.size()); index++)
 				{
+					mreply = std::string(":") + SERVER_NAME + " MODE " + target;
+					if (modestring[0] == '+')
+					{
+						mreply += " +";
+						sign = 1;
+					}
+					if (modestring[0] == '-')
+					{
+						mreply += " -";
+						sign = 0;
+					}
 					if (modestring[index] == 'i')
+					{
+						mreply += std::string("i");
+						modeReply(mreply, channel);
 						channelmode_i(sign, channel);
+					}
 					else if (modestring[index] == 't')
+					{
+						mreply += std::string("t");
+						modeReply(mreply, channel);
 						channelmode_t(sign, channel);
+					}
 					else if (modestring[index] == 'k')
+					{
+						mreply += std::string("k");
+						modeReply(mreply, channel);
 						channelmode_k(sender, sign, channel, modeparam);
+					}
 					else if (modestring[index] == 'l')
+					{
+						mreply += std::string("l") + " " + modeparam;
+						modeReply(mreply, channel);
 						channelmode_l(sign, channel, ft_stoi(modeparam));
+					}
 					//mode o : give / take operator privileges
 					else if (modestring[index] == 'o')
 					{
+						mreply += std::string("o") + " " + modeparam;
 						fd_t targetfd = getClientFd(modeparam);
 						if (targetfd == -1)
+						{
+							mreply.clear();
 							sendStr(sender, ERR_NOSUCHNICK(_ClientMap[sender]->getNick(), modeparam));
+						}
 						else if (sender == targetfd)
-							;
+							mreply.clear();
 						else if (!channel->isInChannel(targetfd))
+						{
+							mreply.clear();
 							sendStr(sender, ERR_USERNOTINCHANNEL(_ClientMap[sender]->getNick(), modeparam, target));
+						}
 						else
 						{
 							if (sign && !channel->isAdmin(targetfd))
 								channel->setAdmin(targetfd, true);
 							else if (!sign && channel->isAdmin(targetfd))
 								channel->setAdmin(targetfd, false);
+							modeReply(mreply, channel);
 						}
+					}
+					else
+					{
+						sendStr(sender, ERR_UMODEUNKNOWNFLAG(_ClientMap[sender]->getNick()));
+						mreply.clear();
 					}
 				}
 				return;

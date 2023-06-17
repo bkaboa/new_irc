@@ -11,14 +11,19 @@ void	Server::channelNew(Client *creator, std::string name, std::string pass)
 
 void Server::deleteChannel(std::string channame)
 {
-	for (mapChannel::iterator it = _ChannelMap.begin(); it != _ChannelMap.end(); it++)
+	for (mapChannel::iterator it = _ChannelMap.begin(); it != _ChannelMap.end();)
 	{
 		if (it->first == channame)
 		{
 			delete it->second;
+			mapChannel::iterator temp = it;
+			++temp;
 			_ChannelMap.erase(it);
+			it = temp;
 			return;
 		}
+		else
+			++it;
 	}
 }
 

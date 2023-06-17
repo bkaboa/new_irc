@@ -37,7 +37,7 @@ void Server::Join(fd_t sender, const commandData_t &args)
 							_ChannelMap[newChanName]->joinNameReply(sender, _ClientMap[sender]->getName());
 						}
 						else
-							sendStr(sender, ERR_TOOMANYCHANNELS(_ClientMap[sender]->getName(), newChanName));
+							sendStr(sender, ERR_TOOMANYCHANNELS(_ClientMap[sender]->getNick(), newChanName));
 					}
 					else 
 						sendStr(sender, "To create a Channel, you need to add the prefix # or &\r\n");
@@ -48,13 +48,13 @@ void Server::Join(fd_t sender, const commandData_t &args)
 					Channel *chan = _ChannelMap[*iter];
 					//user is already on channel
 					if (chan->isInChannel(sender))
-						sendStr(sender, ERR_USERONCHANNEL(_ClientMap[sender]->getName(), _ClientMap[sender]->getNick(), chan->getName()));
+						sendStr(sender, ERR_USERONCHANNEL(_ClientMap[sender]->getNick(), _ClientMap[sender]->getNick(), chan->getName()));
 					//if user is not in channel
 					else if (!(chan->isInChannel(sender)))
 					{
 						//channel has password
 						if (chan->getOptions() & k)
-							sendStr(sender, ERR_BADCHANNELKEY(_ClientMap[sender]->getName(), chan->getName()));
+							sendStr(sender, ERR_BADCHANNELKEY(_ClientMap[sender]->getNick(), chan->getName()));
 						//channel does not need password to be joined
 						else
 						{
@@ -67,7 +67,7 @@ void Server::Join(fd_t sender, const commandData_t &args)
 									std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";
 									chan->addMember(_ClientMap[sender], 0);
 									chan->channelMsg(-1, reply);
-									chan->joinNameReply(sender, _ClientMap[sender]->getName());
+									chan->joinNameReply(sender, _ClientMap[sender]->getNick());
 									std::cout << YELLOW << sender << std::endl;
 								}
 								else if (!chan->isInvited(sender))
@@ -114,7 +114,7 @@ void Server::Join(fd_t sender, const commandData_t &args)
 							_ChannelMap[newChanName]->joinNameReply(sender, _ClientMap[sender]->getName());
 						}
 						else
-							sendStr(sender, ERR_TOOMANYCHANNELS(_ClientMap[sender]->getName(), newChanName));
+							sendStr(sender, ERR_TOOMANYCHANNELS(_ClientMap[sender]->getNick(), newChanName));
 					}
 					else
 						sendStr(sender, "To create a Channel, you need to add the prefix # or &\r\n");
@@ -124,12 +124,12 @@ void Server::Join(fd_t sender, const commandData_t &args)
 				{
 					Channel *chan = _ChannelMap[*iter];
 					if (chan->isInChannel(sender))
-						sendStr(sender, ERR_USERONCHANNEL(_ClientMap[sender]->getName(), _ClientMap[sender]->getNick(), chan->getName()));
+						sendStr(sender, ERR_USERONCHANNEL(_ClientMap[sender]->getNick(), _ClientMap[sender]->getNick(), chan->getName()));
 					// if user is not in channel
 					else if (!(chan->isInChannel(sender)))
 					{
 						// channel has password
-						if (!(chan->getPass().empty()))
+						if (chan->getOptions() & k)
 						{
 							if (chan->getOptions() & i)
 							{
@@ -140,14 +140,14 @@ void Server::Join(fd_t sender, const commandData_t &args)
 										chan->addMember(_ClientMap[sender], 0);
 										std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";
 										chan->channelMsg(-1, reply);
-										chan->joinNameReply(sender, _ClientMap[sender]->getName());
+										chan->joinNameReply(sender, _ClientMap[sender]->getNick());
 										chan->removeInvite(sender);
 									}
 									else
 										sendStr(sender, ERR_INVITEONLYCHAN(_ClientMap[sender]->getNick(), chan->getName()));
 								}
 								else
-									sendStr(sender, ERR_BADCHANNELKEY(_ClientMap[sender]->getName(), chan->getName()));
+									sendStr(sender, ERR_BADCHANNELKEY(_ClientMap[sender]->getNick(), chan->getName()));
 							}
 							else
 							{
@@ -160,7 +160,7 @@ void Server::Join(fd_t sender, const commandData_t &args)
 									chan->removeInvite(sender);
 								}
 								else
-									sendStr(sender, ERR_BADCHANNELKEY(_ClientMap[sender]->getName(), chan->getName()));
+									sendStr(sender, ERR_BADCHANNELKEY(_ClientMap[sender]->getNick(), chan->getName()));
 							}
 						}
 						// channel does not need password to be joined
