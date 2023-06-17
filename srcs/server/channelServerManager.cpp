@@ -14,7 +14,10 @@ void Server::deleteChannel(std::string channame)
 	for (mapChannel::iterator it = _ChannelMap.begin(); it != _ChannelMap.end(); it++)
 	{
 		if (it->first == channame)
-			_ChannelMap.erase(it->first);
+		{
+			delete it->second;
+			_ChannelMap.erase(it);
+		}
 	}
 	return;
 }
