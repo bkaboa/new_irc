@@ -7,7 +7,10 @@ using namespace irc;
 void Server::Kick(fd_t sender, const commandData_t &args)
 {
 	if (!(args.binParams & NICK) || !(args.binParams & CHAN))
+	{
 		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getName(), "KICK"));
+		return;
+	}
 	else
 	{
 		std::string chantarget = args.params[0];

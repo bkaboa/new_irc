@@ -9,7 +9,10 @@ using namespace irc;
 void Server::Privmsg(fd_t sender, const commandData_t &args)
 {
 	if (!(args.binParams & MESS))
+	{
 		sendStr(sender, ERR_NOTEXTTOSEND(_ClientMap[sender]->getName()));
+		return;
+	}
 	else if (args.binParams & MESS)
 	{
 		std::string message = args.params[1];

@@ -6,6 +6,8 @@ using namespace irc;
 
 Server::Server(std::string portStr, std::string pass):_Password(pass)
 {
+	if (pass.empty() || pass.size() == 0)
+		throw IrcError("Error : empty password");
 	const int port = std::atoi(portStr.c_str());
 	if (1 > port || port > 65535)
 		throw IrcError("Error : port out of range 1-65536");
@@ -31,11 +33,6 @@ void	Server::socketInit()
     int reuse = 1;
     if (setsockopt(_Sock, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0)
 		throw IrcError(strerror(errno));
-
-#ifdef SO_REUSEPORT
-    if (setsockopt(_Sock, SOL_SOCKET, SO_REUSEPORT, (const char*)&reuse, sizeof(reuse)) < 0) 
-		throw IrcError(strerror(errno));
-#endif
 }
 
 void	Server::setSocket()

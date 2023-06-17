@@ -20,6 +20,8 @@ int	IrcMessage::recvMessage(std::string message)
 		_Message.append(message);
 	else
 		_Message = message;
+	std::cout << (int)_Message[0] << '\n';
+	std::cout << _Message.size() << '\n';
 	if (*(_Message.end() - 1) != '\n')
 		return (MSG_NOT_TERMINATED);
 	if (_Message.size() > 512)
@@ -27,7 +29,7 @@ int	IrcMessage::recvMessage(std::string message)
 		_Message.clear();
 		return (MSG_ERR);
 	}
-	if ((_Message.end() - 2).base() == endMessage)
+	if (_Message.size() > 2 && (_Message.end() - 2).base() == endMessage)
 		_Message.erase(_Message.end() - 2, _Message.end());
 	else
 		_Message.erase(_Message.end() - 1, _Message.end());
