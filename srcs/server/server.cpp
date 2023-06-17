@@ -1,5 +1,6 @@
 #include "../../include/server/server.hpp"
 #include "../../include/client/client.hpp"
+#include "../../include/channel/channel.hpp"
 #include <vector>
 
 using namespace irc;
@@ -163,7 +164,3 @@ void	Server::deleteParams(struct commandData_t command) const
 	command.params.clear();
 }
 
-void	Server::deleteChannel(std::string channame)
-{
-
-}

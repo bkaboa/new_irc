@@ -37,6 +37,9 @@ void Server::Part(fd_t sender, const commandData_t &args)
 				std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " PART " + chan->getName() + "\r\n";
 				chan->channelMsg(-1, reply);
 				sendStr(sender, reply);
+				std::cout << RED << chan->getNumClients();
+				if (chan->getNumClients() == 0)
+					deleteChannel(chan->getName());
 			}
 			else if (!chan->isInChannel(sender))
 				sendStr(sender, ERR_NOTONCHANNEL(_ClientMap[sender]->getNick(), chan->getName()));
