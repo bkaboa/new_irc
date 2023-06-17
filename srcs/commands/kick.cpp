@@ -26,7 +26,12 @@ void Server::Kick(fd_t sender, const commandData_t &args)
 				if (chan->isAdmin(sender))
 				{
 					fd_t targetFd = getClientFd(target);
-					if (targetFd != -1 && chan->isInChannel(targetFd) && sender != targetFd)
+					if (sender == targetFd)
+					{
+						sendStr(sender, "You can't kick yourself from a channel !\r\n");
+						return;
+					}
+					if (targetFd != -1 && chan->isInChannel(targetFd))
 					{
 						std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " KICK " + chantarget + " " + target + reason + "\r\n";
 						chan->channelMsg(-1, reply);

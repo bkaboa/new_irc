@@ -81,9 +81,9 @@ void	Server::checkEvents()
 					for (std::vector<std::string>::iterator it = itList->params.begin(); it != itList->params.end(); it++)
 						std::cout << NC << "Param = " << *it << '\n';
 					execCommand(*itList);
-					std::cout << GREEN << "-----End of " << _ClientMap[it->fd]->getName() << " request-----" << std::endl;
 					deleteParams(*itList);
 				}
+				std::cout << GREEN << "-----End of " << _ClientMap[it->fd]->getName() << " request-----" << std::endl;
 				commandList.clear();
 			}
 			else if (retRecv == MSG_ERR)
@@ -98,6 +98,8 @@ void	Server::checkEvents()
 			std::cout << RED << "Client unexpected deconnection" << NC << '\n';
 			disconnectClient(it);
 		}
+		if (_ClientMap[it->fd]->getMustDeco())
+			disconnectClient(it);
 		if (it != _PollVector.end())
 			++it;
 	} while (it != _PollVector.end());

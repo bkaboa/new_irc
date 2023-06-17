@@ -27,7 +27,9 @@ namespace irc
 			bool				getNickOk(void) const;
 			void				setUserOk(bool truefalse);
 			bool				getUserOk(void) const;
-	
+			void				setMustDeco();
+			bool				getMustDeco();
+
 		private:
 			fd_t			_Fd;
 			std::string		_Nick;
@@ -36,5 +38,6 @@ namespace irc
 			bool			_passOk;
 			bool			_nickOk;
 			bool			_userOk;
+			bool			_mustDeco;
 	};
 }

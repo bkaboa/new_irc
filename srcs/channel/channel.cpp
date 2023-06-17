@@ -36,11 +36,11 @@ void	Channel::removeMember(fd_t clientFd)
 {
 	if (_Members.find(clientFd) != _Members.end())
 	{
+		if (isAdmin(clientFd))
+			setAdmin(clientFd, false);
+		if (isInvited(clientFd))
+			removeInvite(clientFd);
 		_Members.erase(clientFd);
-	}
-	else
-	{
-		std::cout << "Member is not on channel " << _Name << std::endl;
 	}
 }
 
@@ -112,8 +112,7 @@ bool	Channel::isAdmin(fd_t clientfd)
 
 void	Channel::kickMember(fd_t kicked)
 {
-	if (!isAdmin(kicked))
-		_Members.erase(kicked);
+	removeMember(kicked);
 }
 
 void	Channel::channelMsg(fd_t sender, std::string msg)

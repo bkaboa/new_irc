@@ -17,9 +17,9 @@ void Server::deleteChannel(std::string channame)
 		{
 			delete it->second;
 			_ChannelMap.erase(it);
+			return;
 		}
 	}
-	return;
 }
 
 void Server::deleteAllChannel()

@@ -2,7 +2,7 @@
 
 using namespace irc;
 
-Client::Client(fd_t fd):_Fd(fd), _IsRegistered(false) , _passOk(false), _nickOk(false){}
+Client::Client(fd_t fd):_Fd(fd), _IsRegistered(false) , _passOk(false), _nickOk(false), _mustDeco(false){}
 
 Client::Client():_IsRegistered(false) {}
 
@@ -80,4 +80,14 @@ void	Client::setUserOk(bool truefalse)
 bool	Client::getUserOk(void) const
 {
 	return (_userOk);
+}
+
+void	Client::setMustDeco()
+{
+	_mustDeco = true;
+}
+
+bool	Client::getMustDeco()
+{
+	return(_mustDeco);
 }
