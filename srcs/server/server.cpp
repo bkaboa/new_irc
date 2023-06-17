@@ -138,8 +138,8 @@ void	Server::ConnectServer()
 		checkEvents();
 		acceptConnection();
 	}
-	deleChannel();
-	deleteClient();
+	deleteAllChannel();
+	deleteAllClient();
 	close(_Sock);
 }
 
@@ -161,4 +161,9 @@ void	Server::deleteParams(struct commandData_t command) const
 		it->clear();
 	}
 	command.params.clear();
+}
+
+void	Server::deleteChannel(std::string channame)
+{
+
 }

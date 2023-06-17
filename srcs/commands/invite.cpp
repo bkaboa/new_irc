@@ -27,15 +27,18 @@ void Server::Invite(fd_t sender, const commandData_t &args)
 		else
 		{
 			//invite only for operators, add to list
-			if ((channel->getOptions() & i) && channel->isAdmin(sender))
+			if (channel->getOptions() & i)
 			{
-				channel->addInvite(targetFd);
+				if (channel->isAdmin(sender))
+					channel->addInvite(targetFd);
+				else
+					sendStr(sender, ERR_CHANOPRIVSNEEDED(_ClientMap[sender]->getNick(), targetChannel));
 				return;
 			}
 			//public invite
 			else if (!(channel->getOptions() & i))
 			{
-				sendStr(targetFd, RPL_INVITING(_ClientMap[sender]->getNick(), targetNick, targetChannel));
+				sendStr(sender, RPL_INVITING(_ClientMap[sender]->getNick(), targetNick, targetChannel));
 				return;
 			}
 		}

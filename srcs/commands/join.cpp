@@ -61,7 +61,7 @@ void Server::Join(fd_t sender, const commandData_t &args)
 							//channel has invite only mode
 							if (chan->getOptions() & i)
 							{
-								if (chan->isInvited(sender))
+								if (chan->isInvited(sender) || chan->isAdmin(sender))
 								{
 									chan->removeInvite(sender);
 									std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";

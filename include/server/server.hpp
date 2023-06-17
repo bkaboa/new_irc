@@ -15,6 +15,7 @@ namespace irc
 
 		protected:
 			void			channelNew(Client *creator, std::string name, std::string pass);
+			void			deleteChannel(std::string channame);
 			void			disconnectClient(pollvectorIter &it);
 			mapClientIter	getClient(const fd_t fd) const;
 	
@@ -49,8 +50,8 @@ namespace irc
 			void Topic(fd_t sender, const commandData_t &args);
 			void User(fd_t sender, const commandData_t &args);
 			
-			void deleteClient();
-			void deleChannel();
+			void deleteAllClient();
+			void deleteAllChannel();
 			void deleteParams(struct commandData_t command) const;
 	};
 }
