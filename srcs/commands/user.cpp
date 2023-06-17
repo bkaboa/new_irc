@@ -26,10 +26,6 @@ void Server::User(fd_t sender, const commandData_t &cmd)
 	//if already registered
 	if (_ClientMap[sender]->isRegistered() && newname.compare(_ClientMap[sender]->getName()) != 0)
 	{
-		if (nameExist(newname, _ClientMap))
-			_ClientMap[sender]->changeName(_ClientMap[sender]->getNick());
-		else if (!nameExist(newname, _ClientMap))
-			_ClientMap[sender]->changeName(newname);
 		_ClientMap[sender]->changeName(newname);
 		return;
 	}
