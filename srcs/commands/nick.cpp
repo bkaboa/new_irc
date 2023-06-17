@@ -3,14 +3,22 @@
 
 using namespace irc;
 
-static bool	nickExist(std::string name, mapClient &map)
+static void nickMessage(fd_t sender, std::string previousNick, std::string newnick)
+{
+	std::string mess = std::string(":") + previousNick + " NICK " + newnick + "\r\n";
+	sendStr(sender, mess);
+}
+
+static bool	nickExist(fd_t sender, std::string name, mapClient &map)
 {
 	mapClientIter iter;
 	for(iter = map.begin(); iter != map.end(); ++iter)
 	{
-		Client *client = iter->second;
-		if (client->getNick().compare(name.c_str()) == 0)
-			return (true);
+		if (sender != iter->first)
+		{
+			if (iter->second->getNick().compare(name.c_str()) == 0)
+				return (true);
+		}
 	}
 	return (false);
 }
@@ -20,59 +28,33 @@ void Server::Nick(fd_t sender, const commandData_t &cmd)
 	if (!(cmd.binParams & NICK))
 	{
 		sendStr(sender, ERR_NONICKNAMEGIVEN(_ClientMap[sender]->getNick()));
-		_ClientMap[sender]->setPassOk(false);
-		_ClientMap[sender]->setNickOk(false);
-		_ClientMap[sender]->setUserOk(false);
+		if(!_ClientMap[sender]->isRegistered())
+			_ClientMap[sender]->setNickOk(false);
 		return;
 	}
-	std::string name = cmd.params[0];
+	std::string newnick = cmd.params[0];
+	if (_ClientMap[sender]->getNick().compare(newnick) == 0)
+	{
+		sendStr(sender, "Please enter a nickname different from your current one\r\n");
+		return;
+	}
 	if (this->_ClientMap[sender]->isRegistered())
 	{
-		if (!nickExist(name, this->_ClientMap))
+		if (!nickExist(sender, newnick, _ClientMap))
 		{
-			this->_ClientMap[sender]->changeNick(name);
+			std::string newNameReply = "New nick available, your nickname is now " + newnick + "\r\n";
+			nickMessage(sender, _ClientMap[sender]->getNick(), newnick);
+			this->_ClientMap[sender]->changeNick(newnick);
+			if(!_ClientMap[sender]->isRegistered())
+				_ClientMap[sender]->setNickOk(true);
+			sendStr(sender, newNameReply);
 			return;
 		}
-		else if (nickExist(name, this->_ClientMap))
+		else if (nickExist(sender, newnick, _ClientMap))
 		{
-			sendStr(sender, ERR_NICKNAMEINUSE(_ClientMap[sender]->getNick(), name));
-			_ClientMap[sender]->setPassOk(false);
-			_ClientMap[sender]->setNickOk(false);
-			_ClientMap[sender]->setUserOk(false);
-			return;
-		}
-	}
-	//we are not registered and need to check if pass is ok and if nick is ok
-	else if (!this->_ClientMap[sender]->isRegistered())
-	{
-		if (!this->_ClientMap[sender]->getPassOk())
-		{
-			sendStr(sender, ERR_PASSWDMISMATCH(_ClientMap[sender]->getNick()));
-			_ClientMap[sender]->setPassOk(false);
-			_ClientMap[sender]->setNickOk(false);
-			_ClientMap[sender]->setUserOk(false);
-			return;
-		}
-		if (this->_ClientMap[sender]->getPassOk())
-		{
-			if (nickExist(name, this->_ClientMap))
-			{
-				_ClientMap[sender]->setPassOk(false);
+			if(!_ClientMap[sender]->isRegistered())
 				_ClientMap[sender]->setNickOk(false);
-				_ClientMap[sender]->setUserOk(false);
-				sendStr(sender, ERR_NICKNAMEINUSE("new client", name));
-				return;
-			}
-			else if (!nickExist(name, this->_ClientMap))
-			{
-				this->_ClientMap[sender]->changeNick(name);
-				this->_ClientMap[sender]->setNickOk(true);
-				if (_ClientMap[sender]->getPassOk() && _ClientMap[sender]->getNickOk() && _ClientMap[sender]->getUserOk())
-				{
-					_ClientMap[sender]->setIsRegistered(true);
-					sendStr(sender, "You successfuly registered !\r\n");
-				}
-			}
+			sendStr(sender, ERR_NICKNAMEINUSE(_ClientMap[sender]->getNick(), newnick));
 			return;
 		}
 	}
