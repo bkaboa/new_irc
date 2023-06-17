@@ -11,6 +11,7 @@ void Server::Invite(fd_t sender, const commandData_t &args)
 		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getNick(), "INVITE"));
 		return;
 	}
+	std::string notif = "You've been invited to channel ";
 	std::string targetNick = args.params[0];
 	std::string targetChannel = args.params[1];
 	fd_t		targetFd = getClientFd(targetNick);
@@ -19,6 +20,7 @@ void Server::Invite(fd_t sender, const commandData_t &args)
 	if ((targetChannel[0] == '#' || targetChannel[0] == '&') && _ChannelMap.find(targetChannel) != _ChannelMap.end())
 	{
 		Channel *channel = _ChannelMap.find(targetChannel)->second;
+		notif += targetChannel + " by user " + _ClientMap[sender]->getNick() + "\r\n";
 		if (!channel->isInChannel(sender))
 		{
 			sendStr(sender, ERR_NOTONCHANNEL(_ClientMap[sender]->getNick(), targetChannel));
@@ -30,7 +32,10 @@ void Server::Invite(fd_t sender, const commandData_t &args)
 			if (channel->getOptions() & i)
 			{
 				if (channel->isAdmin(sender))
+				{
+					sendStr(targetFd, notif);
 					channel->addInvite(targetFd);
+				}
 				else
 					sendStr(sender, ERR_CHANOPRIVSNEEDED(_ClientMap[sender]->getNick(), targetChannel));
 				return;
@@ -38,6 +43,7 @@ void Server::Invite(fd_t sender, const commandData_t &args)
 			//public invite
 			else if (!(channel->getOptions() & i))
 			{
+				sendStr(targetFd, notif);
 				sendStr(sender, RPL_INVITING(_ClientMap[sender]->getNick(), targetNick, targetChannel));
 				return;
 			}
