@@ -77,7 +77,10 @@ void IrcMessage::parseMessage(commandList &commandList, fd_t fd)
 	{
 		command.clientRequest = fd;
 		if (it->empty() || it->size() < 3)
+		{
+			command.command = -1;
 			commandList.push_back(command);
+		}
 		else
 		{
 			command.originalCommand = *it;
@@ -140,7 +143,10 @@ void	IrcMessage::checkCommand(std::string &sentence, int *binParams, int *comman
 	stringSlice(sentence.find_first_of(" \n"), sentence, word);
 	std::cout << NC << "Command = " << word << '\n';
 	if (word.empty() || word.size() <= 3)
+	{
+		*command = -1;
 		return ;
+	}
 	for(int i = 0; i < 11; i++)
 	{
 		if ((result = macros[i](word)) != 0)
