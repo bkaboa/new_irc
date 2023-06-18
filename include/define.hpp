@@ -72,7 +72,7 @@ enum parsingType:u_int8_t {
 
 //***************************		SERVER_ERR
 #define ERR_INPUTTOOLONG(client) ":" + std::string(SERVER_NAME) + " 417 " + std::string(client) + " :Input line was too long\r\n"
-#define ERR_UNKNOWNCOMMAND(client, command) ":" + std::string(SERVER_NAME) + " 421 " + std::string(client) + std::string(command) + " :Unknown command\r\n"
+#define ERR_UNKNOWNCOMMAND(client, command) ":" + std::string(SERVER_NAME) + " 421 " + std::string(client) + " " + std::string(command) + " :Unknown command\r\n"
 #define ERR_NOSUCHNICK(client, nick) ":" + std::string(SERVER_NAME) + " 401 " + std::string(client) + " " + std::string(nick) + " :No such nick/channel\r\n"
 #define ERR_NOSUCHSERVER(client, server) ":" + std::string(SERVER_NAME) + " 402 " + std::string(client) + " " + std::string(server) + " :No such server\r\n"
 #define ERR_NOSUCHCHANNEL(client, chan) ":" + std::string(SERVER_NAME) + " 403 " + std::string(client) + " " + std::string(chan) + " :No such channel\r\n"
