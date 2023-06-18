@@ -3,19 +3,19 @@
 
 using namespace irc;
 
-static bool	userExist(fd_t sender, std::string name, mapClient &map)
-{
-	mapClientIter iter;
-	for(iter = map.begin(); iter != map.end(); ++iter)
-	{
-		if (sender != iter->first)
-		{
-			if (iter->second->getName().compare(name.c_str()) == 0)
-				return (true);
-		}
-	}
-	return (false);
-}
+// static bool	userExist(fd_t sender, std::string name, mapClient &map)
+// {
+// 	mapClientIter iter;
+// 	for(iter = map.begin(); iter != map.end(); ++iter)
+// 	{
+// 		if (sender != iter->first)
+// 		{
+// 			if (iter->second->getName().compare(name.c_str()) == 0)
+// 				return (true);
+// 		}
+// 	}
+// 	return (false);
+// }
 
 void Server::User(fd_t sender, const commandData_t &cmd)
 {

@@ -18,6 +18,7 @@ namespace irc
 			void			deleteChannel(std::string channame);
 			void			disconnectClient(pollvectorIter &it);
 			mapClientIter	getClient(const fd_t fd) const;
+			void			quitClient(pollvectorIter &pollIt);
 	
 		private:
 			void	socketInit();

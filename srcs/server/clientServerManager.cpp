@@ -1,5 +1,6 @@
 #include "../../include/server/server.hpp"
 #include "../../include/client/client.hpp"
+#include <unistd.h>
 
 using namespace irc;
 

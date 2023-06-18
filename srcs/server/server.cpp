@@ -97,7 +97,7 @@ void	Server::checkEvents()
 			std::cout << RED << "Client unexpected deconnection" << NC << '\n';
 			disconnectClient(it);
 		}
-		if (_ClientMap[it->fd]->getMustDeco())
+		else if (_ClientMap[it->fd]->getMustDeco())
 			disconnectClient(it);
 		if (it != _PollVector.end())
 			++it;
