@@ -77,10 +77,7 @@ void IrcMessage::parseMessage(commandList &commandList, fd_t fd)
 	{
 		command.clientRequest = fd;
 		if (it->empty() || it->size() < 3)
-		{
-			command.command = -1;
-			commandList.push_back(command);
-		}
+			it++;
 		else
 		{
 			checkCommand(*it, &command);
