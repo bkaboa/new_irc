@@ -80,7 +80,7 @@ void	Server::checkEvents()
 						std::cout << NC << "Empty param" << '\n';
 					for (std::vector<std::string>::iterator it = itList->params.begin(); it != itList->params.end(); it++)
 						std::cout << NC << "Param = " << *it << '\n';
-					execCommand(*itList);
+					execCommand(it->fd, *itList);
 				}
 				std::cout << GREEN << "-----End of " << _ClientMap[it->fd]->getName() << " request-----" << std::endl;
 				commandList.clear();

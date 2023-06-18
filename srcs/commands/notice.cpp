@@ -29,7 +29,7 @@ void Server::Notice(fd_t sender, const commandData_t &args)
 				{
 					if (target[0] == '#' || target[0] == '&')
 					{
-						std::string finalmsg = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + "@" + SERVER_NAME + " PRIVMSG " + target + " " + message;
+						std::string finalmsg = ":" + _ClientMap[sender]->getNick() + " PRIVMSG " + target + " " + message;
 						if (_ChannelMap.find(target) != _ChannelMap.end())
 						{
 							if (_ChannelMap.find(target)->second->isInChannel(sender))
@@ -41,7 +41,7 @@ void Server::Notice(fd_t sender, const commandData_t &args)
 				else
 				{
 					fd_t targetfd = getClientFd(target);
-					if (targetfd != -1 && targetfd != sender)
+					if (targetfd != -1)
 						sendStr(targetfd, message);
 				}
 			}
@@ -53,7 +53,7 @@ void Server::Notice(fd_t sender, const commandData_t &args)
 			// target is a channel
 			if (target[0] == '#' || target[0] == '&')
 			{
-				std::string finalmsg = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + "@" + SERVER_NAME + " PRIVMSG " + target + " " + message;
+				std::string finalmsg = ":" + _ClientMap[sender]->getNick() + " PRIVMSG " + target + " " + message;
 				if (_ChannelMap.find(target) != _ChannelMap.end())
 				{
 					if (_ChannelMap.find(target)->second->isInChannel(sender))
@@ -64,9 +64,9 @@ void Server::Notice(fd_t sender, const commandData_t &args)
 			else
 			{
 				fd_t targetfd = getClientFd(target);
-				if (targetfd != -1 && targetfd != sender)
+				if (targetfd != -1)
 				{
-					std::string finalmsg = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + "@" + SERVER_NAME + " PRIVMSG " + target + " " + message;
+					std::string finalmsg = ":" + _ClientMap[sender]->getNick() + " PRIVMSG " + target + " " + message;
 					sendStr(targetfd, finalmsg);
 				}
 			}
