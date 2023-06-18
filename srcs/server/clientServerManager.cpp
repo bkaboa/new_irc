@@ -33,6 +33,7 @@ void	Server::disconnectClient(pollvectorIter &it)
 		delete mit->second;
 		_ClientMap.erase(mit);
 	}
+	close(it->fd);
 	_PollVector.erase(it);
 }
 
