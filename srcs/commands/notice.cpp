@@ -31,7 +31,7 @@ void Server::Notice(fd_t sender, const commandData_t &args)
 				{
 					if (target[0] == '#' || target[0] == '&')
 					{
-						std::string finalmsg = ":" + _ClientMap[sender]->getNick() + " PRIVMSG " + target + " " + message;
+						std::string finalmsg = "***" + _ClientMap[sender]->getNick() + " NOTICE " + target + " " + message;
 						if (_ChannelMap.find(target) != _ChannelMap.end())
 						{
 							if (_ChannelMap.find(target)->second->isInChannel(sender))
