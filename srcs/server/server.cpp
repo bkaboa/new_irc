@@ -81,7 +81,6 @@ void	Server::checkEvents()
 					for (std::vector<std::string>::iterator it = itList->params.begin(); it != itList->params.end(); it++)
 						std::cout << NC << "Param = " << *it << '\n';
 					execCommand(*itList);
-					deleteParams(*itList);
 				}
 				std::cout << GREEN << "-----End of " << _ClientMap[it->fd]->getName() << " request-----" << std::endl;
 				commandList.clear();
@@ -156,13 +155,3 @@ fd_t	Server::getClientFd(const std::string nick)
 	}
 	return (-1);
 }
-
-void	Server::deleteParams(struct commandData_t command) const
-{
-	for (std::vector<std::string>::iterator it = command.params.begin(); it != command.params.end(); it++)
-	{
-		it->clear();
-	}
-	command.params.clear();
-}
-
