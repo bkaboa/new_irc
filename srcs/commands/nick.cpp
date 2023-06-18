@@ -33,6 +33,11 @@ void Server::Nick(fd_t sender, const commandData_t &cmd)
 		return;
 	}
 	std::string newnick = cmd.params[0];
+	if (newnick.size() > 15)
+	{
+		sendStr(sender, ERR_ERRONEUSNICKNAME(_ClientMap[sender]->getNick(), newnick));
+		return;
+	}
 	if (_ClientMap[sender]->getNick().compare(newnick) == 0)
 	{
 		sendStr(sender, "Please enter a nickname different from your current one\r\n");
