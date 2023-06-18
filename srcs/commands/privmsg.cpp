@@ -44,7 +44,7 @@ void Server::Privmsg(fd_t sender, const commandData_t &args)
 						if (_ChannelMap.find(target) != _ChannelMap.end())
 						{
 							if (_ChannelMap.find(target)->second->isInChannel(sender))
-								_ChannelMap[target]->channelMsg(-1, finalmsg);
+								_ChannelMap[target]->channelMsg(sender, finalmsg);
 							else
 								sendStr(sender, ERR_CANNOTSENDTOCHAN(_ClientMap[sender]->getNick(), target));
 						}
@@ -74,7 +74,7 @@ void Server::Privmsg(fd_t sender, const commandData_t &args)
 				if (_ChannelMap.find(target) != _ChannelMap.end())
 				{
 					if (_ChannelMap.find(target)->second->isInChannel(sender))
-						_ChannelMap[target]->channelMsg(-1, finalmsg);
+						_ChannelMap[target]->channelMsg(sender, finalmsg);
 					else
 						sendStr(sender, ERR_CANNOTSENDTOCHAN(_ClientMap[sender]->getNick(), target));
 				}
