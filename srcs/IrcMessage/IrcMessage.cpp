@@ -83,8 +83,7 @@ void IrcMessage::parseMessage(commandList &commandList, fd_t fd)
 		}
 		else
 		{
-			command.originalCommand = *it;
-			checkCommand(*it, &command.binParams, &command.command);
+			checkCommand(*it, &command);
 			if (command.binParams & CHAN)
 				takeChannel(&command, *it);
 			if (command.binParams & NICK)
@@ -121,7 +120,7 @@ int USERC(const std::string& s) { return USER_MACRO(s); }
 int CAP(const std::string& s) { return CAP_MACRO(s); }
 int NOTICE(const std::string& s) { return NOTICE_MACRO(s); }
 
-void	IrcMessage::checkCommand(std::string &sentence, int *binParams, int *command)
+void	IrcMessage::checkCommand(std::string &sentence, commandData_t *command)
 {
 	int			result;
     typedef macroFunction MacroFunctionPtr;
@@ -141,20 +140,21 @@ void	IrcMessage::checkCommand(std::string &sentence, int *binParams, int *comman
         USERC,
 		NOTICE,
     };
-	*command = -1;
+	command->command = -1;
 	stringSlice(sentence.find_first_of(" \n"), sentence, word);
-	std::cout << NC << "Command = " << word << '\n';
 	if (word.empty() || word.size() <= 3)
 	{
-		*command = -1;
+		command->command = -1;
 		return ;
 	}
+	std::cout << NC << "Command = " << word << '\n';
+	command->originalCommand = word;
 	for(int i = 0; i < 12; i++)
 	{
 		if ((result = macros[i](word)) != 0)
 		{
-			*binParams = result;
-			*command = i;
+			command->binParams = result;
+			command->command = i;
 			return;
 		}
 	}

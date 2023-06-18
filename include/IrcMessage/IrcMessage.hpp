@@ -20,7 +20,7 @@ namespace irc
 			int 						recvMessage(std::string message);
 
 		private : 
-			void 						checkCommand(std::string &sentence, int *binParams, int *command);
+			void 						checkCommand(std::string &sentence, commandData_t *command);
 			bool						stringSlice(size_t nPos, std::string &original, std::string &sliced);
 			void						takeTarget(struct commandData_t *command, std::string &sliceMessage);
 			void						takeMessage(struct commandData_t *command, std::string &sliceMessage);
