@@ -24,7 +24,7 @@ namespace irc
 			void	socketInit();
 			void	setSocket();
 			void	checkEvents();
-			void	acceptConnection();
+			int		acceptConnection();
 			void	clientNew(fd_t clientFd);
 			void	execCommand(fd_t sender, commandData_t &cmd);
 			fd_t	getClientFd(std::string name);

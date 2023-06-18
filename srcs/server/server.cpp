@@ -104,7 +104,7 @@ void	Server::checkEvents()
 	} while (it != _PollVector.end());
 }
 
-void	Server::acceptConnection()
+int	Server::acceptConnection()
 {
 	struct sockaddr_in		client;
 	socklen_t				clientSize = sizeof(sockaddr_in);
@@ -120,14 +120,14 @@ void	Server::acceptConnection()
 			break;
 		else if (clientFd < 0)
 		{
-			std::cout << RED << strerror(errno) << NC <<  '\n';
-			return;
+			return (-2);
 		}
 		newPoll.fd = clientFd;
 		newPoll.events = POLLIN;
 		_PollVector.push_back(newPoll);
 		clientNew(clientFd);
 	}
+	return (0);
 }
 
 void	Server::ConnectServer()
@@ -136,9 +136,11 @@ void	Server::ConnectServer()
 	setSocket();
 	while (globalRuntime)
 	{
-		poll(_PollVector.data(), _PollVector.size(), POLL_TIMEOUT);
+		if (poll(_PollVector.data(), _PollVector.size(), POLL_TIMEOUT) < 0)
+			break;
 		checkEvents();
-		acceptConnection();
+		if (acceptConnection() < 0)
+			break;
 	}
 	deleteAllChannel();
 	deleteAllClient();
