@@ -45,6 +45,7 @@ namespace irc
 			void Nick(fd_t sender, const commandData_t &args);
 			void Part(fd_t sender, const commandData_t &args);
 			void Pass(fd_t sender, const commandData_t &args);
+			void Notice(fd_t sender, const commandData_t &args);
 			void Privmsg(fd_t sender, const commandData_t &args);
 			void Quit(fd_t sender, const commandData_t &args);
 			void Topic(fd_t sender, const commandData_t &args);
