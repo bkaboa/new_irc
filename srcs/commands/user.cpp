@@ -38,6 +38,7 @@ void Server::User(fd_t sender, const commandData_t &cmd)
 		{
 			_ClientMap[sender]->setIsRegistered(true);
 			sendStr(sender, "You successfuly registered !\r\n");
+			sendStr(sender, RPL_WELCOME(_ClientMap[sender]->getNick(), SERVER_NAME, _ClientMap[sender]->getNick()));
 		}
 	}
 }

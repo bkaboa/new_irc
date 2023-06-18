@@ -13,6 +13,11 @@ void Server::Privmsg(fd_t sender, const commandData_t &args)
 		sendStr(sender, ERR_NOTEXTTOSEND(_ClientMap[sender]->getNick()));
 		return;
 	}
+	if (!(args.binParams & TARG))
+	{
+		sendStr(sender, ERR_NORECIPIENT(_ClientMap[sender]->getNick(), "PRIVMSG"));
+		return;
+	}
 	else if (args.binParams & MESS)
 	{
 		std::string message = args.params[1];
@@ -28,22 +33,26 @@ void Server::Privmsg(fd_t sender, const commandData_t &args)
 				//target is a channel
 				if (target[0] == '#' || target[0] == '&')
 				{
-					//channel exist in server
-					if (_ChannelMap.find(target) != _ChannelMap.end())
+					if (target[0] == '#' || target[0] == '&')
 					{
-						_ChannelMap[target]->channelMsg(sender, message);
+						std::string finalmsg = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + "@" + SERVER_NAME + " PRIVMSG " + target + " " + message;
+						if (_ChannelMap.find(target) != _ChannelMap.end())
+						{
+							if (_ChannelMap.find(target)->second->isInChannel(sender))
+								_ChannelMap[target]->channelMsg(sender, finalmsg);
+							else
+								sendStr(sender, ERR_CANNOTSENDTOCHAN(_ClientMap[sender]->getNick(), target));
+						}
+						else
+							sendStr(sender, ERR_NOSUCHCHANNEL(_ClientMap[sender]->getNick(), target));
 					}
-					else
-						sendStr(sender, ERR_NOSUCHCHANNEL(_ClientMap[sender]->getNick(), target));
 				}
 				//target is a user
 				else
 				{
 					fd_t targetfd = getClientFd(target);
-					if (targetfd != -1)
-					{
+					if (targetfd != -1 && targetfd != sender)
 						sendStr(targetfd, message);
-					}
 					else
 						sendStr(sender, ERR_NOSUCHNICK(_ClientMap[sender]->getNick(), target));
 				}
@@ -60,9 +69,9 @@ void Server::Privmsg(fd_t sender, const commandData_t &args)
 				if (_ChannelMap.find(target) != _ChannelMap.end())
 				{
 					if (_ChannelMap.find(target)->second->isInChannel(sender))
-					{
 						_ChannelMap[target]->channelMsg(sender, finalmsg);
-					}
+					else
+						sendStr(sender, ERR_CANNOTSENDTOCHAN(_ClientMap[sender]->getNick(), target));
 				}
 				else
 					sendStr(sender, ERR_NOSUCHCHANNEL(_ClientMap[sender]->getNick(), target));
@@ -71,7 +80,7 @@ void Server::Privmsg(fd_t sender, const commandData_t &args)
 			else
 			{
 				fd_t targetfd = getClientFd(target);
-				if (targetfd != -1)
+				if (targetfd != -1 && targetfd != sender)
 				{
 					std::string finalmsg = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + "@" + SERVER_NAME + " PRIVMSG " + target + " " + message;
 					sendStr(targetfd, finalmsg);

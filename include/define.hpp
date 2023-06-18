@@ -68,6 +68,7 @@ enum parsingType:u_int8_t {
 #define TOPIC_MACRO(command)      (command) == "TOPIC" ? (CHAN + MESS) : 0
 #define USER_MACRO(command)       (command) == "USER" ? (USER) : 0
 #define CAP_MACRO(command)        (command) == "CAP" ? (CAPC) : 0
+#define NOTICE_MACRO(command)    (command) == "NOTICE" ? (TARG + MESS) : 0
 
 //***************************		SERVER_ERR
 #define ERR_INPUTTOOLONG(client) ":" + std::string(SERVER_NAME) + " 417 " + std::string(client) + " :Input line was too long\r\n"
@@ -102,7 +103,7 @@ enum parsingType:u_int8_t {
 #define ERR_USERSDONTMATCH(client) ":" + std::string(SERVER_NAME) + " 502 " + std::string(client) + " :Can't change mode for other users\r\n"
 
 //*****************SERVER_RPL
-#define RPL_WELCOME(client, networkname, nick, user, host) ":" + std::string(SERVER_NAME) + " 001" + std::string(client) + " :Welcome to the " + std::string (networkname) + " Network, " + std::string(nick) + "[!" + std::string(user) + "@" + std::string(host) + "]\r\n"
+#define RPL_WELCOME(client, networkname, nick) ":" + std::string(SERVER_NAME) + " 001 " + std::string(client) + " :Welcome to the " + std::string (networkname) + " Network, " + std::string(nick) + "\r\n"
 #define RPL_TOPIC(client, chan, topic) ":" + std::string(SERVER_NAME) + " 332 " + std::string(client) + " " + std::string(chan) + " :" + std::string(topic) + "\r\n"
 #define RPL_NOTOPIC(client, chan) ":" + std::string(SERVER_NAME) + " 331 " + std::string(client) + " " + std::string(chan) + " :No topic is set\r\n"
 #define RPL_LIST(client, chan, clientcount, topic) ":" + std::string(SERVER_NAME) + " 322 " + std::string(client) + " " + std::string(chan) + " " + std::string(clientcount) + " :" + std::string(topic) + "\r\n"
