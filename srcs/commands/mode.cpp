@@ -53,7 +53,7 @@ static void channelmode_l(int sign, Channel *channel, int limit)
 	if (sign && !(channel->getOptions() & l))
 	{
 		channel->setOptions(l, sign);
-		if (limit > 0)
+		if (limit > 1)
 			channel->setUserLimit(limit);
 	}
 	else if (!sign && (channel->getOptions() & l))
