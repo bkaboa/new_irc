@@ -132,7 +132,7 @@ void	Server::ConnectServer()
 		if (poll(_PollVector.data(), _PollVector.size(), POLL_TIMEOUT) < 0)
 			break;
 		checkEvents();
-		acceptConnection()
+		acceptConnection();
 	}
 	deleteAllChannel();
 	deleteAllClient();
