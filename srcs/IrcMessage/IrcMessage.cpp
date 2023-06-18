@@ -20,7 +20,6 @@ int	IrcMessage::recvMessage(std::string message)
 		_Message.append(message);
 	else
 		_Message = message;
-	std::cout << (int)_Message[0] << '\n';
 	std::cout << _Message.size() << '\n';
 	if (*(_Message.end() - 1) != '\n')
 		return (MSG_NOT_TERMINATED);
@@ -76,7 +75,6 @@ void IrcMessage::parseMessage(commandList &commandList, fd_t fd)
 	for (std::vector<std::string>::iterator it = commands.begin(); it != commands.end(); it++)
 	{
 		command.clientRequest = fd;
-<<<<<<< HEAD
 		if (it->empty() || it->size() < 3)
 			it++;
 		else
@@ -99,33 +97,6 @@ void IrcMessage::parseMessage(commandList &commandList, fd_t fd)
 			commandList.push_back(command);
 			command.params.clear();
 		}
-=======
-		// if (it->empty() || it->size() < 3)
-		// {
-		// 	command.command = -1;
-		// 	commandList.push_back(command);
-		// }
-		// else
-		// {
-		checkCommand(*it, &command);
-		if (command.binParams & CHAN)
-			takeChannel(&command, *it);
-		if (command.binParams & NICK)
-			takeNick(&command, *it);
-		if (command.binParams & TARG)
-			takeTarget(&command, *it);
-		if (command.binParams & PASS)
-			takePass(&command, *it);
-		if (command.binParams & MESS)
-			takeMessage(&command, *it);
-		if (command.binParams & USER)
-			takeUser(&command, *it);
-		if (command.binParams & MODE)
-			takeMode(&command, *it);
-		commandList.push_back(command);
-		command.params.clear();
-		// }
->>>>>>> 926ef6c2c962c8d1306474224e850f8942311bef
 	}
 	commands.clear();
 	_Message.clear();
