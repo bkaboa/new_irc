@@ -9,10 +9,7 @@ using namespace irc;
 void Server::Notice(fd_t sender, const commandData_t &args)
 {
 	if (!_ClientMap[sender]->isRegistered())
-	{
-		sendStr(sender, ERR_NOTREGISTERED(_ClientMap[sender]->getNick()));
 		return;
-	}
 	if (!(args.binParams & MESS))
 		return;
 	if (!(args.binParams & TARG))
