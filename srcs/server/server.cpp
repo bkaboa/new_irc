@@ -113,15 +113,8 @@ int	Server::acceptConnection()
 
 	memset(static_cast<void*>(&newPoll), 0, sizeof(newPoll));
 	memset(static_cast<void*>(&client), 0, sizeof(client));
-	while (ACCEPT_CLIENT)
+	while ((clientFd = accept(_Sock, (sockaddr*)&client, &clientSize)) >= 0)
 	{
-		clientFd = accept(_Sock, (sockaddr*)&client, &clientSize);
-		if (clientFd < 0 && (errno == EAGAIN || errno == EWOULDBLOCK))
-			break;
-		else if (clientFd < 0)
-		{
-			return (-2);
-		}
 		newPoll.fd = clientFd;
 		newPoll.events = POLLIN;
 		_PollVector.push_back(newPoll);
@@ -139,8 +132,7 @@ void	Server::ConnectServer()
 		if (poll(_PollVector.data(), _PollVector.size(), POLL_TIMEOUT) < 0)
 			break;
 		checkEvents();
-		if (acceptConnection() < 0)
-			break;
+		acceptConnection()
 	}
 	deleteAllChannel();
 	deleteAllClient();
