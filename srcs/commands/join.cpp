@@ -6,9 +6,9 @@ using namespace irc;
 
 void Server::Join(fd_t sender, const commandData_t &args)
 {
-	if (!(_ClientMap[sender]->isRegistered()))
+	if (!_ClientMap[sender]->isRegistered())
 	{
-		sendStr(sender, "You are not registered on this server...\r\n");
+		sendStr(sender, ERR_NOTREGISTERED(_ClientMap[sender]->getNick()));
 		return;
 	}
 	if (args.binParams == NONE || !(args.binParams & CHAN))

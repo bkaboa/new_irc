@@ -6,6 +6,11 @@ using namespace irc;
 
 void Server::Part(fd_t sender, const commandData_t &args)
 {
+	if (!_ClientMap[sender]->isRegistered())
+	{
+		sendStr(sender, ERR_NOTREGISTERED(_ClientMap[sender]->getNick()));
+		return;
+	}
 	if (args.binParams == NONE || !(args.binParams & CHAN))
 	{
 		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getNick(), "PART"));
