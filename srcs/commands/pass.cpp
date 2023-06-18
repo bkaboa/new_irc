@@ -7,7 +7,7 @@ void Server::Pass(fd_t sender, const commandData_t &cmd)
 {
 	if (!(cmd.binParams & PASS))
 	{
-		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getNick(), cmd.originalCommand));
+		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getNick(), "PASS"));
 		return;
 	}
 	std::string pass = cmd.params[0];

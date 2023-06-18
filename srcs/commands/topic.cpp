@@ -9,7 +9,7 @@ void Server::Topic(fd_t sender, const commandData_t &args)
 	//command need at least a channel
 	if (args.binParams == NONE || !(args.binParams & CHAN))
 	{
-		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getNick(), args.originalCommand));
+		sendStr(sender, ERR_NEEDMOREPARAMS(_ClientMap[sender]->getNick(), "TOPIC"));
 		return;
 	}
 	else

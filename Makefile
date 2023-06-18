@@ -2,7 +2,7 @@ NAME 	:= 	ircserv
 
 OPATH 	:= 	.obj_dir
 
-FLAGS 	:= -Wall -Wextra -Werror -g3 -fsanitize=address
+FLAGS 	:= -Wall -Wextra -Werror -g3
 
 SRC 	:= 	$(shell find . -name "*.cpp")
 

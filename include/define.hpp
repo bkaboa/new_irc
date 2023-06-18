@@ -95,12 +95,10 @@ enum parsingType:u_int8_t {
 #define ERR_CHANNELISFULL(client, chan) ":" + std::string(SERVER_NAME) + " 471 " + std::string(client) + " " + std::string(chan) + " :Cannot join channel, it is full\r\n"
 #define ERR_UNKNOWNMODE(client, mode) ":" + std::string(SERVER_NAME) + " 472 " + std::string(client) + " " + char(mode) + " :is unknown mode char to me\r\n"
 #define ERR_INVITEONLYCHAN(client, chan) ":" + std::string(SERVER_NAME) + " 473 " + std::string(client) + " " + std::string(chan) + " :Cannot join channel, invite only\r\n"
-#define ERR_BANNEDFROMCHAN(client, chan) ":" + std::string(SERVER_NAME) + " 474 " + std::string(client) + " " + std::string(chan) + " :Cannot join channel, you are banned\r\n"
 #define ERR_BADCHANNELKEY(client, chan) ":" + std::string(SERVER_NAME) + " 475 " + std::string(client) + " " + std::string(chan) + " :Cannot join channel, you need the right key\r\n"
 #define ERR_NOPRIVILEGES(client) ":" + std::string(SERVER_NAME) + " 481 " + std::string(client) + " :Permission Denied- You're not an IRC operator\r\n"
 #define ERR_CHANOPRIVSNEEDED(client, chan) ":" + std::string(SERVER_NAME) + " 482 " + std::string(client) + " " + std::string(chan) + " :Your're not channel operator\r\n"
 #define ERR_UMODEUNKNOWNFLAG(client) ":" + std::string(SERVER_NAME) + " 501 " + std::string(client) + " :Unknown MODE flag\r\n"
-#define ERR_USERSDONTMATCH(client) ":" + std::string(SERVER_NAME) + " 502 " + std::string(client) + " :Can't change mode for other users\r\n"
 
 //*****************SERVER_RPL
 #define RPL_WELCOME(client, networkname, nick) ":" + std::string(SERVER_NAME) + " 001 " + std::string(client) + " :Welcome to the " + std::string (networkname) + " Network, " + std::string(nick) + "\r\n"
