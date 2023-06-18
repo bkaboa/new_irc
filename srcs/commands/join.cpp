@@ -137,11 +137,16 @@ void Server::Join(fd_t sender, const commandData_t &args)
 								{
 									if (chan->isInvited(sender))
 									{
-										chan->addMember(_ClientMap[sender], 0);
-										std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";
-										chan->channelMsg(-1, reply);
-										chan->joinNameReply(sender, _ClientMap[sender]->getNick());
-										chan->removeInvite(sender);
+										if ((chan->getOptions() & l) && (chan->getMembersSize() > chan->getUserLimit()))
+											sendStr(sender, ERR_CHANNELISFULL(_ClientMap[sender]->getNick(), chan->getName()));
+										else
+										{
+											chan->addMember(_ClientMap[sender], 0);
+											std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";
+											chan->channelMsg(-1, reply);
+											chan->joinNameReply(sender, _ClientMap[sender]->getNick());
+											chan->removeInvite(sender);
+										}
 									}
 									else
 										sendStr(sender, ERR_INVITEONLYCHAN(_ClientMap[sender]->getNick(), chan->getName()));
@@ -153,11 +158,16 @@ void Server::Join(fd_t sender, const commandData_t &args)
 							{
 								if (chan->checkPass(*passiter))
 								{
-									chan->addMember(_ClientMap[sender], 0);
-									std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";
-									chan->channelMsg(-1, reply);
-									chan->joinNameReply(sender, _ClientMap[sender]->getName());
-									chan->removeInvite(sender);
+									if ((chan->getOptions() & l) && (chan->getMembersSize() > chan->getUserLimit()))
+										sendStr(sender, ERR_CHANNELISFULL(_ClientMap[sender]->getNick(), chan->getName()));
+									else
+									{
+										chan->addMember(_ClientMap[sender], 0);
+										std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";
+										chan->channelMsg(-1, reply);
+										chan->joinNameReply(sender, _ClientMap[sender]->getNick());
+										chan->removeInvite(sender);
+									}
 								}
 								else
 									sendStr(sender, ERR_BADCHANNELKEY(_ClientMap[sender]->getNick(), chan->getName()));
@@ -166,10 +176,16 @@ void Server::Join(fd_t sender, const commandData_t &args)
 						// channel does not need password to be joined
 						else
 						{
-							chan->addMember(_ClientMap[sender], 0);
-							std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";
-							chan->channelMsg(-1, reply);
-							chan->joinNameReply(sender, _ClientMap[sender]->getName());
+							if ((chan->getOptions() & l) && (chan->getMembersSize() > chan->getUserLimit()))
+								sendStr(sender, ERR_CHANNELISFULL(_ClientMap[sender]->getNick(), chan->getName()));
+							else
+							{
+								chan->addMember(_ClientMap[sender], 0);
+								std::string reply = ":" + _ClientMap[sender]->getNick() + "!" + _ClientMap[sender]->getName() + " JOIN " + chan->getName() + "\r\n";
+								chan->channelMsg(-1, reply);
+								chan->joinNameReply(sender, _ClientMap[sender]->getNick());
+								chan->removeInvite(sender);
+							}
 						}
 					}
 				}

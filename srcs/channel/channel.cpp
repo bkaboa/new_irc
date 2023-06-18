@@ -231,3 +231,8 @@ bool	Channel::isInvited(fd_t clientFd)
 	}
 	return(false);
 }
+
+int		Channel::getMembersSize()
+{
+	return(_Members.size());
+}

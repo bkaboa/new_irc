@@ -33,6 +33,7 @@ namespace irc
 		void	removeInvite(fd_t toremove);
 		bool	isInvited(fd_t clientFd);
 		void	clearInvite();
+		int		getMembersSize();
 
 	protected :
 		bool checkOption(int);
