@@ -2,7 +2,7 @@ NAME 	:= 	ircserv
 
 OPATH 	:= 	.obj_dir
 
-FLAGS 	:= -std=c++98 -Wall -Wextra -Werror -g3
+FLAGS 	:= #-Wall -Wextra -Werror -g3
 
 SRC 	:= 	$(shell find . -name "*.cpp")
 

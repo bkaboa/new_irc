@@ -5,6 +5,8 @@ using namespace irc;
 
 static void nickMessage(fd_t sender, std::string previousNick, std::string newnick)
 {
+	if (previousNick.empty())
+		previousNick = "new client";
 	std::string mess = std::string(":") + previousNick + " NICK " + newnick + "\r\n";
 	sendStr(sender, mess);
 }
@@ -38,24 +40,21 @@ void Server::Nick(fd_t sender, const commandData_t &cmd)
 		sendStr(sender, "Please enter a nickname different from your current one\r\n");
 		return;
 	}
-	if (this->_ClientMap[sender]->isRegistered())
+	if (!nickExist(sender, newnick, _ClientMap))
 	{
-		if (!nickExist(sender, newnick, _ClientMap))
-		{
-			std::string newNameReply = "New nick available, your nickname is now " + newnick + "\r\n";
-			nickMessage(sender, _ClientMap[sender]->getNick(), newnick);
-			this->_ClientMap[sender]->changeNick(newnick);
-			if(!_ClientMap[sender]->isRegistered())
-				_ClientMap[sender]->setNickOk(true);
-			sendStr(sender, newNameReply);
-			return;
-		}
-		else if (nickExist(sender, newnick, _ClientMap))
-		{
-			if(!_ClientMap[sender]->isRegistered())
-				_ClientMap[sender]->setNickOk(false);
-			sendStr(sender, ERR_NICKNAMEINUSE(_ClientMap[sender]->getNick(), newnick));
-			return;
-		}
+		std::string newNameReply = "New nick available, your nickname is now " + newnick + "\r\n";
+		nickMessage(sender, _ClientMap[sender]->getNick(), newnick);
+		this->_ClientMap[sender]->changeNick(newnick);
+		if(!_ClientMap[sender]->isRegistered())
+			_ClientMap[sender]->setNickOk(true);
+		sendStr(sender, newNameReply);
+		return;
+	}
+	else if (nickExist(sender, newnick, _ClientMap))
+	{
+		if(!_ClientMap[sender]->isRegistered())
+			_ClientMap[sender]->setNickOk(false);
+		sendStr(sender, ERR_NICKNAMEINUSE(_ClientMap[sender]->getNick(), newnick));
+		return;
 	}
 }
