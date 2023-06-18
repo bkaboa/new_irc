@@ -119,6 +119,7 @@ int QUIT(const std::string& s) { return QUIT_MACRO(s); }
 int TOPIC(const std::string& s) { return TOPIC_MACRO(s); }
 int USERC(const std::string& s) { return USER_MACRO(s); }
 int CAP(const std::string& s) { return CAP_MACRO(s); }
+int NOTICE(const std::string& s) { return NOTICE_MACRO(s); }
 
 void	IrcMessage::checkCommand(std::string &sentence, int *binParams, int *command)
 {
@@ -138,6 +139,7 @@ void	IrcMessage::checkCommand(std::string &sentence, int *binParams, int *comman
         QUIT,
         TOPIC,
         USERC,
+		NOTICE,
     };
 	*command = -1;
 	stringSlice(sentence.find_first_of(" \n"), sentence, word);
@@ -147,7 +149,7 @@ void	IrcMessage::checkCommand(std::string &sentence, int *binParams, int *comman
 		*command = -1;
 		return ;
 	}
-	for(int i = 0; i < 11; i++)
+	for(int i = 0; i < 12; i++)
 	{
 		if ((result = macros[i](word)) != 0)
 		{
