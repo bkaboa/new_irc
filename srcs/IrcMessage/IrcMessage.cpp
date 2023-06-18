@@ -20,7 +20,6 @@ int	IrcMessage::recvMessage(std::string message)
 		_Message.append(message);
 	else
 		_Message = message;
-	std::cout << (int)_Message[0] << '\n';
 	std::cout << _Message.size() << '\n';
 	if (*(_Message.end() - 1) != '\n')
 		return (MSG_NOT_TERMINATED);
