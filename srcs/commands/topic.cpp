@@ -6,6 +6,11 @@ using namespace irc;
 
 void Server::Topic(fd_t sender, const commandData_t &args)
 {
+	if (!_ClientMap[sender]->isRegistered())
+	{
+		sendStr(sender, ERR_NOTREGISTERED(_ClientMap[sender]->getNick()));
+		return;
+	}
 	//command need at least a channel
 	if (args.binParams == NONE || !(args.binParams & CHAN))
 	{
@@ -23,7 +28,10 @@ void Server::Topic(fd_t sender, const commandData_t &args)
 		}
 		//user not on channel
 		if (!(_ChannelMap.find(targetChan)->second->isInChannel(sender)))
+		{
 			sendStr(sender, ERR_NOTONCHANNEL(_ClientMap[sender]->getNick(), targetChan));
+			return;
+		}
 		//no message
 		if (!(args.binParams & MESS))
 		{
