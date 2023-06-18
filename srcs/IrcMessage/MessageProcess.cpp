@@ -10,7 +10,8 @@ void Server::execCommand(fd_t sender, commandData_t &cmd)
 {
 	if (cmd.command == -1)
 	{
-		sendStr(sender, ERR_UNKNOWNCOMMAND(_ClientMap[sender]->getNick(), "UNKNOWN"));
+		if (!(cmd.originalCommand.empty()))
+			sendStr(sender, ERR_UNKNOWNCOMMAND(_ClientMap[sender]->getNick(), "UNKNOWN"));
 		return;
 	}
 	FunctionPointer functions[12] = { &Server::Invite, &Server::Join, &Server::Kick, &Server::Mode, \
